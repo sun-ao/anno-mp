@@ -1,0 +1,53 @@
+<view class="page" catchtouchmove="onTouchMove">
+  <view class="title-area">
+    <text class="title">太空接星</text>
+    <text class="subtitle">只接星星 躲开月亮太阳</text>
+  </view>
+
+  <view class="panel-row">
+    <view class="stat-panel">
+      <text class="stat-num time">{{timerText}}</text>
+      <text class="stat-label">本关用时</text>
+    </view>
+    <view class="stat-panel">
+      <text class="stat-num">⭐{{score}}/{{target}}</text>
+      <text class="stat-label">第 {{level}} 关</text>
+    </view>
+    <view class="stat-panel">
+      <text class="stat-num">🏆{{bestText}}</text>
+      <text class="stat-label">本关最佳</text>
+      <view class="score-clear" bindtap="onClear">清空</view>
+    </view>
+  </view>
+
+  <view class="field">
+    <view class="deco d1">✨</view>
+    <view class="deco d2">🌟</view>
+    <view class="deco d3">🌙</view>
+    <view class="deco d4">☁️</view>
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="item"
+      style="left: {{item.x}}rpx; top: {{item.y}}rpx;"
+    >{{item.emoji}}</view>
+    <view
+      wx:for="{{pops}}"
+      wx:key="id"
+      class="pop"
+      style="left: {{item.x}}rpx; top: {{item.y}}rpx;"
+    >+1</view>
+    <view class="catcher" style="left: {{catcherX}}rpx;">🫴</view>
+
+    <view wx:if="{{paused}}" class="pause-cover">
+      <text class="pause-emoji">😵</text>
+      <text class="pause-title">碰到啦</text>
+      <text class="pause-count">{{pausedLeft}} 秒后继续</text>
+    </view>
+    <view wx:if="{{over}}" class="win-cover">
+      <text class="win-emoji">{{newRecord ? '🏆' : '⭐'}}</text>
+      <text class="win-text">第 {{level}} 关完成</text>
+      <text class="win-sub">用时 {{finalText}}{{newRecord ? ' · 新纪录！' : ''}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,201 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #0c0c0e;
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.cam {
+  width: 100%;
+  height: 100%;
+}
+
+/* 隐藏预览：把相机移出屏幕，但保持挂载以继续出帧（不能用 display:none / wx:if） */
+.cam.cam-hidden {
+  position: fixed;
+  left: -9999rpx;
+  top: -9999rpx;
+  width: 320rpx;
+  height: 240rpx;
+}
+
+.hidden-tip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  background: #111;
+  z-index: 1;
+}
+
+.ht-main {
+  color: #cfcfcf;
+  font-size: 32rpx;
+}
+
+.ht-sub {
+  color: #777;
+  font-size: 24rpx;
+  padding: 0 60rpx;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.topctrls {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  display: flex;
+  gap: 16rpx;
+  z-index: 5;
+}
+
+.ctrlbtn {
+  padding: 12rpx 22rpx;
+  border-radius: 999rpx;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.ctrlbtn:active {
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.ctrl-tx {
+  line-height: 1;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.hud {
+  position: absolute;
+  top: 24rpx;
+  left: 24rpx;
+  right: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  pointer-events: none;
+}
+
+.pill {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 26rpx;
+}
+
+.pill .dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #888;
+}
+
+.pill.live .dot {
+  background: #ff4d4f;
+  box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.7);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.stamp {
+  align-self: flex-start;
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ddd;
+  font-size: 22rpx;
+}
+
+.bar {
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: #0c0c0e;
+}
+
+.btn {
+  flex: 1;
+  margin: 0;
+  font-size: 30rpx;
+  border-radius: 12rpx;
+  color: #fff;
+}
+
+.btn.primary { background: #3F51B5; }
+.btn.warn { background: #E53935; }
+.btn.ghost {
+  background: #2b2b30;
+  color: #cfcfcf;
+}
+
+.interval-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 28rpx;
+  background: #0c0c0e;
+}
+
+.interval-label {
+  color: #cfcfcf;
+  font-size: 26rpx;
+  white-space: nowrap;
+}
+
+.interval-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+}
+
+.interval-opt {
+  padding: 8rpx 22rpx;
+  border-radius: 999rpx;
+  background: #2b2b30;
+  color: #cfcfcf;
+  font-size: 24rpx;
+}
+
+.interval-opt.active {
+  background: #3F51B5;
+  color: #fff;
+}
+
+.tip {
+  padding: 0 28rpx 36rpx;
+  color: #9a9a9a;
+  font-size: 24rpx;
+  line-height: 1.6;
+  background: #0c0c0e;
+}

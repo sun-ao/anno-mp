@@ -1,0 +1,125 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #EBF7F7 0%, #DCF1F1 100%);
+  padding: 40rpx 32rpx 60rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+  min-height: 56rpx;
+}
+
+.stat {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #2E9E94;
+}
+
+.done-flag {
+  font-size: 44rpx;
+}
+
+.board {
+  margin-top: 40rpx;
+  display: grid;
+  grid-template-columns: repeat(3, 190rpx);
+  gap: 16rpx;
+  background: #ffffff;
+  border-radius: 32rpx;
+  padding: 24rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.07);
+}
+
+.slot {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 24rpx;
+  border: 6rpx dashed #9AD1D1;
+  background: #F4FBFB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot-filled {
+  border: 6rpx solid #4ECDC4;
+  background: #ffffff;
+}
+
+.slot-ghost {
+  font-size: 96rpx;
+  opacity: 0.2;
+  line-height: 1;
+}
+
+.slot-emoji {
+  font-size: 96rpx;
+  line-height: 1;
+}
+
+.pieces {
+  margin-top: 50rpx;
+  display: grid;
+  grid-template-columns: repeat(3, 150rpx);
+  gap: 18rpx;
+  justify-content: center;
+}
+
+.piece {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 28rpx;
+  background: #ffffff;
+  border: 6rpx solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease;
+}
+
+.piece:active {
+  transform: scale(0.92);
+}
+
+.piece-selected {
+  border-color: #FFB84D;
+  background: #FFF7E8;
+  transform: scale(1.1);
+}
+
+.piece-gone {
+  visibility: hidden;
+}
+
+.piece-emoji {
+  font-size: 72rpx;
+  line-height: 1;
+}
+
+.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-14rpx); }
+  50% { transform: translateX(12rpx); }
+  75% { transform: translateX(-8rpx); }
+}
+
+.score-clear {
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: #999;
+  padding: 6rpx 22rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 999rpx;
+}

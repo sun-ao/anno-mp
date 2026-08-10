@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="title-area">
+    <view class="title">切水果</view>
+    <view class="subtitle">看准了切一刀，别碰炸弹 💣</view>
+  </view>
+  <view class="counter">切了 {{count}} 个</view>
+  <view class="stage">
+    <view wx:for="{{items}}" wx:key="id"
+      class="fruit {{item.sliced ? 'fruit-sliced' : ''}} {{item.bomb ? 'fruit-bomb' : ''}}"
+      style="left:{{item.left}}%; animation-duration:{{item.dur}}s"
+      data-id="{{item.id}}" bindtap="onTapItem">
+      <block wx:if="{{item.sliced}}">
+        <view class="half half-left"><text class="fruit-emoji">{{item.emoji}}</text></view>
+        <view class="half half-right"><text class="fruit-emoji">{{item.emoji}}</text></view>
+        <view class="slash"></view>
+      </block>
+      <text wx:else class="fruit-emoji">{{item.emoji}}</text>
+    </view>
+    <view wx:if="{{over}}" class="over-mask">
+      <view class="over-text">💥 切到炸弹啦！</view>
+      <view class="over-sub">马上重新开始～</view>
+    </view>
+  </view>
+  <view class="tip">水果飞起来时点它，炸弹千万别点！</view>
+</view>

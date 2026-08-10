@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="title-area">
+    <text class="title">汉堡大厨</text>
+    <text class="subtitle">照着菜谱做汉堡</text>
+  </view>
+
+  <view class="count-panel">
+    <text class="count-num">{{total}}</text>
+    <text class="count-label">做好的汉堡</text>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="recipe-box">
+    <view class="recipe-title">菜谱</view>
+    <view class="recipe">
+      <view
+        wx:for="{{layers}}"
+        wx:key="*this"
+        class="recipe-card {{index < next ? 'card-done' : ''}} {{index === next ? 'card-current' : ''}}"
+      >
+        <text class="recipe-emoji">{{item}}</text>
+        <text wx:if="{{index < next}}" class="card-check">✓</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="burger-box">
+    <view class="burger">
+      <view class="bun-bottom"></view>
+      <view wx:for="{{stack}}" wx:key="emoji" class="layer {{item.cls}}"></view>
+      <view wx:if="{{done}}" class="bun-top"></view>
+    </view>
+    <view class="plate"></view>
+    <view wx:if="{{done}}" class="win-cover">
+      <text class="win-emoji">🎉</text>
+    </view>
+  </view>
+
+  <view class="tray">
+    <view
+      wx:for="{{buttons}}"
+      wx:key="id"
+      class="layer-btn {{shakeId === item.id ? 'shake' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onTapLayer"
+    >{{item.emoji}}</view>
+  </view>
+</view>

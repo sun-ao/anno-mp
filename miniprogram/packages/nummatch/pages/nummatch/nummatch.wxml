@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="count-panel">
+    <text class="count-num">{{total}}</text>
+    <text class="count-label">⭐</text>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="obj-area">
+    <view wx:for="{{count}}" wx:key="*this" class="obj {{sizeClass}}">{{obj}}</view>
+    <view wx:if="{{celebrate}}" class="burst">🎉</view>
+  </view>
+
+  <view class="opt-row">
+    <view
+      wx:for="{{options}}"
+      wx:key="*this"
+      class="opt {{correctIdx === index ? 'opt-correct' : ''}} {{shakeIdx === index ? 'opt-shake' : ''}}"
+      data-idx="{{index}}"
+      bindtap="onTapOption"
+    >{{item}}</view>
+  </view>
+
+  <view class="tip">👀 ➜ 🔢 ➜ 👆</view>
+</view>

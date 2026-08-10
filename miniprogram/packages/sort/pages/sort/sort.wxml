@@ -1,0 +1,32 @@
+<view class="page">
+  <view class="counter">
+    <text class="counter-star">⭐</text>
+    <text class="counter-num">{{count}}</text>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="ball-area">
+    <view
+      class="ball {{dropping ? 'ball-drop' : ''}} {{ballNoanim ? 'ball-noanim' : ''}}"
+      style="background: {{ballColor}}; {{dropping ? 'left:' + dropLeft + '%;' : ''}}"
+    ></view>
+  </view>
+
+  <view class="basket-row">
+    <view
+      wx:for="{{baskets}}"
+      wx:key="*this"
+      class="basket-cell"
+      data-idx="{{index}}"
+      bindtap="onTapBasket"
+    >
+      <view
+        class="basket {{shakingIndex === index ? 'basket-shake' : ''}}"
+        style="background: {{item}};"
+      >
+        <view class="basket-handle"></view>
+        <view class="basket-mouth"></view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,48 @@
+<view class="page">
+  <cube3d id="cube3d" state="{{viewState}}" />
+
+  <view class="hint">
+    <text class="hint-text">{{hintText}}</text>
+  </view>
+
+  <view class="controls">
+    <view class="ctrl {{current === 0 || animating || autoPlaying ? 'ctrl-disabled' : ''}}" bindtap="onPrev">上一步</view>
+    <view class="progress">{{current}} / {{steps.length}}</view>
+    <view class="ctrl ctrl-primary {{current === steps.length ? 'ctrl-disabled' : ''}}" bindtap="onMainAction">{{autoPlaying ? '暂停' : (animating ? '旋转中…' : '下一步')}}</view>
+  </view>
+
+  <view class="formula">
+    <view class="formula-header">
+      <text class="formula-label">完整解法</text>
+      <view class="auto-area">
+        <view class="auto-link {{autoPlaying ? 'auto-link-active' : ''}}" bindtap="onToggleAuto">{{autoPlaying ? '暂停' : '自动'}}</view>
+        <picker mode="selector" range="{{intervalOptions}}" value="{{intervalIndex}}" bindchange="onIntervalChange">
+          <view class="interval-link">{{autoInterval}}s</view>
+        </picker>
+      </view>
+    </view>
+    <view class="formula-text">
+      <text
+        wx:for="{{formulaMoves}}"
+        wx:key="index"
+        class="formula-move {{item.highlight ? 'formula-move-active' : ''}} {{item.done ? 'formula-move-done' : ''}}"
+      >{{item.move}} </text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="steps" scroll-into-view="{{scrollTo}}" scroll-with-animation>
+    <view
+      wx:for="{{steps}}"
+      wx:key="index"
+      id="step-{{index}}"
+      class="step step-{{item.status}}"
+    >
+      <text class="step-no">{{index + 1}}</text>
+      <text class="step-move">{{item.move}}</text>
+      <text class="step-text">{{item.text}}</text>
+      <text wx:if="{{item.status === 'next'}}" class="step-flag">当前</text>
+    </view>
+  </scroll-view>
+
+  <view class="back-link" bindtap="onBackFill">返回修改配色</view>
+</view>

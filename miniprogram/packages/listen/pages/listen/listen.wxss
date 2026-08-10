@@ -1,0 +1,148 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FDEEEC 0%, #FADDD7 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 32rpx 60rpx;
+  box-sizing: border-box;
+}
+
+.count-panel {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 14rpx 40rpx;
+  border-radius: 60rpx;
+}
+
+.count-num {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #E14B4B;
+}
+
+.count-label {
+  font-size: 38rpx;
+}
+
+.target-card {
+  margin-top: 50rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.target-label {
+  font-size: 32rpx;
+  color: #C2544E;
+  font-weight: 600;
+  margin-bottom: 18rpx;
+}
+
+.target-emoji-box {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 40rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 0 #F0C6C0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.target-emoji {
+  font-size: 130rpx;
+  line-height: 1;
+}
+
+.tip-row {
+  margin-top: 30rpx;
+  font-size: 34rpx;
+  color: #C2544E;
+  font-weight: 600;
+}
+
+.car-row {
+  margin-top: 40rpx;
+  display: flex;
+  gap: 30rpx;
+}
+
+.car {
+  width: 200rpx;
+  height: 220rpx;
+  border-radius: 44rpx;
+  background: #FFFFFF;
+  box-shadow: 0 10rpx 0 #F0C6C0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.car:active {
+  transform: scale(0.94);
+}
+
+.car-emoji {
+  font-size: 130rpx;
+  line-height: 1;
+}
+
+.car-mark {
+  position: absolute;
+  top: -30rpx;
+  right: -14rpx;
+  font-size: 64rpx;
+}
+
+.car-win {
+  background: #E9F9F0;
+  box-shadow: 0 10rpx 0 #9ADDBB;
+  animation: carWin 0.6s ease;
+}
+
+@keyframes carWin {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-36rpx) scale(1.08); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.car-shake {
+  animation: carShake 0.4s ease;
+}
+
+@keyframes carShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-16rpx); }
+  40% { transform: translateX(16rpx); }
+  60% { transform: translateX(-12rpx); }
+  80% { transform: translateX(12rpx); }
+}
+
+.new-btn {
+  margin-top: 54rpx;
+  padding: 18rpx 52rpx;
+  background: #E14B4B;
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 700;
+  border-radius: 60rpx;
+  box-shadow: 0 8rpx 0 #C13A3A;
+}
+
+.new-btn:active {
+  transform: scale(0.95);
+}
+
+.score-clear {
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: #999;
+  padding: 6rpx 22rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 999rpx;
+}

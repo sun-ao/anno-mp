@@ -1,0 +1,177 @@
+.page {
+  min-height: 100vh;
+  background: #f6f7f9;
+  padding-bottom: 48rpx;
+}
+
+/* ==================== 顶部提示 ==================== */
+
+.tip-bar {
+  padding: 20rpx 32rpx 0;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #888780;
+}
+
+/* ==================== 打卡项列表 ==================== */
+
+.habit-list {
+  padding: 16rpx 24rpx;
+}
+
+.habit-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.habit-item:active {
+  background: #f1efe8;
+}
+
+.habit-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-top {
+  display: flex;
+  align-items: baseline;
+}
+
+.habit-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1f2329;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+.habit-deadline {
+  font-size: 22rpx;
+  color: #888780;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+
+.habit-deadline.urgent {
+  color: #BA7517;
+}
+
+.habit-deadline.overdue {
+  color: #C41E3A;
+}
+
+.habit-stats {
+  display: flex;
+  align-items: center;
+  margin-top: 16rpx;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.stat-num {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #7F77DD;
+  font-family: monospace;
+}
+
+.stat-label {
+  font-size: 20rpx;
+  color: #b4b2a9;
+  margin-top: 2rpx;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 44rpx;
+  background: #f0efe8;
+}
+
+/* ==================== 打卡按钮 ==================== */
+
+.habit-check-btn {
+  width: 120rpx;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7F77DD;
+  border-radius: 48rpx;
+  margin-left: 20rpx;
+  flex-shrink: 0;
+}
+
+.habit-check-btn.done {
+  background: #f1efe8;
+}
+
+.habit-check-btn.disabled {
+  background: #f1efe8;
+}
+
+.habit-check-text {
+  font-size: 26rpx;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.habit-check-btn.done .habit-check-text {
+  color: #888780;
+}
+
+.habit-check-btn.disabled .habit-check-text {
+  color: #b4b2a9;
+}
+
+.habit-check-btn:active {
+  opacity: 0.8;
+}
+
+/* ==================== 空状态 ==================== */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #888780;
+}
+
+/* ==================== 添加按钮 ==================== */
+
+.add-btn {
+  margin: 32rpx 24rpx 0;
+  background: #7F77DD;
+  color: #ffffff;
+  padding: 28rpx 0;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.add-btn:active {
+  opacity: 0.8;
+}
+
+.add-btn-text {
+  color: #ffffff;
+}

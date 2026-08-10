@@ -1,0 +1,77 @@
+.page {
+  min-height: 100vh;
+  background: #f6f7f9;
+  padding: 0 0 120rpx;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  margin: 16rpx;
+  padding: 28rpx 32rpx;
+  border-radius: 20rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #888780;
+  width: 100rpx;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1f2329;
+}
+
+.form-placeholder {
+  color: #c5c3ba;
+}
+
+.form-value {
+  font-size: 28rpx;
+  color: #1f2329;
+}
+
+.hint-row {
+  padding: 8rpx 40rpx 0;
+}
+
+.hint-text {
+  font-size: 22rpx;
+  color: #b4b2a9;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 48rpx;
+  padding: 0 32rpx;
+  gap: 24rpx;
+}
+
+.btn {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.btn-save {
+  background: #0F6E56;
+  color: #ffffff;
+}
+
+.btn-delete {
+  background: #ffffff;
+  color: #C41E3A;
+  border: 1rpx solid #f0c1c1;
+}
+
+.btn:active {
+  opacity: 0.85;
+}

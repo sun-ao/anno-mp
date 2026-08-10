@@ -1,0 +1,44 @@
+<view class="page">
+  <view class="title-area">
+    <text class="title">小迷宫</text>
+    <text class="subtitle">点格子带小老鼠找到奶酪</text>
+  </view>
+
+  <view class="panel-row">
+    <view class="stat-panel">
+      <text class="stat-num time">{{timerText}}</text>
+      <text class="stat-label">本关用时</text>
+    </view>
+    <view class="stat-panel">
+      <text class="stat-num">{{n}}×{{n}}</text>
+      <text class="stat-label">第 {{level}} 关</text>
+    </view>
+    <view class="stat-panel">
+      <text class="stat-num">🏆{{bestText}}</text>
+      <text class="stat-label">本关最佳</text>
+    </view>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="maze-box">
+    <view class="grid {{n >= 6 ? 'grid-sm' : ''}}" style="grid-template-columns: repeat({{n}}, 1fr);">
+      <view
+        wx:for="{{cells}}"
+        wx:key="id"
+        class="cell {{item.walls.top ? 'w-top' : ''}} {{item.walls.right ? 'w-right' : ''}} {{item.walls.bottom ? 'w-bottom' : ''}} {{item.walls.left ? 'w-left' : ''}} {{item.id === player ? 'cell-player' : ''}} {{item.id === goal ? 'cell-goal' : ''}}"
+        data-id="{{item.id}}"
+        style="height: {{cellH}}rpx; font-size: {{cellFont}}rpx;"
+        bindtap="onTapCell"
+      >
+        <text wx:if="{{item.id === player}}">🐭</text>
+        <text wx:elif="{{item.id === goal}}">🧀</text>
+      </view>
+    </view>
+    <view wx:if="{{done}}" class="win-cover">
+      <text class="win-emoji">{{newRecord ? '🏆' : '🎉'}}</text>
+      <text class="win-text">第 {{level}} 关完成</text>
+      <text class="win-sub">用时 {{finalText}}{{newRecord ? ' · 新纪录！' : ''}}</text>
+      <text class="win-sub2">共走通 {{total}} 个迷宫</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,48 @@
+<view class="page">
+  <!-- 顶部提示 -->
+  <view class="tip-bar">
+    <text class="tip-text">点击卡片编辑 · 长按删除</text>
+  </view>
+
+  <!-- 打卡项列表 -->
+  <view class="habit-list">
+    <view
+      wx:for="{{habits}}"
+      wx:key="id"
+      class="habit-item"
+      bindtap="onTapHabit"
+      bindlongpress="onLongPressHabit"
+      data-id="{{item.id}}"
+    >
+      <view class="habit-main">
+        <view class="habit-top">
+          <text class="habit-name">{{item.name}}</text>
+          <text class="habit-deadline {{item.daysLeft < 0 ? 'overdue' : (item.daysLeft <= 3 ? 'urgent' : '')}}">{{item.deadlineText}}</text>
+        </view>
+        <view class="habit-stats">
+          <view class="stat">
+            <text class="stat-num">{{item.streak}}</text>
+            <text class="stat-label">连续(天)</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat">
+            <text class="stat-num">{{item.total}}</text>
+            <text class="stat-label">累计(天)</text>
+          </view>
+        </view>
+      </view>
+      <view class="habit-check-btn {{item.checkedToday ? 'done' : ''}} {{item.daysLeft < 0 ? 'disabled' : ''}}" catchtap="onCheckIn" data-id="{{item.id}}">
+        <text class="habit-check-text">{{item.checkedToday ? '已打卡' : '打卡'}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{habits.length === 0}}" class="empty" bindtap="onAddHabit">
+      <text class="empty-text">还没有打卡项，点击添加</text>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="onAddHabit">
+    <text class="add-btn-text">+ 添加打卡项</text>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="merit-panel">
+    <text class="merit-label">累计功德</text>
+    <text class="merit-count">{{merit}}</text>
+    <text class="merit-unit">功德</text>
+  </view>
+
+  <view class="knock-area" bindtap="onKnock">
+    <view class="ripple ripple-1 {{knocking ? 'ripple-on' : ''}}"></view>
+    <view class="ripple ripple-2 {{knocking ? 'ripple-on' : ''}}"></view>
+    <view class="ripple ripple-3 {{knocking ? 'ripple-on' : ''}}"></view>
+
+    <view class="fish-wrap {{knocking ? 'fish-knock' : ''}}">
+      <image class="fish-img" src="/packages/muyu/assets/muyu.png" mode="aspectFit"></image>
+    </view>
+
+    <view class="float-wrap {{showFloat ? 'float-on' : ''}}">
+      <text class="float-text">{{floatText}}</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <view class="reset-btn" bindtap="onReset">清零功德</view>
+    <text class="footer-tip">心诚则灵 · 敲一下功德 +1</text>
+  </view>
+</view>

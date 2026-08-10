@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="title-area">
+    <text class="title">数一数</text>
+    <text class="subtitle">点一下，一直往上数</text>
+  </view>
+
+  <view class="num-display">{{count === 0 ? '点它' : count}}</view>
+
+  <view class="obj-area" bindtap="onTapObject">
+    <view class="obj {{jumping ? 'obj-jump' : ''}}">{{obj}}</view>
+    <view wx:if="{{milestone}}" class="confetti">🎉</view>
+  </view>
+
+  <view class="tip">数到多少算多少，没有上限～</view>
+
+  <view class="actions">
+    <view class="btn" bindtap="onRestart">🔄 重来</view>
+  </view>
+</view>

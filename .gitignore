@@ -1,0 +1,16 @@
+# 依赖：微信小程序通过“构建 npm”生成，不入库
+node_modules/
+package-lock.json
+
+# 微信开发者工具私有配置（含上传私钥 / appid 等敏感信息，禁止入库）
+project.private.config.json
+
+# 系统 / 编辑器产物
+.DS_Store
+Thumbs.db
+*.log
+
+# 本地构建产物（根目录生成，分包内的 miniprogram_npm 为源码，不忽略）
+/miniprogram_npm/
+dist/
+build/

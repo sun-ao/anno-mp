@@ -1,0 +1,31 @@
+<view class="page">
+  <!-- 表单 -->
+  <view class="form-row">
+    <text class="form-label">名称</text>
+    <input class="form-input" value="{{name}}" bindinput="onNameInput" placeholder="如：项目上线" placeholder-class="form-placeholder" />
+  </view>
+
+  <view class="form-row">
+    <text class="form-label">日期</text>
+    <picker mode="date" value="{{date}}" bindchange="onDateChange">
+      <text class="form-value">{{date}}</text>
+    </picker>
+  </view>
+
+  <view class="form-row">
+    <text class="form-label">时间</text>
+    <picker mode="time" value="{{time}}" bindchange="onTimeChange">
+      <text class="form-value">{{time}}</text>
+    </picker>
+  </view>
+
+  <view class="hint-row">
+    <text class="hint-text">到点后倒计时将显示「已到点」</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete">删除</view>
+    <view class="btn btn-save" bindtap="onSave">保存</view>
+  </view>
+</view>

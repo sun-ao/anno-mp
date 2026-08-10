@@ -1,0 +1,69 @@
+<view class="page">
+  <view wx:if="{{result}}" class="type-card">
+    <text wx:if="{{isHistory}}" class="history-tag">历史结果</text>
+    <text class="type-letters">{{result.type}}</text>
+    <text class="type-name">{{result.name}}</text>
+    <text class="type-traits">{{result.traits}}</text>
+    <text class="type-desc">{{result.desc}}</text>
+  </view>
+
+  <view wx:if="{{result}}" class="dims-card">
+    <view class="dim-row" wx:for="{{result.percents}}" wx:key="dim">
+      <text class="dim-key dim-left">{{item.leftKey}} {{item.leftPct}}%</text>
+      <view class="dim-bar">
+        <view class="dim-fill" style="width: {{item.leftPct}}%;"></view>
+      </view>
+      <text class="dim-key dim-right">{{item.rightPct}}% {{item.rightKey}}</text>
+    </view>
+  </view>
+
+  <view class="btn-row">
+    <view class="btn-poster" bindtap="onMakePoster">生成海报</view>
+    <view class="btn-retest" bindtap="onRetest">再测一次</view>
+    <view class="btn-history" bindtap="onOpenHistory">测试历史</view>
+  </view>
+
+  <!-- 海报生成画布（屏幕外，绘制完成后隐藏） -->
+  <canvas type="2d" id="posterCanvas" class="poster-canvas" hidden="{{posterCanvasHidden}}"></canvas>
+
+  <!-- 海报预览弹窗 -->
+  <view wx:if="{{showPoster}}" class="cat-mask" bindtap="onClosePoster" catchtouchmove="noop">
+    <view class="poster-dialog" catchtap="noop">
+      <view class="poster-title">我的 MBTI 海报</view>
+      <scroll-view scroll-y class="poster-scroll">
+        <view wx:if="{{posterReady}}" class="poster-img-wrap">
+          <image class="poster-img" src="{{posterPath}}" mode="widthFix"></image>
+        </view>
+        <view wx:else class="poster-loading">
+          <text class="poster-loading-text">海报生成中...</text>
+        </view>
+      </scroll-view>
+      <view class="poster-actions">
+        <view class="poster-btn-save" bindtap="onSavePoster">保存到相册</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史弹窗 -->
+  <view wx:if="{{showHistory}}" class="cat-mask" bindtap="onCloseHistory" catchtouchmove="noop">
+    <view class="cat-dialog history-dialog" catchtap="noop">
+      <view class="history-dialog-title">测试历史</view>
+      <scroll-view scroll-y class="history-dialog-body">
+        <view wx:if="{{history.length === 0}}" class="history-empty">
+          <text class="history-empty-text">还没有测试记录</text>
+        </view>
+        <view wx:for="{{history}}" wx:key="ts" class="history-item" bindtap="onViewHistory" data-idx="{{index}}">
+          <view class="history-item-type">{{item.type}}</view>
+          <view class="history-item-main">
+            <text class="history-item-name">{{item.name}}</text>
+            <text class="history-item-date">{{item.dateText}}</text>
+          </view>
+          <view class="history-item-del" catchtap="onDeleteHistory" data-ts="{{item.ts}}">删除</view>
+        </view>
+      </scroll-view>
+      <view wx:if="{{history.length > 0}}" class="history-dialog-footer">
+        <view class="history-clear" bindtap="onClearHistory">清空全部记录</view>
+      </view>
+    </view>
+  </view>
+</view>

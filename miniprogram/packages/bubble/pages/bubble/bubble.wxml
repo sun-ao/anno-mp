@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="counter">
+    <text class="counter-num">{{popped}}</text>
+    <text class="counter-label">破掉的泡泡</text>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="bubble-zone">
+    <view
+      wx:for="{{bubbles}}"
+      wx:key="id"
+      class="bubble-wrap bubble-float"
+      style="left: {{item.left}}%; width: {{item.size}}rpx; height: {{item.size}}rpx; animation-duration: {{item.dur}}s;"
+      data-id="{{item.id}}"
+      bindtap="onTapBubble"
+    >
+      <view class="bubble-body {{item.popping ? 'bubble-pop' : ''}}" style="background: {{item.color}};">
+        <view class="bubble-shine"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tip">点破飞起来的泡泡</view>
+</view>

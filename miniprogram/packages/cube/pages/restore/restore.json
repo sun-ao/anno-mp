@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "课堂还原",
+  "usingComponents": {
+    "cube3d": "../../components/cube3d/cube3d"
+  }
+}

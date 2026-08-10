@@ -1,0 +1,68 @@
+<view class="page">
+  <!-- 结果区 -->
+  <view class="result-card">
+    <text wx:if="{{!showResult && !rolling}}" class="result-placeholder">点击下方抽签</text>
+    <text wx:elif="{{rolling}}" class="roll-text">{{rollText}}</text>
+    <block wx:else>
+      <text class="result-label">抽中</text>
+      <text class="result-text">{{result}}</text>
+    </block>
+  </view>
+
+  <view class="draw-btn {{rolling ? 'draw-btn-disabled' : ''}}" bindtap="onDraw">抽签</view>
+
+  <!-- 选项池 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">选项池（{{options.length}}）</text>
+      <view wx:if="{{options.length > 0}}" class="clear-btn" bindtap="onClearOptions">清空</view>
+    </view>
+
+    <view class="add-row">
+      <input
+        class="add-input"
+        value="{{inputText}}"
+        maxlength="20"
+        placeholder="输入选项内容"
+        placeholder-class="add-input-placeholder"
+        bindinput="onInput"
+        bindconfirm="onAdd"
+        confirm-type="done"
+      />
+      <view class="add-btn" bindtap="onAdd">添加</view>
+    </view>
+
+    <view wx:if="{{options.length === 0}}" class="empty-tip">
+      <text class="empty-tip-text">还没有选项，先添加几个吧</text>
+    </view>
+    <view wx:else class="chips">
+      <view wx:for="{{options}}" wx:key="id" class="chip">
+        <text class="chip-text">{{item.text}}</text>
+        <view class="chip-del" bindtap="onDeleteOption" data-id="{{item.id}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer-bar">
+    <view class="history-btn" bindtap="onOpenHistory">抽取历史</view>
+  </view>
+
+  <!-- 历史弹窗 -->
+  <view wx:if="{{showHistory}}" class="cat-mask" bindtap="onCloseHistory" catchtouchmove="noop">
+    <view class="cat-dialog history-dialog" catchtap="noop">
+      <view class="history-head">
+        <text class="history-title">抽取历史</text>
+        <view wx:if="{{history.length > 0}}" class="history-clear" bindtap="onClearHistory">清空</view>
+      </view>
+      <scroll-view scroll-y class="history-body">
+        <view wx:if="{{history.length === 0}}" class="history-empty">
+          <text class="history-empty-text">还没有抽取记录</text>
+        </view>
+        <view wx:for="{{history}}" wx:key="ts" class="history-item">
+          <text class="history-text">{{item.text}}</text>
+          <text class="history-date">{{item.dateText}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

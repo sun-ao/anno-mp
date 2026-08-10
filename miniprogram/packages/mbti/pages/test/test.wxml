@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="progress-row">
+    <text class="progress-text">{{index + 1}} / {{questions.length}}</text>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%;"></view>
+    </view>
+  </view>
+
+  <view class="q-card">
+    <text class="q-text">{{questions[index].text}}</text>
+  </view>
+
+  <view class="opts">
+    <view class="opt {{answers[index] === 'a' ? 'opt-active' : ''}}" bindtap="onChoose" data-choice="a">
+      <view class="opt-mark">A</view>
+      <text class="opt-text">{{questions[index].a}}</text>
+    </view>
+    <view class="opt {{answers[index] === 'b' ? 'opt-active' : ''}}" bindtap="onChoose" data-choice="b">
+      <view class="opt-mark">B</view>
+      <text class="opt-text">{{questions[index].b}}</text>
+    </view>
+  </view>
+
+  <view class="nav-row">
+    <view wx:if="{{index > 0}}" class="prev-btn" bindtap="onPrev">上一题</view>
+  </view>
+</view>

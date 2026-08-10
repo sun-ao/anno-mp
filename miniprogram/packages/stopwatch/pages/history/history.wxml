@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="topbar">
+    <view class="title">历史成绩</view>
+    <view wx:if="{{!empty}}" class="clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view wx:if="{{empty}}" class="empty">还没有保存的成绩
+在计时器里停止后点「保存成绩」即可记录</view>
+
+  <view wx:else class="list">
+    <view class="card" wx:for="{{sessions}}" wx:key="id">
+      <view class="card-head">
+        <view class="card-meta">
+          <text class="card-date">{{item.date}}</text>
+          <text class="card-sub">{{item.count}} 组 · 最快 {{item.bestText}}</text>
+        </view>
+        <view class="del" data-id="{{item.id}}" bindtap="onDelete">删除</view>
+      </view>
+      <view class="card-laps">
+        <view class="clap" wx:for="{{item.laps}}" wx:for-item="l" wx:key="i">
+          <text class="cidx">第{{l.i}}组</text>
+          <text class="ctot">{{l.totalText}}</text>
+          <text class="csp">+{{l.splitText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,74 @@
+<view class="page">
+  <view class="header">
+    <view class="month-bar">
+      <view class="left-entries">
+        <view class="wallet-entry" bindtap="onGoWallet">
+          <text class="wallet-entry-text">钱包</text>
+        </view>
+        <view class="wallet-entry" bindtap="onGoStat">
+          <text class="wallet-entry-text">统计</text>
+        </view>
+      </view>
+      <view class="month-nav">
+        <view class="month-arrow" bindtap="onPrevMonth"><text class="arrow-text">‹</text></view>
+        <text class="month-text">{{monthLabel}}</text>
+        <view class="month-arrow" bindtap="onNextMonth"><text class="arrow-text">›</text></view>
+      </view>
+    </view>
+    <view class="summary">
+      <view class="summary-item">
+        <text class="summary-label">收入</text>
+        <text class="summary-amount income">¥{{summary.incomeText}}</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-label">支出</text>
+        <text class="summary-amount expense">¥{{summary.expenseText}}</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-label">结余</text>
+        <text class="summary-amount">¥{{summary.balanceText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="bill-list">
+    <block wx:for="{{groups}}" wx:key="date">
+      <view class="date-header">
+        <text class="date-text">{{item.dateLabel}}</text>
+        <text class="date-total">支出 ¥{{item.dayExpenseText}}</text>
+      </view>
+      <view
+        wx:for="{{item.bills}}"
+        wx:for-item="bill"
+        wx:key="id"
+        class="bill-item"
+        bindtap="onTapBill"
+        bindlongpress="onLongPressBill"
+        data-id="{{bill.id}}"
+      >
+        <view class="bill-icon" style="background: {{bill.categoryColor}};">
+          <text class="bill-icon-text">{{bill.categoryIcon}}</text>
+        </view>
+        <view class="bill-info">
+          <text class="bill-category">{{bill.categoryName}}</text>
+          <view class="bill-meta">
+            <text wx:if="{{bill.note}}" class="bill-note">{{bill.note}}</text>
+            <text wx:if="{{bill.walletName}}" class="bill-wallet" style="color: {{bill.walletColor}};">{{bill.walletIcon}} {{bill.walletName}}</text>
+          </view>
+        </view>
+        <text class="bill-amount {{bill.type === 'income' ? 'income' : 'expense'}}">{{bill.type === 'income' ? '+' : '-'}}¥{{bill.amountText}}</text>
+      </view>
+    </block>
+
+    <view wx:if="{{groups.length === 0}}" class="empty">
+      <text class="empty-text">本月还没有记录</text>
+      <text class="empty-hint">点下方按钮记一笔</text>
+    </view>
+  </scroll-view>
+
+  <view class="fab" bindtap="onAdd">
+    <text class="fab-text">记一笔</text>
+  </view>
+</view>

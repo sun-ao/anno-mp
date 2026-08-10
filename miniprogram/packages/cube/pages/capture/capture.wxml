@@ -1,0 +1,136 @@
+<view class="page">
+  <!-- 顶部进度条 -->
+  <view class="progress">
+    <view
+      wx:for="{{6}}"
+      wx:key="index"
+      class="progress-step {{captured[index] ? 'progress-done' : ''}} {{currentFace === index ? 'progress-current' : ''}}"
+      bindtap="onFaceTap"
+      data-face="{{index}}"
+    >
+      <view class="progress-dot" style="background: {{captured[index] || currentFace === index ? (index === 0 ? '#FFD500' : index === 1 ? '#009B48' : index === 2 ? '#C41E3A' : index === 3 ? '#FFFFFF' : index === 4 ? '#0051BA' : '#FF5800') : '#e8e6e0'}};">
+        <text wx:if="{{captured[index]}}" class="progress-check">✓</text>
+      </view>
+      <text class="progress-label">{{index === 0 ? '黄' : index === 1 ? '绿' : index === 2 ? '红' : index === 3 ? '白' : index === 4 ? '蓝' : '橙'}}</text>
+    </view>
+  </view>
+
+  <!-- 拍照阶段 -->
+  <view wx:if="{{phase === 'capture'}}" class="capture-section">
+    <view class="face-title">
+      <text class="face-letter">{{faceLetter}}</text>
+      <text class="face-name">{{faceName}}面</text>
+      <text class="face-count">第 {{currentFace + 1}}/6 面</text>
+    </view>
+
+    <view class="camera-area" bindtap="onTakePhoto">
+      <view class="camera-icon-wrap">
+        <view class="camera-icon">
+          <view class="camera-body"></view>
+          <view class="camera-lens"></view>
+        </view>
+      </view>
+      <text class="camera-text">点击拍照</text>
+    </view>
+
+    <view class="album-btn" bindtap="onChooseFromAlbum">
+      <text>从相册选择</text>
+    </view>
+
+    <view class="tip-section">
+      <text class="tip-text">{{tip}}</text>
+      <text class="orient-hint">{{orientHint}}</text>
+      <view class="cross">
+        <view class="cross-row">
+          <view class="cross-spacer"></view>
+          <view class="cross-cell" style="background: {{crossTop.hex}};">
+            <text class="cross-name" style="color: {{crossTop.textOn}};">上</text>
+            <text class="cross-dir" style="color: {{crossTop.textOn}};">{{crossTop.colorName}}</text>
+          </view>
+          <view class="cross-spacer"></view>
+        </view>
+        <view class="cross-row">
+          <view class="cross-cell" style="background: {{crossLeft.hex}};">
+            <text class="cross-name" style="color: {{crossLeft.textOn}};">左</text>
+            <text class="cross-dir" style="color: {{crossLeft.textOn}};">{{crossLeft.colorName}}</text>
+          </view>
+          <view class="cross-cell cross-center" style="background: {{crossCenter.hex}};">
+            <text class="cross-name" style="color: {{crossCenter.textOn}};">拍</text>
+            <text class="cross-dir" style="color: {{crossCenter.textOn}};">{{crossCenter.colorName}}</text>
+          </view>
+          <view class="cross-cell" style="background: {{crossRight.hex}};">
+            <text class="cross-name" style="color: {{crossRight.textOn}};">右</text>
+            <text class="cross-dir" style="color: {{crossRight.textOn}};">{{crossRight.colorName}}</text>
+          </view>
+        </view>
+        <view class="cross-row">
+          <view class="cross-spacer"></view>
+          <view class="cross-cell" style="background: {{crossBottom.hex}};">
+            <text class="cross-name" style="color: {{crossBottom.textOn}};">下</text>
+            <text class="cross-dir" style="color: {{crossBottom.textOn}};">{{crossBottom.colorName}}</text>
+          </view>
+          <view class="cross-spacer"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 识别结果 / 校正阶段 -->
+  <view wx:if="{{phase === 'review'}}" class="review-section">
+    <view class="face-title">
+      <text class="face-letter">{{faceLetter}}</text>
+      <text class="face-name">{{faceName}}面 · 识别结果</text>
+    </view>
+
+    <view class="color-grid">
+      <view
+        wx:for="{{gridCells}}"
+        wx:key="index"
+        class="color-cell {{item.isCenter ? 'color-cell-center' : ''}} {{item.isEmpty ? 'color-cell-empty' : ''}}"
+        style="background: {{item.hex}}; border-color: {{item.hex === '#FFFFFF' ? '#d3d1c7' : item.hex}};"
+        bindtap="onCellTap"
+        data-cell="{{item.index}}"
+      >
+        <text wx:if="{{item.isCenter}}" class="cell-letter" style="color: {{item.textOn}};">{{faceLetter}}</text>
+      </view>
+    </view>
+
+    <text class="review-hint">中心块已自动校正为{{faceName}}面颜色 · 点击其他格子可手动修改</text>
+
+    <view class="review-actions">
+      <view class="btn btn-plain" bindtap="onRetake">重拍</view>
+      <view class="btn btn-primary" bindtap="onConfirm">
+        {{currentFace < 5 ? '确认，下一面' : '完成拍摄'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 全部完成阶段 -->
+  <view wx:if="{{phase === 'done'}}" class="done-section">
+    <view class="done-title">
+      <text class="done-icon">✓</text>
+      <text>六面拍摄完成</text>
+    </view>
+
+    <view class="done-preview">
+      <cube3d state="{{state}}" canvasSize="480" />
+    </view>
+
+    <view wx:if="{{errorText}}" class="error">
+      <text class="error-text">{{errorText}}</text>
+    </view>
+
+    <view class="done-actions">
+      <view class="btn btn-plain" bindtap="onBackToFill">返回修改</view>
+      <view class="btn btn-primary {{!canSolve ? 'btn-disabled' : ''}}" bindtap="onSolve">
+        {{solving ? '求解中…' : '求解'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 上传中遮罩 -->
+  <view wx:if="{{uploading}}" class="loading-mask">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在识别颜色…</text>
+  </view>
+</view>

@@ -1,0 +1,36 @@
+<view class="page">
+  <!-- 顶部提示 -->
+  <view class="tip-bar">
+    <text class="tip-text">点击事件编辑 · 长按删除</text>
+  </view>
+
+  <!-- 倒计时列表 -->
+  <view class="event-list">
+    <view
+      wx:for="{{events}}"
+      wx:key="id"
+      class="event-item {{item.expired ? 'expired' : ''}}"
+      bindtap="onTapEvent"
+      bindlongpress="onLongPressEvent"
+      data-id="{{item.id}}"
+    >
+      <view class="event-info">
+        <text class="event-name">{{item.name}}</text>
+        <text class="event-target">{{item.targetLabel}}</text>
+      </view>
+      <view class="event-remaining">
+        <text class="event-remaining-text {{item.expired ? 'expired-text' : ''}}">{{item.expired ? '已到点' : item.remainingText}}</text>
+        <text class="event-expired-hint" wx:if="{{item.expired}}">时间已过</text>
+      </view>
+    </view>
+
+    <view wx:if="{{events.length === 0}}" class="empty" bindtap="onAddEvent">
+      <text class="empty-text">还没有倒计时，点击添加</text>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn" bindtap="onAddEvent">
+    <text class="add-btn-text">+ 添加倒计时</text>
+  </view>
+</view>

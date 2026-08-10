@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="title-area">
+    <text class="title">捏泡泡纸</text>
+    <view class="target-tip">
+      <text>请捏</text>
+      <view class="target-dot c-{{target.key}}"></view>
+      <text class="target-name">{{target.name}}</text>
+      <text>的泡泡</text>
+    </view>
+  </view>
+
+  <view class="sheet">
+    <view
+      wx:for="{{sheet}}"
+      wx:key="id"
+      class="cell"
+      data-id="{{item.id}}"
+      bindtap="onTapCell"
+    >
+      <view class="bubble c-{{item.color}} {{item.popped ? 'bubble-flat' : ''}}"></view>
+    </view>
+  </view>
+
+  <view class="stat-row">
+    <text class="stat-left">还剩 {{poppedLeft}} 颗</text>
+    <text class="stat-right">已捏 {{total}} 颗</text>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+</view>

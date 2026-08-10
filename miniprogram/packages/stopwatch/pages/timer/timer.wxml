@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="topbar">
+    <view class="title">毫秒计时器</view>
+    <view class="history-link" bindtap="onGoHistory">历史 ›</view>
+  </view>
+
+  <view class="clock {{status === 'running' ? 'running' : ''}}">
+    <view class="time">{{timeText}}</view>
+    <view class="clock-sub">
+      <text wx:if="{{status === 'running'}}">计时中 · 点「计次」记录每组</text>
+      <text wx:elif="{{status === 'stopped'}}">已停止 · 可保存或重置</text>
+      <text wx:else>点下方按钮开始</text>
+    </view>
+  </view>
+
+  <view class="laps" wx:if="{{lapCount > 0}}">
+    <view class="laps-head">
+      <text>成绩（共 {{lapCount}} 组）</text>
+      <text wx:if="{{status === 'running'}}" class="undo" bindtap="onUndo">撤销上一次</text>
+    </view>
+    <scroll-view scroll-y class="lap-list">
+      <view class="lap-row {{item.best ? 'best' : ''}}" wx:for="{{laps}}" wx:key="i">
+        <text class="lap-idx">第 {{item.i}} 组</text>
+        <text class="lap-split">+{{item.splitText}}</text>
+        <text class="lap-total">{{item.totalText}}{{item.best ? ' 🏆' : ''}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="empty" wx:else>
+    <text>开始后，每组成绩点一下「计次」即可记录\n自动算出分段与最快一组</text>
+  </view>
+
+  <view class="actions">
+    <button wx:if="{{status === 'running'}}" class="btn btn-ghost" bindtap="onStop">停止</button>
+    <button wx:if="{{status === 'stopped'}}" class="btn btn-ghost" bindtap="onReset">重置</button>
+    <button class="btn btn-primary" bindtap="onToggle">{{primaryLabel}}</button>
+  </view>
+</view>

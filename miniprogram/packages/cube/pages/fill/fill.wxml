@@ -1,0 +1,59 @@
+<view class="page">
+  <view class="tabs">
+    <view class="tab {{mode === 'edit' ? 'tab-active' : ''}}" bindtap="onSwitchMode" data-mode="edit">手动填色</view>
+    <view class="tab {{mode === 'preview' ? 'tab-active' : ''}}" bindtap="onSwitchMode" data-mode="preview">3D 填色</view>
+  </view>
+
+  <view class="content-area">
+    <view wx:if="{{mode === 'edit'}}" class="net">
+      <view class="net-row" wx:for="{{netRows}}" wx:key="index" wx:for-item="row">
+        <view wx:for="{{row}}" wx:key="index" wx:for-item="slot">
+          <view wx:if="{{slot.type === 'face'}}" class="face">
+            <view
+              wx:for="{{slot.cells}}"
+              wx:key="index"
+              wx:for-item="cell"
+              class="cell {{cell.isCenter ? 'cell-center' : ''}}"
+              style="background: {{cell.hex}}; color: {{cell.textOn}};"
+              bindtap="onPaint"
+              data-face="{{slot.face}}"
+              data-cell="{{index}}"
+            >
+              <text wx:if="{{cell.isCenter}}" class="cell-letter">{{cell.letter}}</text>
+            </view>
+          </view>
+          <view wx:else class="face face-spacer"></view>
+        </view>
+      </view>
+      <view class="net-tip">选中下方颜色后点按格子上色 · 中心块固定</view>
+    </view>
+
+    <view wx:if="{{mode === 'preview'}}" class="preview">
+      <cube3d state="{{state}}" canvasSize="530" bind:stickerTap="on3DPaint" />
+      <view class="preview-tip">点按色块上色 · 单指拖动旋转视角 · 中心块固定</view>
+    </view>
+  </view>
+
+  <view class="palette">
+    <view
+      wx:for="{{palette}}"
+      wx:key="id"
+      class="palette-item {{selectedColor === item.id ? 'palette-active' : ''}}"
+      bindtap="onSelectColor"
+      data-id="{{item.id}}"
+    >
+      <view class="palette-color" style="background: {{item.hex}}; border-color: {{item.id === 3 ? '#d3d1c7' : item.hex}};"></view>
+      <text class="palette-count">{{item.count}}/9</text>
+    </view>
+  </view>
+
+  <view wx:if="{{errorText}}" class="error">
+    <text class="error-text">{{errorText}}</text>
+  </view>
+
+  <view class="actions">
+    <view class="btn btn-plain" bindtap="onReset">重置</view>
+    <view class="btn btn-plain" bindtap="onGotoCapture">拍照识别</view>
+    <view class="btn btn-primary {{!canSolve ? 'btn-disabled' : ''}}" bindtap="onSolve">{{solving ? '求解中…' : '求解'}}</view>
+  </view>
+</view>

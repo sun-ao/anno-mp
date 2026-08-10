@@ -1,0 +1,35 @@
+<view class="page">
+  <!-- 账户类型选择 -->
+  <view class="section-label">账户类型</view>
+  <view class="type-grid">
+    <view
+      wx:for="{{walletTypes}}"
+      wx:key="key"
+      class="type-item {{selectedType === item.key ? 'selected' : ''}} {{isEdit ? 'disabled' : ''}}"
+      bindtap="onSelectType"
+      data-key="{{item.key}}"
+    >
+      <view class="type-icon" style="background: {{item.color}};">
+        <text class="type-icon-text">{{item.icon}}</text>
+      </view>
+      <text class="type-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form-row">
+    <text class="form-label">名称</text>
+    <input class="form-input" value="{{name}}" bindinput="onNameInput" placeholder="如：招商银行储蓄卡" placeholder-class="form-placeholder" />
+  </view>
+
+  <view class="form-row">
+    <text class="form-label">{{selectedType === 'credit' ? '欠款' : '余额'}}</text>
+    <input class="form-input" type="digit" value="{{balance}}" bindinput="onBalanceInput" placeholder="0.00" placeholder-class="form-placeholder" />
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete">删除</view>
+    <view class="btn btn-save" bindtap="onSave">保存</view>
+  </view>
+</view>

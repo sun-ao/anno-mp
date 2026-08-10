@@ -1,0 +1,192 @@
+.page {
+  min-height: 100vh;
+  background: #f6f7f9;
+  padding-bottom: 48rpx;
+}
+
+/* ==================== 总资产卡片 ==================== */
+
+.asset-card {
+  background: #ffffff;
+  margin: 24rpx;
+  border-radius: 20rpx;
+  padding: 40rpx 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+.asset-row {
+  display: flex;
+  justify-content: center;
+}
+
+.asset-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.asset-label {
+  font-size: 24rpx;
+  color: #888780;
+  margin-bottom: 12rpx;
+}
+
+.asset-amount {
+  font-size: 52rpx;
+  font-weight: 600;
+  color: #1f2329;
+}
+
+.summary-row {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #f0efe8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  color: #888780;
+  margin-bottom: 8rpx;
+}
+
+.summary-value {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #1f2329;
+}
+
+.summary-value.debt {
+  color: #BA7517;
+}
+
+.summary-divider {
+  width: 1rpx;
+  height: 48rpx;
+  background: #f0efe8;
+  margin: 0 32rpx;
+}
+
+/* ==================== 账户列表 ==================== */
+
+.section-label {
+  font-size: 26rpx;
+  color: #888780;
+  padding: 0 36rpx 16rpx;
+}
+
+.wallet-list {
+  padding: 0 24rpx;
+}
+
+.wallet-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.wallet-item:active {
+  background: #f1efe8;
+}
+
+.wallet-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.wallet-icon-text {
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.wallet-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.wallet-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1f2329;
+}
+
+.wallet-balance {
+  font-size: 24rpx;
+  color: #888780;
+  margin-top: 6rpx;
+}
+
+.wallet-balance.credit {
+  color: #BA7517;
+}
+
+.wallet-arrow {
+  width: 16rpx;
+  height: 16rpx;
+  border-top: 3rpx solid #b4b2a9;
+  border-right: 3rpx solid #b4b2a9;
+  transform: rotate(45deg);
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}
+
+/* ==================== 空状态 ==================== */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #888780;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #b4b2a9;
+  margin-top: 8rpx;
+}
+
+/* ==================== 添加按钮 ==================== */
+
+.add-btn {
+  margin: 32rpx 24rpx 0;
+  background: #BA7517;
+  color: #ffffff;
+  padding: 28rpx 0;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.add-btn:active {
+  opacity: 0.8;
+}
+
+.add-btn-text {
+  color: #ffffff;
+}

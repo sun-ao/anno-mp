@@ -1,0 +1,127 @@
+.page {
+  min-height: 100vh;
+  background: #f6f7f9;
+  padding: 0 0 120rpx;
+}
+
+.section-label {
+  padding: 24rpx 32rpx 12rpx;
+  font-size: 26rpx;
+  color: #888780;
+}
+
+/* ==================== 类型选择网格 ==================== */
+
+.type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  background: #ffffff;
+  margin: 0 16rpx;
+  padding: 20rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.type-item {
+  width: 33.33%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 0;
+}
+
+.type-item.disabled {
+  opacity: 0.5;
+}
+
+.type-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10rpx;
+  border: 4rpx solid transparent;
+}
+
+.type-item.selected .type-icon {
+  border-color: #BA7517;
+}
+
+.type-icon-text {
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.type-name {
+  font-size: 24rpx;
+  color: #555555;
+}
+
+.type-item.selected .type-name {
+  color: #BA7517;
+  font-weight: 500;
+}
+
+/* ==================== 表单 ==================== */
+
+.form-row {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  margin: 16rpx;
+  padding: 28rpx 32rpx;
+  border-radius: 20rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #888780;
+  width: 100rpx;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1f2329;
+}
+
+.form-placeholder {
+  color: #c5c3ba;
+}
+
+/* ==================== 操作按钮 ==================== */
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 48rpx;
+  padding: 0 32rpx;
+  gap: 24rpx;
+}
+
+.btn {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.btn-save {
+  background: #BA7517;
+  color: #ffffff;
+}
+
+.btn-delete {
+  background: #ffffff;
+  color: #C41E3A;
+  border: 1rpx solid #f0c1c1;
+}
+
+.btn:active {
+  opacity: 0.85;
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "还原步骤",
+  "usingComponents": {
+    "cube3d": "../../components/cube3d/cube3d"
+  }
+}

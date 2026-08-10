@@ -1,0 +1,25 @@
+<view class="page">
+  <view class="title-area">
+    <view class="title">垃圾分类</view>
+    <view class="subtitle">这是啥垃圾？送它回对的桶 ♻️</view>
+  </view>
+  <view class="counter">已分类 {{count}} 个</view>
+  <view class="score-clear" bindtap="onClear">清空</view>
+
+  <view class="item-card {{solved ? 'item-done' : ''}}">
+    <text class="item-emoji">{{item.emoji}}</text>
+    <text class="item-name">{{item.name}}</text>
+  </view>
+
+  <view class="bins">
+    <view wx:for="{{bins}}" wx:key="id"
+      class="bin {{shakeId === item.id ? 'bin-shake' : ''}}"
+      style="border-color:{{item.color}}"
+      data-cat="{{item.id}}" bindtap="onTapBin">
+      <text class="bin-emoji">{{item.emoji}}</text>
+      <text class="bin-name" style="color:{{item.color}}">{{item.name}}</text>
+    </view>
+  </view>
+
+  <view class="tip">看清楚再点，分对啦它会开心～</view>
+</view>

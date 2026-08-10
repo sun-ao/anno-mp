@@ -1,0 +1,68 @@
+<view class="page">
+  <view class="header">
+    <text class="header-title">番茄钟</text>
+    <text class="header-sub">专注一会 · 休息一会</text>
+  </view>
+
+  <!-- 模式切换 -->
+  <view class="mode-tabs">
+    <view class="mode-tab {{mode === 'focus' ? 'mode-tab-active mode-tab-focus' : ''}}" bindtap="onSelectMode" data-mode="focus">专注</view>
+    <view class="mode-tab {{mode === 'rest' ? 'mode-tab-active mode-tab-rest' : ''}}" bindtap="onSelectMode" data-mode="rest">休息</view>
+  </view>
+
+  <!-- 圆环计时 -->
+  <view class="ring-wrap">
+    <canvas type="2d" id="ringCanvas" class="ring-canvas"></canvas>
+    <view class="ring-center">
+      <text class="ring-time {{mode === 'rest' ? 'ring-time-rest' : ''}}">{{timeText}}</text>
+      <text class="ring-phase">{{mode === 'focus' ? '专注中' : '休息中'}}</text>
+    </view>
+  </view>
+
+  <!-- 时长选择 -->
+  <view class="duration-row" wx:if="{{status === 'idle'}}">
+    <block wx:if="{{mode === 'focus'}}">
+      <view
+        wx:for="{{focusOptions}}"
+        wx:key="*this"
+        class="duration-chip {{focusMin === item ? 'duration-chip-focus-on' : ''}}"
+        bindtap="onSelectFocusMin"
+        data-min="{{item}}"
+      >{{item}} 分</view>
+    </block>
+    <block wx:else>
+      <view
+        wx:for="{{restOptions}}"
+        wx:key="*this"
+        class="duration-chip {{restMin === item ? 'duration-chip-rest-on' : ''}}"
+        bindtap="onSelectRestMin"
+        data-min="{{item}}"
+      >{{item}} 分</view>
+    </block>
+  </view>
+
+  <!-- 今日统计 -->
+  <view class="stats-card">
+    <view class="stats-item">
+      <text class="stats-num">{{stats.count}}</text>
+      <text class="stats-label">今日专注（次）</text>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item">
+      <text class="stats-num">{{stats.minutes}}</text>
+      <text class="stats-label">累计时长（分）</text>
+    </view>
+  </view>
+
+  <!-- 控制按钮 -->
+  <view class="controls">
+    <view class="main-btn {{status === 'running' ? 'main-btn-pause' : (mode === 'rest' ? 'main-btn-rest' : 'main-btn-focus')}}" bindtap="onToggle">
+      {{status === 'running' ? '暂停' : (status === 'paused' ? '继续' : (mode === 'focus' ? '开始专注' : '开始休息'))}}
+    </view>
+    <view class="reset-btn" bindtap="onReset">重置</view>
+  </view>
+
+  <view class="tips">
+    <text class="tips-text">建议专注 25 分钟后休息 5 分钟，劳逸结合效率更高</text>
+  </view>
+</view>

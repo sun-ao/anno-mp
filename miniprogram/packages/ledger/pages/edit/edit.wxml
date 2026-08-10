@@ -1,0 +1,150 @@
+<view class="page">
+  <view class="type-toggle">
+    <view class="type-btn {{type === 'expense' ? 'active' : ''}}" bindtap="onSwitchType" data-type="expense">支出</view>
+    <view class="type-btn {{type === 'income' ? 'active' : ''}}" bindtap="onSwitchType" data-type="income">收入</view>
+  </view>
+
+  <view class="amount-box">
+    <text class="amount-symbol">¥</text>
+    <input class="amount-input" type="digit" value="{{amount}}" bindinput="onAmountInput" placeholder="0" placeholder-class="amount-placeholder" />
+  </view>
+
+  <view class="section-label">分类</view>
+  <view class="category-grid">
+    <view
+      wx:for="{{categories}}"
+      wx:key="key"
+      class="category-item {{selectedCategory === item.key ? 'selected' : ''}}"
+      bindtap="onSelectCategory"
+      bindlongpress="onLongPressCategory"
+      data-key="{{item.key}}"
+    >
+      <view class="category-icon" style="background: {{item.color}};">
+        <text class="category-icon-text">{{item.icon}}</text>
+      </view>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+    <view class="category-item" bindtap="onAddCategory">
+      <view class="category-icon category-add-icon">
+        <text class="category-add-text">+</text>
+      </view>
+      <text class="category-name">添加</text>
+    </view>
+  </view>
+
+  <!-- 自定义分类弹窗 -->
+  <view wx:if="{{showAddCategory}}" class="cat-mask" bindtap="onCloseAddCategory">
+    <view class="cat-dialog" catchtap="noop">
+      <text class="cat-dialog-title">新增{{type === 'income' ? '收入' : '支出'}}分类</text>
+      <view class="cat-preview">
+        <view class="cat-preview-icon" style="background: {{catColor}};">
+          <text class="cat-preview-text">{{catName ? catName.charAt(0) : '?'}}</text>
+        </view>
+        <text class="cat-preview-name">{{catName || '分类名称'}}</text>
+      </view>
+      <input class="cat-input" value="{{catName}}" bindinput="onCatNameInput" placeholder="分类名称" placeholder-class="form-placeholder" focus="{{showAddCategory}}" />
+      <view class="cat-color-row">
+        <view
+          wx:for="{{catColors}}"
+          wx:key="*this"
+          class="cat-color-dot {{catColor === item ? 'selected' : ''}}"
+          style="background: {{item}};"
+          bindtap="onSelectCatColor"
+          data-color="{{item}}"
+        >
+          <view wx:if="{{catColor === item}}" class="cat-color-check">✓</view>
+        </view>
+      </view>
+      <view class="cat-custom-color">
+        <text class="cat-custom-color-label">自定义颜色</text>
+        <input class="cat-custom-color-input" type="text" value="{{catColor}}" bindinput="onCatColorInput" placeholder="#000000" placeholder-class="form-placeholder" maxlength="7" />
+        <view class="cat-custom-color-preview" style="background: {{catColor}};"></view>
+      </view>
+      <view class="cat-dialog-actions">
+        <view class="cat-btn cat-btn-cancel" bindtap="onCloseAddCategory">取消</view>
+        <view class="cat-btn cat-btn-confirm" bindtap="onConfirmAddCategory">确定</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-row">
+    <text class="form-label">备注</text>
+    <input class="form-input" value="{{note}}" bindinput="onNoteInput" placeholder="选填" placeholder-class="form-placeholder" />
+  </view>
+
+  <!-- 日期 + 钱包 一行 -->
+  <view class="form-row double-row">
+    <view class="double-item" bindtap="onOpenCalendar">
+      <text class="form-label">日期</text>
+      <text class="form-value">{{dateLabel}}</text>
+      <view class="form-arrow"></view>
+    </view>
+    <view class="double-item" bindtap="onSelectWallet">
+      <text class="form-label">钱包</text>
+      <view wx:if="{{walletName}}" class="wallet-select">
+        <view class="wallet-select-icon" style="background: {{walletColor}};">
+          <text class="wallet-select-icon-text">{{walletIcon}}</text>
+        </view>
+        <text class="wallet-name-inline">{{walletName}}</text>
+      </view>
+      <text wx:else class="form-value placeholder">请选择</text>
+      <view class="form-arrow"></view>
+    </view>
+  </view>
+
+  <!-- 日历弹窗 -->
+  <view wx:if="{{showCalendar}}" class="cat-mask" bindtap="onCloseCalendar">
+    <view class="calendar-dialog" catchtap="noop">
+      <view class="calendar-header">
+        <view class="calendar-arrow prev" bindtap="onCalendarPrevMonth"></view>
+        <text class="calendar-title">{{calendarTitle}}</text>
+        <view class="calendar-arrow {{canNext ? '' : 'disabled'}}" bindtap="onCalendarNextMonth"></view>
+      </view>
+      <view class="calendar-weekdays">
+        <text class="calendar-weekday" wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="calendar-grid">
+        <view
+          wx:for="{{calendarDays}}"
+          wx:key="idx"
+          class="calendar-day {{item.blank ? 'blank' : ''}} {{item.disabled ? 'disabled' : ''}} {{item.date === date ? 'selected' : ''}} {{item.isToday && item.date !== date ? 'today' : ''}}"
+          bindtap="onSelectCalendarDay"
+          data-date="{{item.date}}"
+        >
+          <text class="calendar-day-text">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 钱包选择弹窗 -->
+  <view wx:if="{{showWalletPicker}}" class="cat-mask" bindtap="onCloseWalletPicker">
+    <view class="wallet-picker" catchtap="noop">
+      <text class="wallet-picker-title">选择钱包</text>
+      <view class="wallet-picker-list">
+        <view
+          wx:for="{{walletList}}"
+          wx:key="id"
+          class="wallet-picker-item {{walletId === item.id ? 'active' : ''}}"
+          bindtap="onPickWallet"
+          data-id="{{item.id}}"
+        >
+          <view class="wallet-picker-icon" style="background: {{item.color}};">
+            <text class="wallet-picker-icon-text">{{item.icon}}</text>
+          </view>
+          <view class="wallet-picker-info">
+            <text class="wallet-picker-name">{{item.name}}</text>
+            <text wx:if="{{item.type === 'credit'}}" class="wallet-picker-balance">欠款 ¥{{item.balanceText}}</text>
+            <text wx:else class="wallet-picker-balance">余额 ¥{{item.balanceText}}</text>
+          </view>
+          <text wx:if="{{walletId === item.id}}" class="wallet-picker-check">✓</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="actions">
+    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete">删除</view>
+    <view class="btn btn-save" bindtap="onSave">保存</view>
+  </view>
+</view>

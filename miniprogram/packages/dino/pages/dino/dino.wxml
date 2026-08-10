@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="stage {{shake ? 'shake-on' : ''}}">
+    <view class="count-panel">
+      <text class="count-num">{{count}}</text>
+      <text class="count-label">吼叫次数</text>
+    </view>
+
+    <scroll-view scroll-y class="dino-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="dino-grid">
+        <view
+          wx:for="{{dinos}}"
+          wx:key="name"
+          class="dino {{roaringIndex === index ? 'dino-roar' : ''}}"
+          style="background: {{item.tint}};"
+          data-idx="{{index}}"
+          bindtap="onTapDino"
+        >
+          <text class="dino-emoji">{{item.emoji}}</text>
+          <text class="dino-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="burst {{showBurst ? 'burst-on' : ''}}">吼～！</view>
+
+    <view class="tip">点一点恐龙，它会大声吼哦</view>
+  </view>
+</view>

@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="title-area">
+    <text class="title">翻翻乐</text>
+  </view>
+
+  <view class="score-panel">
+    <view class="score-item">
+      <text class="score-emoji">🧩</text>
+      <text class="score-num">{{pairsFound}} / {{totalPairs}}</text>
+    </view>
+    <view class="score-divider"></view>
+    <view class="score-item">
+      <text class="score-emoji">⭐</text>
+      <text class="score-num">{{total}}</text>
+    </view>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="card-grid">
+    <view
+      wx:for="{{cards}}"
+      wx:key="id"
+      class="card {{item.shake ? 'card-shake' : ''}}"
+      data-index="{{index}}"
+      bindtap="onTapCard"
+    >
+      <view class="card-inner {{item.flipped || item.matched ? 'card-flipped' : ''}}">
+        <view class="card-face card-back">❓</view>
+        <view class="card-face card-front {{item.matched ? 'card-matched' : ''}}">{{item.emoji}}</view>
+      </view>
+    </view>
+  </view>
+</view>

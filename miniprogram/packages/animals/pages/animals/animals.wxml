@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="tip">点一点小动物，听听它们的叫声～</view>
+  <view class="grid">
+    <view
+      wx:for="{{animals}}"
+      wx:key="key"
+      class="card {{activeKey === item.key ? 'card-active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTap"
+      hover-class="card-hover"
+    >
+      <text class="emoji">{{item.emoji}}</text>
+      <text class="name">{{item.name}}</text>
+    </view>
+  </view>
+</view>

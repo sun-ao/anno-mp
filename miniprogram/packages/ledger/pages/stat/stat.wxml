@@ -1,0 +1,104 @@
+<view class="page">
+  <view class="header">
+    <view class="mode-tabs">
+      <view class="mode-tab {{mode === 'month' ? 'active' : ''}}" data-mode="month" bindtap="onSelectMode">自然月</view>
+      <view class="mode-tab {{mode === 'year' ? 'active' : ''}}" data-mode="year" bindtap="onSelectMode">自然年</view>
+      <view class="mode-tab {{mode === 'custom' ? 'active' : ''}}" data-mode="custom" bindtap="onSelectMode">自定义</view>
+    </view>
+
+    <view class="period-nav">
+      <view class="arrow" bindtap="onPrev"><text class="arrow-text">‹</text></view>
+      <text class="period-label">{{periodLabel}}</text>
+      <view class="arrow" bindtap="onNext"><text class="arrow-text">›</text></view>
+    </view>
+
+    <view wx:if="{{mode === 'custom'}}" class="custom-range">
+      <picker mode="date" value="{{customStart}}" bindchange="onPickStart">
+        <view class="range-field"><text class="range-label">起</text><text class="range-value">{{customStart}}</text></view>
+      </picker>
+      <text class="range-sep">~</text>
+      <picker mode="date" value="{{customEnd}}" bindchange="onPickEnd">
+        <view class="range-field"><text class="range-label">止</text><text class="range-value">{{customEnd}}</text></view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="summary">
+    <view class="summary-item">
+      <text class="summary-label">收入</text>
+      <text class="summary-amount income">¥{{summary.incomeText}}</text>
+    </view>
+    <view class="summary-divider"></view>
+    <view class="summary-item">
+      <text class="summary-label">支出</text>
+      <text class="summary-amount expense">¥{{summary.expenseText}}</text>
+    </view>
+    <view class="summary-divider"></view>
+    <view class="summary-item">
+      <text class="summary-label">结余</text>
+      <text class="summary-amount">¥{{summary.balanceText}}</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content">
+    <view wx:if="{{isEmpty}}" class="empty">
+      <text class="empty-text">该时间段还没有记录</text>
+      <text class="empty-hint">去记一笔吧</text>
+    </view>
+
+    <block wx:else>
+      <view class="section">
+        <view class="section-head">
+          <text class="section-title">支出分类排行</text>
+          <text class="section-total">合计 ¥{{expenseTotalText}}</text>
+        </view>
+        <view class="cat-row" wx:for="{{expenseCats}}" wx:key="key">
+          <view class="cat-icon" style="background: {{item.color}};"><text class="cat-icon-text">{{item.icon}}</text></view>
+          <view class="cat-main">
+            <view class="cat-top">
+              <text class="cat-name">{{item.name}}</text>
+              <text class="cat-amount">¥{{item.amountText}}</text>
+            </view>
+            <view class="cat-bar-bg">
+              <view class="cat-bar" style="width: {{item.percent}}%; background: {{item.color}};"></view>
+            </view>
+          </view>
+          <text class="cat-percent">{{item.percent}}%</text>
+        </view>
+      </view>
+
+      <view class="section" wx:if="{{hasIncome}}">
+        <view class="section-head">
+          <text class="section-title">收入分类排行</text>
+          <text class="section-total">合计 ¥{{incomeTotalText}}</text>
+        </view>
+        <view class="cat-row" wx:for="{{incomeCats}}" wx:key="key">
+          <view class="cat-icon" style="background: {{item.color}};"><text class="cat-icon-text">{{item.icon}}</text></view>
+          <view class="cat-main">
+            <view class="cat-top">
+              <text class="cat-name">{{item.name}}</text>
+              <text class="cat-amount income">¥{{item.amountText}}</text>
+            </view>
+            <view class="cat-bar-bg">
+              <view class="cat-bar" style="width: {{item.percent}}%; background: {{item.color}};"></view>
+            </view>
+          </view>
+          <text class="cat-percent">{{item.percent}}%</text>
+        </view>
+      </view>
+
+      <view class="section" wx:if="{{mode === 'year'}}">
+        <view class="section-head">
+          <text class="section-title">月度趋势（支出）</text>
+        </view>
+        <view class="trend-row" wx:for="{{monthTrend}}" wx:key="month">
+          <text class="trend-month">{{item.monthLabel}}</text>
+          <view class="trend-bar-bg">
+            <view class="trend-bar" style="width: {{item.barWidth}}%;"></view>
+          </view>
+          <text class="trend-amount">¥{{item.expenseText}}</text>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

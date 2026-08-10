@@ -1,0 +1,62 @@
+<view class="page">
+  <view class="stage {{hidePreview ? 'hidden' : ''}}">
+    <camera
+      class="cam {{hidePreview ? 'cam-hidden' : ''}}"
+      device-position="{{devicePosition}}"
+      flash="{{flash}}"
+      resolution="high"
+      bindinitdone="onCameraReady"
+      binderror="onCameraError"
+    ></camera>
+
+    <view wx:if="{{hidePreview}}" class="hidden-tip">
+      <text class="ht-main">预览已隐藏</text>
+      <text class="ht-sub">相机仍在后台按所选间隔抽帧采集{{capturing ? '（采集中）' : ''}}</text>
+    </view>
+
+    <view class="topctrls">
+      <view class="ctrlbtn" bindtap="onSwitchCamera">
+        <text class="ctrl-tx">镜头 {{devicePosition === 'back' ? '后置' : '前置'}}</text>
+      </view>
+      <view class="ctrlbtn" bindtap="onCycleFlash">
+        <text class="ctrl-tx">闪光 {{flashLabel}}</text>
+      </view>
+      <view class="ctrlbtn" bindtap="onTogglePreview">
+        <text class="ctrl-tx">预览 {{hidePreview ? '隐藏' : '显示'}}</text>
+      </view>
+    </view>
+
+    <view class="hud">
+      <view class="pill {{capturing ? 'live' : ''}}">
+        <text class="dot"></text>
+        <text wx:if="{{capturing}}">采集中 · 已存 {{count}} 张</text>
+        <text wx:else>待开始</text>
+      </view>
+      <text class="stamp" wx:if="{{lastTs}}">最近一张 {{lastTs}}</text>
+    </view>
+
+    <!-- 离屏画布：仅用于抽帧导出，不参与显示 -->
+    <canvas type="2d" id="snapCanvas" class="offscreen"></canvas>
+  </view>
+
+  <view class="interval-row">
+    <text class="interval-label">拍摄间隔</text>
+    <view class="interval-opts">
+      <text
+        wx:for="{{intervals}}"
+        wx:key="*this"
+        class="interval-opt {{index === intervalIndex ? 'active' : ''}}"
+        data-idx="{{index}}"
+        bindtap="onSelectInterval"
+      >{{item / 1000}}s</text>
+    </view>
+  </view>
+
+  <view class="bar">
+    <button wx:if="{{!capturing}}" class="btn primary" bindtap="onStart">开始连拍</button>
+    <button wx:else class="btn warn" bindtap="onStop">停止</button>
+    <button class="btn ghost" bindtap="goReview">回查 ({{count}})</button>
+  </view>
+
+  <view class="tip">摄像头开启后，按所选间隔自动抽一帧并保存到本地，无需手动拍照；可随时切换前后镜头与闪光灯。点「回查」查看已采集的照片。</view>
+</view>

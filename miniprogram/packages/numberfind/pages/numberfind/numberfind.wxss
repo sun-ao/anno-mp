@@ -1,0 +1,117 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #EEF2FF 0%, #DCE4FF 100%);
+  padding: 48rpx 32rpx 60rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #3F51B5;
+}
+
+.subtitle {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #6B79C4;
+}
+
+.counter {
+  margin-top: 24rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #3F51B5;
+  background: #ffffff;
+  padding: 10rpx 32rpx;
+  border-radius: 999rpx;
+  box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.06);
+}
+
+.ask {
+  margin-top: 56rpx;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 20rpx 44rpx;
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.ask-label {
+  font-size: 32rpx;
+  color: #455;
+}
+
+.ask-num {
+  margin-left: 18rpx;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #FF7043;
+  color: #fff;
+  font-size: 52rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6rpx 16rpx rgba(255, 112, 67, 0.35);
+}
+
+.grid {
+  margin-top: 56rpx;
+  width: 600rpx;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28rpx;
+}
+
+.cell {
+  height: 170rpx;
+  background: #fff;
+  border-radius: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.cell-num {
+  font-size: 64rpx;
+  font-weight: 800;
+  color: #3F51B5;
+}
+
+.cell-shake {
+  animation: cell-shake 0.4s;
+}
+
+@keyframes cell-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-14rpx); }
+  60% { transform: translateX(14rpx); }
+}
+
+.tip {
+  margin-top: 56rpx;
+  font-size: 26rpx;
+  color: #6B79C4;
+}
+
+.score-clear {
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: #999;
+  padding: 6rpx 22rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 999rpx;
+}

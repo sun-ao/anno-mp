@@ -1,0 +1,37 @@
+<view class="page">
+  <view class="topbar">
+    <view class="title">数字合并</view>
+    <view class="scores">
+      <view class="score-box">
+        <text class="score-label">分数</text>
+        <text class="score-val">{{score}}</text>
+      </view>
+      <view class="score-box best">
+        <text class="score-label">最高</text>
+        <text class="score-val">{{best}}</text>
+      </view>
+    </view>
+    <view class="newbtn" bindtap="onRestart">重开</view>
+  </view>
+
+  <view class="board" bindtouchstart="onTouchStart" bindtouchend="onTouchEnd">
+    <view class="grid-bg">
+      <view class="cell" wx:for="{{cells}}" wx:for-index="i" wx:key="i"></view>
+    </view>
+    <view class="tile" wx:for="{{tiles}}" wx:key="id"
+          style="transform: translate({{14 + item.x * 164}}rpx, {{14 + item.y * 164}}rpx)">
+      <view class="tile-inner val-{{item.value}} {{item.value >= 4096 ? 'val-big' : ''}} {{item.isNew ? 'tile-new' : ''}} {{item.mergedFrom ? 'tile-merged' : ''}}">{{item.value}}</view>
+    </view>
+
+    <view class="mask" wx:if="{{over}}">
+      <view class="mask-card">
+        <text class="mask-title">{{won ? '太强了！' : '没地方走啦'}}</text>
+        <text class="mask-sub">本局分数 {{score}}</text>
+        <view class="mask-btn" bindtap="onRestart">再来一局</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="hint">上下左右滑动 · 合并相同数字 · 凑出 2048</view>
+  <view class="won-tip" wx:if="{{won && !over}}">🎉 已达成 2048，可继续挑战更大数字</view>
+</view>

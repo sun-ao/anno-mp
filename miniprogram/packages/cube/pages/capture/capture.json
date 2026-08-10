@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "拍照识别",
+  "usingComponents": {
+    "cube3d": "../../components/cube3d/cube3d"
+  }
+}

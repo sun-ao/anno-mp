@@ -1,0 +1,80 @@
+<view class="page">
+  <cube3d id="cube3d" state="{{viewState}}" />
+
+  <view class="hint">
+    <text class="hint-text">{{hintText}}</text>
+  </view>
+
+  <!-- 当前阶段要点卡 -->
+  <view class="phase-card">
+    <view class="phase-progress-text">{{phaseProgressText}}</view>
+    <view class="phase-title">{{phaseTitle}}</view>
+    <view class="phase-goal">{{phaseGoal}}</view>
+    <view class="phase-tip">
+      <text class="phase-tip-label">💡 口诀</text>
+      <text class="phase-tip-text">{{phaseTip}}</text>
+    </view>
+  </view>
+
+  <!-- 七阶段进度条 -->
+  <view class="phase-strip">
+    <view
+      wx:for="{{phaseDots}}"
+      wx:key="index"
+      class="phase-dot phase-dot-{{item.status}}"
+    >
+      <view class="phase-dot-num">{{item.index}}</view>
+      <view class="phase-dot-label">{{item.shortTitle}}</view>
+    </view>
+  </view>
+
+  <!-- 控制条 -->
+  <view class="controls">
+    <view class="ctrl {{current === 0 || animating || autoPlaying ? 'ctrl-disabled' : ''}}" bindtap="onPrev">上一步</view>
+    <view class="progress">{{current}} / {{steps.length}}</view>
+    <view class="ctrl ctrl-primary {{current === steps.length ? 'ctrl-disabled' : ''}}" bindtap="onMainAction">{{autoPlaying ? '暂停' : (animating ? '旋转中…' : '下一步')}}</view>
+  </view>
+
+  <!-- 本阶段公式 -->
+  <view class="formula">
+    <view class="formula-header">
+      <text class="formula-label">本阶段公式</text>
+      <view class="auto-area">
+        <view class="auto-link {{autoPlaying ? 'auto-link-active' : ''}}" bindtap="onToggleAuto">{{autoPlaying ? '暂停' : '自动'}}</view>
+        <picker mode="selector" range="{{intervalOptions}}" value="{{intervalIndex}}" bindchange="onIntervalChange">
+          <view class="interval-link">{{autoInterval}}s</view>
+        </picker>
+      </view>
+    </view>
+    <view wx:if="{{phaseFormulaMoves.length === 0}}" class="formula-empty">本阶段已满足，无需转动 ✅</view>
+    <view wx:else class="formula-text">
+      <text
+        wx:for="{{phaseFormulaMoves}}"
+        wx:key="localIndex"
+        class="formula-move {{item.highlight ? 'formula-move-active' : ''}} {{item.done ? 'formula-move-done' : ''}}"
+      >{{item.move}} </text>
+    </view>
+  </view>
+
+  <!-- 全部分步 -->
+  <scroll-view scroll-y class="steps" scroll-into-view="{{scrollTo}}" scroll-with-animation>
+    <block wx:for="{{steps}}" wx:key="globalIndex">
+      <view wx:if="{{item.divider}}" class="step-divider">
+        <view class="step-divider-bar"></view>
+        <text class="step-divider-title">{{item.dividerTitle}}</text>
+        <view class="step-divider-bar"></view>
+      </view>
+      <view
+        id="step-{{item.globalIndex}}"
+        class="step step-{{item.status}}"
+      >
+        <text class="step-no">{{item.globalIndex + 1}}</text>
+        <text class="step-move">{{item.move}}</text>
+        <text class="step-text">{{item.text}}</text>
+        <text wx:if="{{item.status === 'next'}}" class="step-flag">当前</text>
+      </view>
+    </block>
+  </scroll-view>
+
+  <view class="back-link" bindtap="onBack">返回选择方式</view>
+</view>

@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="sky" bindtap="onSkyTap">
+    <view class="star star-1"></view>
+    <view class="star star-2"></view>
+    <view class="star star-3"></view>
+
+    <view wx:for="{{rockets}}" wx:key="id" class="rocket" style="left: {{item.x}}px; top: {{item.y}}px; background: {{item.color}};"></view>
+
+    <view wx:for="{{bursts}}" wx:for-item="b" wx:key="id" class="burst" style="left: {{b.x}}px; top: {{b.y}}px;">
+      <view class="burst-ring" style="border-color: {{b.color}};"></view>
+      <view wx:for="{{arms}}" wx:for-item="deg" wx:key="*this" class="spark-arm" style="transform: rotate({{deg}}deg);">
+        <view class="spark" style="background: {{b.color}};"></view>
+      </view>
+    </view>
+
+    <view class="launched-panel">
+      <text class="launched-num">{{launched}}</text>
+      <text class="launched-label">放出的烟花</text>
+      <view class="launched-clear" catchtap="onClear">清空</view>
+    </view>
+
+    <view class="hint">点一点天空，放烟花</view>
+  </view>
+</view>

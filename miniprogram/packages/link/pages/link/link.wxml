@@ -1,0 +1,16 @@
+<view class="page">
+  <view class="title-area">
+    <view class="title">消消乐</view>
+    <view class="subtitle">点两个一样的，把它们消掉</view>
+  </view>
+  <view class="counter">已消 {{count}} 局 · 剩 {{remaining}}</view>
+  <view class="score-clear" bindtap="onClear">清空</view>
+  <view class="board">
+    <view wx:for="{{tiles}}" wx:key="id"
+      class="tile {{item.cleared ? 'tile-clear' : ''}} {{item.sel ? 'tile-sel' : ''}} {{item.shake ? 'tile-shake' : ''}}"
+      data-idx="{{index}}" bindtap="onTapTile">
+      <text wx:if="{{!item.cleared}}" class="tile-emoji">{{item.emoji}}</text>
+    </view>
+  </view>
+  <view class="tip">把 8 对水果全部消掉就赢啦～</view>
+</view>

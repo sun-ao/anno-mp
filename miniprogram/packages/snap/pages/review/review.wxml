@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="head">
+    <text class="title">已采集 {{photos.length}} 张</text>
+    <view class="actions">
+      <text class="link" bindtap="goCapture">继续拍</text>
+      <text class="link danger" bindtap="onClear" wx:if="{{photos.length}}">清空</text>
+    </view>
+  </view>
+
+  <view class="grid" wx:if="{{photos.length}}">
+    <view class="cell" wx:for="{{photos}}" wx:key="id">
+      <image class="thumb" src="{{item.path}}" mode="aspectFill" data-idx="{{index}}" bindtap="onPreview"></image>
+      <text class="time">{{item.displayTime}}</text>
+      <view class="del" data-id="{{item.id}}" data-path="{{item.path}}" bindtap="onDelete">删</view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <text class="empty-emoji">📷</text>
+    <text class="empty-text">还没有采集到照片</text>
+    <button class="go-btn" bindtap="goCapture">去连拍</button>
+  </view>
+</view>

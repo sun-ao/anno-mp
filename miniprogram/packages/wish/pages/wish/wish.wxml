@@ -1,0 +1,65 @@
+<view class="page">
+  <view class="header">
+    <text class="header-title">赛博许愿池</text>
+    <text class="header-sub">心诚则灵 · 投币接好运</text>
+  </view>
+
+  <view class="wish-input-card">
+    <input
+      class="wish-input"
+      value="{{wishText}}"
+      maxlength="30"
+      placeholder="写下你的愿望，心诚则灵…"
+      placeholder-class="wish-input-placeholder"
+      bindinput="onWishInput"
+      confirm-type="done"
+    />
+  </view>
+
+  <view class="pool-zone">
+    <view class="pool">
+      <view class="wave-line"></view>
+      <view class="koi koi-1">🐟</view>
+      <view class="koi koi-2">🐠</view>
+      <view wx:if="{{showCoin}}" class="coin coin-fly"><text class="coin-text">福</text></view>
+      <view class="ripple ripple-1 {{showRipple ? 'ripple-on' : ''}}"></view>
+      <view class="ripple ripple-2 {{showRipple ? 'ripple-on' : ''}}"></view>
+      <view class="ripple ripple-3 {{showRipple ? 'ripple-on' : ''}}"></view>
+    </view>
+  </view>
+
+  <view class="throw-btn" bindtap="onThrow">投币许愿</view>
+
+  <view wx:if="{{showFortune && fortune}}" class="fortune-card">
+    <text class="fortune-level" style="color: {{fortune.levelColor}};">{{fortune.level}}</text>
+    <text class="fortune-verse">{{fortune.verse}}</text>
+    <text class="fortune-hint">{{fortune.hint}}</text>
+    <view class="fortune-again" bindtap="onAgain">再许一愿</view>
+  </view>
+
+  <view class="footer-bar">
+    <view class="list-btn" bindtap="onOpenList">我的许愿</view>
+  </view>
+
+  <!-- 许愿记录弹窗 -->
+  <view wx:if="{{showList}}" class="cat-mask" bindtap="onCloseList" catchtouchmove="noop">
+    <view class="cat-dialog wish-dialog" catchtap="noop">
+      <view class="wish-dialog-title">我的许愿</view>
+      <scroll-view scroll-y class="wish-dialog-body">
+        <view wx:if="{{wishes.length === 0}}" class="wish-empty">
+          <text class="wish-empty-text">还没有愿望，快去许一个吧</text>
+        </view>
+        <view wx:for="{{wishes}}" wx:key="id" class="wish-item">
+          <view class="wish-item-main">
+            <text class="wish-item-text">{{item.text}}</text>
+            <text class="wish-item-meta">{{item.dateText}} · {{item.level}}</text>
+          </view>
+          <view class="wish-item-del" bindtap="onDeleteWish" data-id="{{item.id}}"></view>
+        </view>
+      </scroll-view>
+      <view wx:if="{{wishes.length > 0}}" class="wish-dialog-footer">
+        <view class="wish-clear" bindtap="onClearWishes">清空全部记录</view>
+      </view>
+    </view>
+  </view>
+</view>

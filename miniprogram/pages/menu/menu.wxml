@@ -1,0 +1,25 @@
+<view class="page">
+  <block wx:for="{{sections}}" wx:key="title" wx:for-item="sec">
+    <view class="sec-head">
+      <view class="sec-bar"></view>
+      <text class="sec-title">{{sec.title}}</text>
+      <text class="sec-count">{{sec.modules.length}}</text>
+    </view>
+    <view class="grid">
+      <view wx:for="{{sec.modules}}" wx:key="key" wx:for-item="item"
+        class="card {{item.ready ? '' : 'card-disabled'}}"
+        bindtap="onTapModule"
+        data-item="{{item}}">
+        <view class="card-icon" style="background: {{item.color}};">
+          <text class="card-icon-text">{{item.iconText}}</text>
+        </view>
+        <text class="card-title">{{item.title}}</text>
+        <text class="card-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="footer">
+    <text class="footer-text">尽享无限可能</text>
+  </view>
+</view>

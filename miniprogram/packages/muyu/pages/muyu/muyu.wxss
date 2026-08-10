@@ -1,0 +1,176 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FBF6EC 0%, #F3E7D3 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0 60rpx;
+  box-sizing: border-box;
+}
+
+/* 功德计数 */
+.merit-panel {
+  margin-top: 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.merit-label {
+  font-size: 26rpx;
+  color: #A0835F;
+  letter-spacing: 8rpx;
+}
+
+.merit-count {
+  margin-top: 8rpx;
+  font-size: 120rpx;
+  font-weight: 600;
+  color: #8B4E22;
+  line-height: 1.1;
+}
+
+.merit-unit {
+  font-size: 26rpx;
+  color: #A0835F;
+  letter-spacing: 4rpx;
+}
+
+/* 敲击区 */
+.knock-area {
+  position: relative;
+  margin-top: 100rpx;
+  width: 520rpx;
+  height: 520rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 涟漪 */
+.ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 420rpx;
+  height: 420rpx;
+  margin-left: -210rpx;
+  margin-top: -210rpx;
+  border: 6rpx solid rgba(181, 113, 63, 0.45);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.ripple-1.ripple-on {
+  animation: ripple 0.6s ease-out forwards;
+}
+
+.ripple-2.ripple-on {
+  animation: ripple 0.6s ease-out 0.08s forwards;
+}
+
+.ripple-3.ripple-on {
+  animation: ripple 0.6s ease-out 0.16s forwards;
+}
+
+@keyframes ripple {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* 木鱼 */
+.fish-wrap {
+  position: relative;
+  width: 380rpx;
+  height: 380rpx;
+}
+
+.fish-knock {
+  animation: knock 0.28s ease-out;
+}
+
+@keyframes knock {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(14rpx) scale(0.96);
+  }
+  70% {
+    transform: translateY(-6rpx) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fish-img {
+  width: 380rpx;
+  height: 380rpx;
+}
+
+/* 功德飘字 */
+.float-wrap {
+  position: absolute;
+  left: 50%;
+  top: -70rpx;
+  opacity: 0;
+}
+
+.float-on {
+  animation: floatUp 0.9s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30rpx);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-90rpx);
+  }
+}
+
+.float-text {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #B5713F;
+}
+
+/* 底部 */
+.footer {
+  margin-top: 110rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reset-btn {
+  padding: 16rpx 48rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  color: #A0835F;
+  font-size: 26rpx;
+  border: 2rpx solid #E3D5BC;
+}
+
+.reset-btn:active {
+  opacity: 0.8;
+}
+
+.footer-tip {
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  color: #B9A487;
+}

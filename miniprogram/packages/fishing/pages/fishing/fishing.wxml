@@ -1,0 +1,17 @@
+<view class="page">
+  <view class="title-area">
+    <view class="title">钓小鱼</view>
+    <view class="subtitle">点一点，把小鱼钓起来 🎣</view>
+  </view>
+  <view class="counter">钓到 {{count}} 条</view>
+  <view class="pond">
+    <view wx:for="{{fish}}" wx:key="id"
+      class="fish {{item.caught ? 'caught' : ''}}"
+      style="top:{{item.top}}rpx; font-size:{{item.size}}rpx; animation-name:{{item.anim}}; animation-duration:{{item.dur}}s; animation-delay:{{item.delay}}s"
+      data-id="{{item.id}}" bindtap="onTapFish">
+      <text class="fish-emoji">{{item.emoji}}</text>
+    </view>
+    <view class="ripple"></view>
+  </view>
+  <view class="tip">小鱼游来游去，看准了再点哦～</view>
+</view>

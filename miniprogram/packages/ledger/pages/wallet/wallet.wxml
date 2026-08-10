@@ -1,0 +1,54 @@
+<view class="page">
+  <!-- 总资产卡片 -->
+  <view class="asset-card">
+    <view class="asset-row">
+      <view class="asset-item">
+        <text class="asset-label">净资产</text>
+        <text class="asset-amount">¥{{totalAssetsText}}</text>
+      </view>
+    </view>
+    <view class="summary-row">
+      <view class="summary-item">
+        <text class="summary-label">负债</text>
+        <text class="summary-value debt">¥{{totalDebtText}}</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-label">资产</text>
+        <text class="summary-value">¥{{totalAssetsBalanceText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 账户列表 -->
+  <view class="section-label">我的账户</view>
+  <view class="wallet-list">
+    <view
+      wx:for="{{wallets}}"
+      wx:key="id"
+      class="wallet-item"
+      bindtap="onTapWallet"
+      bindlongpress="onLongPressWallet"
+      data-id="{{item.id}}"
+    >
+      <view class="wallet-icon" style="background: {{item.color}};">
+        <text class="wallet-icon-text">{{item.icon}}</text>
+      </view>
+      <view class="wallet-info">
+        <text class="wallet-name">{{item.name}}</text>
+        <text wx:if="{{item.type === 'credit'}}" class="wallet-balance credit">欠款 ¥{{item.balanceText}}</text>
+        <text wx:else class="wallet-balance">余额 ¥{{item.balanceText}}</text>
+      </view>
+      <view class="wallet-arrow"></view>
+    </view>
+
+    <view wx:if="{{wallets.length === 0}}" class="empty" bindtap="onAddWallet">
+      <text class="empty-text">还没有账户，点击添加</text>
+    </view>
+  </view>
+
+  <!-- 添加账户按钮 -->
+  <view class="add-btn" bindtap="onAddWallet">
+    <text class="add-btn-text">+ 添加账户</text>
+  </view>
+</view>

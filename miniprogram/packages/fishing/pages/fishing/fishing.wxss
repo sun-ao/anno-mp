@@ -1,0 +1,97 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #E8F6FF 0%, #CDEBFB 100%);
+  padding: 48rpx 32rpx 60rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #1577B8;
+}
+
+.subtitle {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #4E97C9;
+}
+
+.counter {
+  margin-top: 24rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1577B8;
+  background: #ffffff;
+  padding: 10rpx 32rpx;
+  border-radius: 999rpx;
+  box-shadow: 0 6rpx 18rpx rgba(0, 0, 0, 0.06);
+}
+
+.pond {
+  position: relative;
+  margin-top: 48rpx;
+  width: 100%;
+  height: 720rpx;
+  background: linear-gradient(180deg, #BFE6FB 0%, #8FD0F5 100%);
+  border-radius: 36rpx;
+  overflow: hidden;
+  box-shadow: inset 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.fish {
+  position: absolute;
+  left: -22%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+.fish-emoji {
+  font-size: inherit;
+  line-height: 1;
+}
+
+.fish.caught {
+  animation-play-state: paused;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.4s ease-in, opacity 0.4s ease-in;
+}
+
+@keyframes swim-ltr {
+  0%   { left: -22%; }
+  100% { left: 118%; }
+}
+
+@keyframes swim-rtl {
+  0%   { left: 118%; }
+  100% { left: -22%; }
+}
+
+.ripple {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120rpx;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.35) 100%);
+}
+
+.tip {
+  margin-top: 40rpx;
+  font-size: 26rpx;
+  color: #6FA8CC;
+}

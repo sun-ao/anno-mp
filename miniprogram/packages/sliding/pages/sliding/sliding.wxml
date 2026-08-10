@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="title-area">
+    <text class="title">数字滑块</text>
+    <text class="subtitle">把数字按顺序排好 1 → 8，点空白旁边的方块滑动</text>
+  </view>
+
+  <view class="stat">
+    <text class="stat-num">{{steps}}</text>
+    <text class="stat-label">步数</text>
+  </view>
+
+  <view class="board">
+    <view
+      wx:for="{{tiles}}"
+      wx:key="value"
+      class="tile {{item.value === 0 ? 'tile-empty' : ''}} {{win ? 'tile-win' : ''}}"
+      data-i="{{index}}"
+      bindtap="onTapTile"
+    >
+      <text wx:if="{{item.value !== 0}}">{{item.value}}</text>
+    </view>
+  </view>
+
+  <view class="actions">
+    <view wx:if="{{win}}" class="btn" bindtap="onAgain">太棒了！再来一局 🎉</view>
+    <view wx:else class="tip">点挨着空格的数字块，把它挪过去</view>
+  </view>
+</view>

@@ -1,0 +1,192 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40rpx;
+}
+
+.hint {
+  margin-top: 8rpx;
+  padding: 10rpx 32rpx;
+}
+
+.hint-text {
+  font-size: 26rpx;
+  color: #185fa5;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12rpx;
+}
+
+.ctrl {
+  padding: 16rpx 48rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  border: 1rpx solid #d3d1c7;
+  font-size: 28rpx;
+  margin: 0 16rpx;
+}
+
+.ctrl-primary {
+  background: #185fa5;
+  border-color: #185fa5;
+  color: #ffffff;
+}
+
+.ctrl-disabled {
+  opacity: 0.35;
+}
+
+.progress {
+  font-size: 26rpx;
+  color: #888780;
+  min-width: 120rpx;
+  text-align: center;
+}
+
+.formula {
+  margin-top: 20rpx;
+  padding: 20rpx 32rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  width: 686rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.formula-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.formula-label {
+  font-size: 22rpx;
+  color: #888780;
+}
+
+.auto-area {
+  display: flex;
+  align-items: center;
+}
+
+.auto-link {
+  font-size: 24rpx;
+  color: #BA7517;
+  padding: 8rpx 12rpx;
+  margin-right: 8rpx;
+  border-radius: 8rpx;
+}
+
+.auto-link-active {
+  color: #C41E3A;
+  background: #fcebeb;
+}
+
+.interval-link {
+  font-size: 24rpx;
+  color: #888780;
+  padding: 8rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.formula-text {
+  font-size: 30rpx;
+  letter-spacing: 2rpx;
+  word-break: break-all;
+  line-height: 1.8;
+}
+
+.formula-move {
+  font-size: 30rpx;
+}
+
+.formula-move-active {
+  color: #C41E3A;
+  font-weight: 600;
+  font-size: 36rpx;
+}
+
+.formula-move-done {
+  color: #b4b2a9;
+}
+
+.steps {
+  margin-top: 20rpx;
+  width: 686rpx;
+  max-height: 280rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 12rpx 0;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 28rpx;
+  border-left: 6rpx solid transparent;
+  transition: background 0.2s;
+}
+
+.step-no {
+  width: 56rpx;
+  font-size: 24rpx;
+  color: #b4b2a9;
+}
+
+.step-move {
+  width: 90rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.step-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #555555;
+}
+
+.step-done {
+  opacity: 0.4;
+}
+
+.step-next {
+  background: #e6f1fb;
+  border-left-color: #185fa5;
+  border-radius: 0 12rpx 12rpx 0;
+}
+
+.step-next .step-no {
+  color: #185fa5;
+  font-weight: 500;
+}
+
+.step-next .step-move {
+  color: #185fa5;
+  font-size: 32rpx;
+}
+
+.step-flag {
+  font-size: 20rpx;
+  color: #ffffff;
+  background: #185fa5;
+  padding: 4rpx 12rpx;
+  border-radius: 999rpx;
+}
+
+.back-link {
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  color: #888780;
+  padding: 8rpx 24rpx;
+}
+
+.back-link:active {
+  color: #185fa5;
+}

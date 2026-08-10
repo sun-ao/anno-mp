@@ -1,0 +1,432 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFFDF6 0%, #FBF3DC 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 24rpx 60rpx;
+  box-sizing: border-box;
+}
+
+/* 标题 */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #C9971F;
+  letter-spacing: 6rpx;
+}
+
+.header-sub {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #A0835F;
+  letter-spacing: 4rpx;
+}
+
+/* 愿望输入 */
+.wish-input-card {
+  margin-top: 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 28rpx 32rpx;
+  box-shadow: 0 6rpx 16rpx rgba(201, 151, 31, 0.08);
+}
+
+.wish-input {
+  font-size: 30rpx;
+  color: #4A3A28;
+}
+
+.wish-input-placeholder {
+  color: #C0B8A8;
+}
+
+/* 许愿池 */
+.pool-zone {
+  margin-top: 60rpx;
+}
+
+.pool {
+  position: relative;
+  width: 600rpx;
+  height: 320rpx;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 35%, #4FA3E8 0%, #2E7BB5 55%, #1D5F94 100%);
+  box-shadow: inset 0 -20rpx 40rpx rgba(0, 0, 0, 0.15), 0 10rpx 30rpx rgba(46, 123, 181, 0.25);
+  overflow: hidden;
+}
+
+/* 水波纹理 */
+.wave-line {
+  position: absolute;
+  left: -20%;
+  top: 38%;
+  width: 140%;
+  height: 40rpx;
+  border-radius: 50%;
+  border-top: 6rpx solid rgba(255, 255, 255, 0.22);
+  animation: waveMove 4s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(30rpx) translateY(10rpx);
+  }
+}
+
+/* 锦鲤 */
+.koi {
+  position: absolute;
+  font-size: 64rpx;
+  line-height: 1;
+  animation: swim 9s linear infinite;
+}
+
+.koi-1 {
+  top: 22%;
+  animation-duration: 9s;
+}
+
+.koi-2 {
+  top: 58%;
+  font-size: 52rpx;
+  animation-duration: 12s;
+  animation-delay: -4s;
+}
+
+@keyframes swim {
+  0% {
+    left: -80rpx;
+    transform: scaleX(1) translateY(0);
+  }
+  25% {
+    transform: scaleX(1) translateY(-16rpx);
+  }
+  50% {
+    left: calc(100% - 40rpx);
+    transform: scaleX(1) translateY(0);
+  }
+  50.01% {
+    transform: scaleX(-1) translateY(0);
+  }
+  75% {
+    transform: scaleX(-1) translateY(-16rpx);
+  }
+  100% {
+    left: -80rpx;
+    transform: scaleX(-1) translateY(0);
+  }
+}
+
+/* 金币 */
+.coin {
+  position: absolute;
+  left: 50%;
+  top: -140rpx;
+  width: 72rpx;
+  height: 72rpx;
+  margin-left: -36rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFE9A8 0%, #E8B83C 55%, #C9971F 100%);
+  border: 4rpx solid #A87B14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.coin-fly {
+  animation: coinFall 0.9s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+}
+
+@keyframes coinFall {
+  0% {
+    top: -140rpx;
+    opacity: 0;
+    transform: rotate(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    top: 62%;
+    opacity: 1;
+    transform: rotate(540deg);
+  }
+}
+
+.coin-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #8F6A10;
+}
+
+/* 涟漪 */
+.ripple {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: 100rpx;
+  height: 60rpx;
+  margin-left: -50rpx;
+  margin-top: -30rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.ripple-1.ripple-on {
+  animation: rippleExpand 0.8s ease-out forwards;
+}
+
+.ripple-2.ripple-on {
+  animation: rippleExpand 0.8s ease-out 0.12s forwards;
+}
+
+.ripple-3.ripple-on {
+  animation: rippleExpand 0.8s ease-out 0.24s forwards;
+}
+
+@keyframes rippleExpand {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.2);
+  }
+}
+
+/* 投币按钮 */
+.throw-btn {
+  margin-top: 48rpx;
+  width: 420rpx;
+  padding: 24rpx 0;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, #F0C75E 0%, #D4A017 100%);
+  color: #6B4E00;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 8rpx 20rpx rgba(212, 160, 23, 0.35);
+}
+
+.throw-btn:active {
+  opacity: 0.85;
+}
+
+/* 签文卡片 */
+.fortune-card {
+  margin-top: 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+  background: #FFFDF5;
+  border: 2rpx solid #EBD9A8;
+  border-radius: 20rpx;
+  padding: 36rpx 32rpx;
+  box-shadow: 0 8rpx 24rpx rgba(201, 162, 39, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fortuneUp 0.5s ease-out;
+}
+
+@keyframes fortuneUp {
+  0% {
+    transform: translateY(40rpx) scale(0.92);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.fortune-level {
+  font-size: 32rpx;
+  font-weight: 700;
+  letter-spacing: 6rpx;
+}
+
+.fortune-verse {
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  color: #5A4632;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.fortune-hint {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #A0835F;
+}
+
+.fortune-again {
+  margin-top: 28rpx;
+  padding: 12rpx 48rpx;
+  border-radius: 999rpx;
+  border: 2rpx solid #D4A017;
+  color: #A87B14;
+  font-size: 26rpx;
+}
+
+.fortune-again:active {
+  opacity: 0.8;
+}
+
+/* 底部 */
+.footer-bar {
+  margin-top: auto;
+  padding-top: 60rpx;
+}
+
+.list-btn {
+  padding: 16rpx 48rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  border: 2rpx solid #EBD9A8;
+  color: #A87B14;
+  font-size: 26rpx;
+}
+
+.list-btn:active {
+  opacity: 0.8;
+}
+
+/* 许愿记录弹窗 */
+.cat-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-dialog {
+  width: 620rpx;
+  max-height: 70vh;
+  background: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.wish-dialog-title {
+  padding: 32rpx 32rpx 20rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #4A3A28;
+  text-align: center;
+}
+
+.wish-dialog-body {
+  max-height: 52vh;
+  padding: 8rpx 32rpx 32rpx;
+  box-sizing: border-box;
+}
+
+.wish-empty {
+  padding: 80rpx 0;
+  text-align: center;
+}
+
+.wish-empty-text {
+  font-size: 26rpx;
+  color: #B9A487;
+}
+
+.wish-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 2rpx solid #F3EFE6;
+}
+
+.wish-item-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.wish-item-text {
+  font-size: 28rpx;
+  color: #4A3A28;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wish-item-meta {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #B9A487;
+}
+
+.wish-item-del {
+  width: 44rpx;
+  height: 44rpx;
+  margin-left: 20rpx;
+  position: relative;
+}
+
+.wish-item-del::before,
+.wish-item-del::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28rpx;
+  height: 3rpx;
+  background: #C8BFAD;
+  border-radius: 2rpx;
+}
+
+.wish-item-del::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.wish-item-del::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.wish-item-del:active {
+  opacity: 0.6;
+}
+
+.wish-dialog-footer {
+  padding: 16rpx 32rpx 32rpx;
+  text-align: center;
+  border-top: 2rpx solid #F3EEE2;
+}
+
+.wish-clear {
+  display: inline-block;
+  padding: 12rpx 32rpx;
+  font-size: 26rpx;
+  color: #C41E3A;
+}
+
+.wish-clear:active {
+  opacity: 0.7;
+}

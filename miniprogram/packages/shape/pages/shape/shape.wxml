@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="counter">
+    <text class="counter-star">⭐</text>
+    <text class="counter-num">{{count}}</text>
+    <view class="score-clear" bindtap="onClear">清空</view>
+  </view>
+
+  <view class="target-card">
+    <text class="target-emoji">{{target}}</text>
+  </view>
+
+  <view class="options">
+    <view
+      wx:for="{{options}}"
+      wx:key="*this"
+      class="option {{popIndex === index ? 'option-pop' : ''}} {{shakingIndex === index ? 'option-shake' : ''}}"
+      data-idx="{{index}}"
+      bindtap="onTapOption"
+    >
+      <text class="option-emoji {{popIndex === index ? 'revealed' : ''}}">{{item}}</text>
+    </view>
+  </view>
+</view>

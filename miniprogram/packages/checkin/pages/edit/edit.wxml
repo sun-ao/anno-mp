@@ -1,0 +1,24 @@
+<view class="page">
+  <!-- 表单 -->
+  <view class="form-row">
+    <text class="form-label">名称</text>
+    <input class="form-input" value="{{name}}" bindinput="onNameInput" placeholder="如：考研冲刺" placeholder-class="form-placeholder" />
+  </view>
+
+  <view class="form-row">
+    <text class="form-label">截止日期</text>
+    <picker mode="date" value="{{deadline}}" bindchange="onDeadlineChange">
+      <text class="form-value">{{deadline}}</text>
+    </picker>
+  </view>
+
+  <view class="hint-row">
+    <text class="hint-text">每天可打卡一次，漏打卡连续天数将清零</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete">删除</view>
+    <view class="btn btn-save" bindtap="onSave">保存</view>
+  </view>
+</view>

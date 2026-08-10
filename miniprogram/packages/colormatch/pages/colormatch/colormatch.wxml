@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="title-area">
+    <view class="title">认颜色</view>
+    <view class="subtitle">读一读颜色，点出对应的色块</view>
+  </view>
+  <view class="counter">答对 {{count}} 次</view>
+  <view class="score-clear" bindtap="onClear">清空</view>
+  <view class="ask">
+    <text class="ask-label">请点出</text>
+    <text class="ask-name" style="color:{{target.val}}">{{target.name}}</text>
+  </view>
+  <view class="opt-row">
+    <view wx:for="{{options}}" wx:key="val"
+      class="opt {{shakeIndex === index ? 'opt-shake' : ''}}"
+      style="background:{{item.val}}"
+      data-idx="{{index}}" bindtap="onTapOpt"></view>
+  </view>
+  <view class="tip">看清楚颜色名字，再点对应的色块～</view>
+</view>

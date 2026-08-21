@@ -1,0 +1,9 @@
+<canvas
+  type="webgl"
+  id="gl"
+  class="gl"
+  disable-scroll
+  bindtouchstart="onTouchStart"
+  bindtouchmove="onTouchMove"
+  bindtouchend="onTouchEnd"
+></canvas>

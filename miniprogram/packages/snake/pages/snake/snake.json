@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "蛇形魔方",
+  "usingComponents": {
+    "snake3d": "../../components/snake3d/snake3d"
+  }
+}

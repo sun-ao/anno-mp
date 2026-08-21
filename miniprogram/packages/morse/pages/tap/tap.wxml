@@ -1,0 +1,47 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">摩斯密码 · 手指解码</view>
+    <view class="hero-sub">短按 = 点(·) · 长按 = 划(−) · 停顿1秒出字母 · 停顿2.5秒出空格</view>
+  </view>
+
+  <!-- 大敲击区 -->
+  <view
+    class="tap-area {{pressing ? 'pressing' : ''}} {{pressKind === 'dot' ? 'is-dot' : ''}} {{pressKind === 'dash' ? 'is-dash' : ''}}"
+    bindtouchstart="onTouchStart"
+    bindtouchend="onTouchEnd"
+  >
+    <view class="ring"></view>
+    <view class="tap-sign">
+      <text wx:if="{{pressing}}" class="rec">●</text>
+      <text wx:elif="{{pressKind === 'dot'}}">·</text>
+      <text wx:elif="{{pressKind === 'dash'}}">—</text>
+      <text wx:else>◌</text>
+    </view>
+    <view class="tap-hint">{{pressing ? '松手记录…' : (pressKind ? (pressKind === 'dot' ? '点 ✔' : '划 ✔') : '按住这里敲')}}</view>
+    <view class="tap-tip">短按一下 = 点，按住不放 = 划</view>
+  </view>
+
+  <!-- 拼字状态 -->
+  <view class="state">
+    <view class="state-row">
+      <view class="state-label">正在拼</view>
+      <view class="state-symbols">{{symbols || '—'}}</view>
+      <view class="state-cur" wx:if="{{current}}">{{current}}</view>
+    </view>
+    <view class="state-row">
+      <view class="state-label">已识别</view>
+      <view class="state-text">{{decodedText || '（敲击后这里出现文字）'}}</view>
+    </view>
+  </view>
+
+  <!-- 操作 -->
+  <view class="actions">
+    <button class="btn ghost" bindtap="onUndo">撤销</button>
+    <button class="btn ghost" bindtap="onClear">清空</button>
+    <button class="btn primary" bindtap="onPlay">▶ 播放</button>
+    <button class="btn ghost" bindtap="onCopy">复制</button>
+    <button class="btn ghost" bindtap="onGoRef">📖 码表</button>
+  </view>
+
+  <view class="foot-tip">像发电报一样，用节奏拼出字母。例如 SOS = 三短 · 三长 · 三短，敲完停顿一下自动出字母。</view>
+</view>

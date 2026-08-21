@@ -45,12 +45,14 @@ const MODULES = {
   beat: { key: 'beat', title: '节奏点点', desc: '跟着节拍点一点', iconText: '拍', color: '#C67113', ready: true, url: '/packages/beat/pages/beat/beat' },
   scratch: { key: 'scratch', title: '刮刮乐', desc: '刮开看看好运气', iconText: '刮', color: '#00897B', ready: true, url: '/packages/scratch/pages/scratch/scratch' },
   snap: { key: 'snap', title: '随手连拍', desc: '摄像头每秒自动抽帧·本地留存', iconText: '拍', color: '#3949AB', ready: true, url: '/packages/snap/pages/capture/capture' },
-  stopwatch: { key: 'stopwatch', title: '计时器', desc: '毫秒级 · 多组短跑成绩', iconText: '时', color: '#0E8AC8', ready: true, url: '/packages/stopwatch/pages/timer/timer' }
+  stopwatch: { key: 'stopwatch', title: '计时器', desc: '毫秒级 · 多组短跑成绩', iconText: '时', color: '#0E8AC8', ready: true, url: '/packages/stopwatch/pages/timer/timer' },
+  morse: { key: 'morse', title: '摩斯密码', desc: '手指敲击解码 · 长按短按识别', iconText: '摩', color: '#00695C', ready: true, url: '/packages/morse/pages/tap/tap' },
+  snake: { key: 'snake', title: '蛇形魔方', desc: '3D 造型浏览 · 逐步折叠回放', iconText: '蛇', color: '#2f6fb0', ready: true, url: '/packages/snake/pages/snake/snake' }
 }
 
 // 分类（其余模块按使用场景分组）
 const SECTIONS = [
-  { title: '实用工具', keys: ['cube', 'ledger', 'countdown', 'checkin', 'idphoto', 'mbti', 'lots', 'tomato', 'snap', 'stopwatch'] },
+  { title: '实用工具', keys: ['cube', 'ledger', 'countdown', 'checkin', 'idphoto', 'mbti', 'lots', 'tomato', 'snap', 'stopwatch', 'morse', 'snake'] },
   { title: '启蒙益智', keys: ['count', 'nummatch', 'size', 'sort', 'shape', 'shadow', 'odd', 'pattern', 'listen', 'memory', 'puzzle', 'maze', 'numberfind', 'colormatch', 'coloring', 'trash', 'peekaboo', 'sliding'] },
   { title: '互动游戏', keys: ['rps', 'gopher', 'rocket', 'cook', 'link', 'hoop', 'simon', 'merge'] },
   { title: '声音玩具', keys: ['xylo', 'cars', 'animals', 'beat'] },

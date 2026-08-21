@@ -338,6 +338,21 @@
         "pages/timer/timer",
         "pages/history/history"
       ]
+    },
+    {
+      "root": "packages/morse",
+      "name": "morse",
+      "pages": [
+        "pages/ref/ref",
+        "pages/tap/tap"
+      ]
+    },
+    {
+      "root": "packages/snake",
+      "name": "snake",
+      "pages": [
+        "pages/snake/snake"
+      ]
     }
   ],
   "window": {

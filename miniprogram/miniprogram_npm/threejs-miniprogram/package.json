@@ -1,0 +1,7 @@
+{
+  "name": "threejs-miniprogram",
+  "version": "0.0.8",
+  "description": "three.js wrapper for WeChat mini-program (prebuilt, manually placed)",
+  "main": "index.js",
+  "miniprogram": "index.js"
+}

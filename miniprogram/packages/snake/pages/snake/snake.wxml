@@ -1,0 +1,163 @@
+<view class="page">
+  <view class="tabs">
+    <view class="tab {{mode === 'library' ? 'active' : ''}}" bindtap="onSwitchMode" data-mode="library">造型库</view>
+    <view class="tab {{mode === 'guide' ? 'active' : ''}}" bindtap="onSwitchMode" data-mode="guide">跟着折</view>
+    <view class="tab {{mode === 'manual' ? 'active' : ''}}" bindtap="onSwitchMode" data-mode="manual">自由折</view>
+  </view>
+
+  <view class="seg-row">
+    <text class="seg-label">段数</text>
+    <view
+      wx:for="{{segOptions}}"
+      wx:key="*this"
+      class="seg-pill {{segCount === item ? 'active' : ''}}"
+      data-c="{{item}}"
+      bindtap="onPickSeg"
+    >{{item}}</view>
+  </view>
+
+  <view class="header">
+    <view class="shape-name">{{shapeName}}</view>
+    <view class="shape-meta">{{metaText}}</view>
+  </view>
+
+  <view class="stage">
+    <snake3d
+      id="snake3d"
+      turns="{{turns}}"
+      pieceCount="{{pieceCount}}"
+      interactive="{{interactive}}"
+      overlap="{{overlap}}"
+      highlight="{{highlight}}"
+      spin="{{spin}}"
+      scale="{{scale}}"
+      focus="{{focus}}"
+      bindpick="onPickPiece"
+    />
+    <view class="stage-tools">
+      <view class="tool-size">
+        <view class="tool-toggle" bindtap="onScaleDec">－</view>
+        <text class="size-label">🔍 {{scalePct}}%</text>
+        <view class="tool-toggle" bindtap="onScaleInc">＋</view>
+      </view>
+      <view wx:if="{{mode === 'library'}}" class="tool-toggle {{spin ? 'on' : ''}}" bindtap="onToggleSpin">⟳ 自转</view>
+    </view>
+    <view wx:if="{{mode === 'manual' && overlapCount > 0}}" class="overlap-banner">⚠ 有 {{overlapCount}} 处穿模</view>
+    <view wx:if="{{mode === 'guide' && !guideDone}}" class="guide-banner">👉 {{guideHint}}</view>
+    <view wx:if="{{mode === 'guide' && guideDone}}" class="guide-banner done">🎉 {{guideHint}}</view>
+  </view>
+
+  <!-- 造型库 -->
+  <block wx:if="{{mode === 'library'}}">
+    <view class="control-bar">
+      <view class="ctrl-btn primary" bindtap="onTogglePlay">{{isPlaying ? '⏸ 暂停' : '▶ 播放'}}</view>
+      <view class="ctrl-btn" bindtap="onEnterGuide">👶 跟着折</view>
+      <view class="ctrl-btn" bindtap="onReset">↺ 直线</view>
+    </view>
+
+    <view class="speed-row">
+      <text class="speed-label">速度</text>
+      <view
+        wx:for="{{speeds}}"
+        wx:key="ms"
+        class="speed-pill {{speedIndex === index ? 'active' : ''}}"
+        data-i="{{index}}"
+        bindtap="onPickSpeed"
+      >{{item.label}}</view>
+    </view>
+
+    <scroll-view class="preset-bar" scroll-x enable-flex>
+      <view
+        wx:for="{{presets}}"
+        wx:key="id"
+        class="preset-chip {{selectedId === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onTapPreset"
+      >
+        <text class="preset-name">{{item.name}}</text>
+        <view class="star {{item.fav ? 'on' : ''}}" catchtap="onToggleFav" data-id="{{item.id}}">{{item.fav ? '★' : '☆'}}</view>
+      </view>
+    </scroll-view>
+
+    <scroll-view wx:if="{{myShapes.length}}" class="preset-bar mine" scroll-x enable-flex>
+      <view class="mine-tag">我的造型</view>
+      <view
+        wx:for="{{myShapes}}"
+        wx:key="id"
+        class="preset-chip mine {{selectedId === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onTapMyShape"
+        bindlongpress="onDeleteMyShape"
+      >
+        <text class="preset-name">{{item.name}}</text>
+        <view class="star del" catchtap="onDeleteMyShape" data-id="{{item.id}}">✕</view>
+      </view>
+    </scroll-view>
+  </block>
+
+  <!-- 跟着折 -->
+  <block wx:if="{{mode === 'guide'}}">
+    <view class="guide-progress">
+      <view class="guide-bar">
+        <view class="guide-fill" style="width:{{guideTotal ? (guideStep / guideTotal * 100) : 0}}%"></view>
+      </view>
+      <text class="guide-count">{{guideStep}}/{{guideTotal}}</text>
+    </view>
+
+    <view class="control-bar guide">
+      <view class="ctrl-btn" bindtap="onGuidePrev">⏮ 上一步</view>
+      <view class="ctrl-btn primary" bindtap="onGuideAuto">👉 帮我折</view>
+      <view class="ctrl-btn" bindtap="onGuideNext">下一步 ⏭</view>
+    </view>
+    <view class="ctrl-btn ghost full" bindtap="onGuideRestart">🔄 重新折一次</view>
+
+    <scroll-view class="preset-bar" scroll-x enable-flex>
+      <view
+        wx:for="{{presets}}"
+        wx:key="id"
+        class="preset-chip {{selectedId === item.id ? 'active' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onTapPreset"
+      >
+        <text class="preset-name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </block>
+
+  <!-- 自由折 -->
+  <block wx:if="{{mode === 'manual'}}">
+    <view class="joint-rail">
+      <view
+        wx:for="{{joints}}"
+        wx:key="index"
+        class="joint-dot state-{{item.state}} {{selectedJoint === item.index ? 'sel' : ''}}"
+        data-j="{{item.index}}"
+        bindtap="onTapJoint"
+      >{{item.index + 1}}</view>
+    </view>
+
+    <view class="stepper" wx:if="{{selectedJoint >= 0}}">
+      <text class="stepper-title">关节 {{selectedJoint + 1}}</text>
+      <view class="stepper-btns">
+        <view class="step-btn" bindtap="onSetJoint" data-v="-1">↺ 左 (-1)</view>
+        <view class="step-btn" bindtap="onSetJoint" data-v="0">归零</view>
+        <view class="step-btn" bindtap="onSetJoint" data-v="1">右 (+1) ↻</view>
+        <view class="step-btn" bindtap="onSetJoint" data-v="2">翻转 (2)</view>
+      </view>
+    </view>
+
+    <view class="control-bar manual">
+      <view class="ctrl-btn" bindtap="onUndo">↶ 撤销</view>
+      <view class="ctrl-btn" bindtap="onReset">↺ 直线</view>
+      <view class="ctrl-btn" bindtap="onRandom">🎲 随机</view>
+      <view class="ctrl-btn primary" bindtap="onSave">💾 保存</view>
+    </view>
+
+    <view class="pose-row" bindtap="onCopyPose">
+      <text class="pose-label">当前姿态</text>
+      <text class="pose-digits">{{poseDigits}}</text>
+    </view>
+
+    <view class="hint">点 3D 中的一段可直接扭转 · 拖动旋转视角</view>
+  </block>
+</view>

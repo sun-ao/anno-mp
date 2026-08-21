@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">摩斯密码 · 常用码</view>
+    <view class="hero-sub">点一下就能听 · 点 = 短音 · 划 = 长音</view>
+  </view>
+
+  <!-- 码表 -->
+  <view class="section" wx:for="{{groups}}" wx:for-item="g" wx:key="name">
+    <view class="section-title">{{g.name}}</view>
+    <view class="code-grid {{g.wide ? 'wide' : ''}}">
+      <view
+        class="code-cell {{activeChar === item.ch ? 'active' : ''}}"
+        wx:for="{{g.items}}"
+        wx:for-item="item"
+        wx:key="ch"
+        data-ch="{{item.ch}}"
+        bindtap="onTapChar"
+      >
+        <view class="code-ch">{{item.ch}}</view>
+        <view class="code-morse">{{item.code}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 转换器 -->
+  <view class="section">
+    <view class="section-title">文本 ⇄ 摩斯</view>
+
+    <view class="conv-card">
+      <view class="conv-label">文本 → 摩斯</view>
+      <textarea class="conv-input" placeholder="输入文字，如 HELLO" value="{{text}}" bindinput="onTextInput" maxlength="200" auto-height />
+      <view class="conv-out">{{morseOut || '（摩斯码会显示在这里）'}}</view>
+      <button class="conv-btn" bindtap="onPlayMorse">▶ 播放摩斯声</button>
+    </view>
+
+    <!-- 解码：改用手指敲击，不再用输入框 -->
+    <view class="conv-card cta" bindtap="onGoTap" hover-class="cta-hover">
+      <view class="cta-icon">👆</view>
+      <view class="cta-main">
+        <view class="cta-title">用手指敲击屏幕来「解码」</view>
+        <view class="cta-sub">短按 = 点 · 长按 = 划 · 自动识别字母和空格，比打字爽多了</view>
+      </view>
+      <view class="cta-arrow">›</view>
+    </view>
+
+    <view class="conv-tip">摩斯写法：点用「.」划用「-」，字母间空格、单词间用「/」。例：SOS = ... --- ...</view>
+  </view>
+</view>

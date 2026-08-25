@@ -18,7 +18,6 @@ const MODULES = {
   peekaboo: { key: 'peekaboo', title: '躲猫猫', desc: '找找藏着的小动物', iconText: '猫', color: '#C9A227', ready: true, url: '/packages/peekaboo/pages/peekaboo/peekaboo' },
   firework: { key: 'firework', title: '点烟花', desc: '点亮夜空放烟花', iconText: '烟', color: '#5C6BC0', ready: true, url: '/packages/firework/pages/firework/firework' },
   balloon: { key: 'balloon', title: '吹气球', desc: '按住吹气别吹爆', iconText: '球', color: '#EC407A', ready: true, url: '/packages/balloon/pages/balloon/balloon' },
-  gopher: { key: 'gopher', title: '打地鼠', desc: '冒头就打它一下', iconText: '鼠', color: '#A0672B', ready: true, url: '/packages/gopher/pages/gopher/gopher' },
   count: { key: 'count', title: '数一数', desc: '点一下数一个数', iconText: '数', color: '#3B6BE0', ready: true, url: '/packages/count/pages/count/count' },
   memory: { key: 'memory', title: '翻翻乐', desc: '翻开卡片找一对', iconText: '翻', color: '#7F77DD', ready: true, url: '/packages/memory/pages/memory/memory' },
   odd: { key: 'odd', title: '找不同', desc: '找出不一样的那个', iconText: '找', color: '#FB8C00', ready: true, url: '/packages/odd/pages/odd/odd' },
@@ -37,7 +36,6 @@ const MODULES = {
   coloring: { key: 'coloring', title: '涂色书', desc: '选颜色涂一涂', iconText: '涂', color: '#EC407A', ready: true, url: '/packages/coloring/pages/coloring/coloring' },
   numberfind: { key: 'numberfind', title: '找数字', desc: '在格子里找数字', iconText: '数', color: '#3F51B5', ready: true, url: '/packages/numberfind/pages/numberfind/numberfind' },
   trash: { key: 'trash', title: '垃圾分类', desc: '把垃圾送回对的桶', iconText: '圾', color: '#00897B', ready: true, url: '/packages/trash/pages/trash/trash' },
-  link: { key: 'link', title: '消消乐', desc: '找出相同消掉它', iconText: '消', color: '#8E24AA', ready: true, url: '/packages/link/pages/link/link' },
   hoop: { key: 'hoop', title: '投篮', desc: '看准时机投进筐', iconText: '篮', color: '#F4511E', ready: true, url: '/packages/hoop/pages/hoop/hoop' },
   simon: { key: 'simon', title: '记顺序', desc: '跟着亮灯点一遍', iconText: '顺', color: '#6D4C41', ready: true, url: '/packages/simon/pages/simon/simon' },
   sliding: { key: 'sliding', title: '数字滑块', desc: '把数字排回顺序', iconText: '滑', color: '#2E5BBF', ready: true, url: '/packages/sliding/pages/sliding/sliding' },
@@ -54,7 +52,7 @@ const MODULES = {
 const SECTIONS = [
   { title: '实用工具', keys: ['cube', 'ledger', 'countdown', 'checkin', 'idphoto', 'mbti', 'lots', 'tomato', 'snap', 'stopwatch', 'morse', 'snake'] },
   { title: '启蒙益智', keys: ['count', 'nummatch', 'size', 'sort', 'shape', 'shadow', 'odd', 'pattern', 'listen', 'memory', 'puzzle', 'maze', 'numberfind', 'colormatch', 'coloring', 'trash', 'peekaboo', 'sliding'] },
-  { title: '互动游戏', keys: ['rps', 'gopher', 'rocket', 'cook', 'link', 'hoop', 'simon', 'merge'] },
+  { title: '互动游戏', keys: ['rps', 'rocket', 'cook', 'hoop', 'simon', 'merge'] },
   { title: '声音玩具', keys: ['xylo', 'cars', 'animals', 'beat'] },
   { title: '解压放松', keys: ['muyu', 'bubble', 'popwrap', 'firework', 'balloon', 'scratch'] }
 ]

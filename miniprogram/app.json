@@ -135,13 +135,6 @@
       ]
     },
     {
-      "root": "packages/gopher",
-      "name": "gopher",
-      "pages": [
-        "pages/gopher/gopher"
-      ]
-    },
-    {
       "root": "packages/count",
       "name": "count",
       "pages": [
@@ -272,13 +265,6 @@
       "name": "trash",
       "pages": [
         "pages/trash/trash"
-      ]
-    },
-    {
-      "root": "packages/link",
-      "name": "link",
-      "pages": [
-        "pages/link/link"
       ]
     },
     {

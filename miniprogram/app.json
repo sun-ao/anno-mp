@@ -56,13 +56,6 @@
       ]
     },
     {
-      "root": "packages/rps",
-      "name": "rps",
-      "pages": [
-        "pages/rps/rps"
-      ]
-    },
-    {
       "root": "packages/mbti",
       "name": "mbti",
       "pages": [
@@ -85,21 +78,6 @@
       ]
     },
     {
-      "root": "packages/xylo",
-      "name": "xylo",
-      "pages": [
-        "pages/xylo/xylo"
-      ]
-    },
-    {
-
-      "root": "packages/cars",
-      "name": "cars",
-      "pages": [
-        "pages/cars/cars"
-      ]
-    },
-    {
       "root": "packages/bubble",
       "name": "bubble",
       "pages": [
@@ -114,199 +92,10 @@
       ]
     },
     {
-      "root": "packages/peekaboo",
-      "name": "peekaboo",
-      "pages": [
-        "pages/peekaboo/peekaboo"
-      ]
-    },
-    {
       "root": "packages/firework",
       "name": "firework",
       "pages": [
         "pages/firework/firework"
-      ]
-    },
-    {
-      "root": "packages/balloon",
-      "name": "balloon",
-      "pages": [
-        "pages/balloon/balloon"
-      ]
-    },
-    {
-      "root": "packages/count",
-      "name": "count",
-      "pages": [
-        "pages/count/count"
-      ]
-    },
-    {
-      "root": "packages/memory",
-      "name": "memory",
-      "pages": [
-        "pages/memory/memory"
-      ]
-    },
-    {
-      "root": "packages/odd",
-      "name": "odd",
-      "pages": [
-        "pages/odd/odd"
-      ]
-    },
-    {
-      "root": "packages/sort",
-      "name": "sort",
-      "pages": [
-        "pages/sort/sort"
-      ]
-    },
-    {
-      "root": "packages/shape",
-      "name": "shape",
-      "pages": [
-        "pages/shape/shape"
-      ]
-    },
-    {
-      "root": "packages/shadow",
-      "name": "shadow",
-      "pages": [
-        "pages/shadow/shadow"
-      ]
-    },
-    {
-      "root": "packages/pattern",
-      "name": "pattern",
-      "pages": [
-        "pages/pattern/pattern"
-      ]
-    },
-    {
-      "root": "packages/nummatch",
-      "name": "nummatch",
-      "pages": [
-        "pages/nummatch/nummatch"
-      ]
-    },
-    {
-      "root": "packages/listen",
-      "name": "listen",
-      "pages": [
-        "pages/listen/listen"
-      ]
-    },
-    {
-      "root": "packages/puzzle",
-      "name": "puzzle",
-      "pages": [
-        "pages/puzzle/puzzle"
-      ]
-    },
-    {
-      "root": "packages/size",
-      "name": "size",
-      "pages": [
-        "pages/size/size"
-      ]
-    },
-    {
-      "root": "packages/maze",
-      "name": "maze",
-      "pages": [
-        "pages/maze/maze"
-      ]
-    },
-    {
-      "root": "packages/rocket",
-      "name": "rocket",
-      "pages": [
-        "pages/rocket/rocket"
-      ]
-    },
-    {
-      "root": "packages/cook",
-      "name": "cook",
-      "pages": [
-        "pages/cook/cook"
-      ]
-    },
-    {
-      "root": "packages/colormatch",
-      "name": "colormatch",
-      "pages": [
-        "pages/colormatch/colormatch"
-      ]
-    },
-    {
-      "root": "packages/animals",
-      "name": "animals",
-      "pages": [
-        "pages/animals/animals"
-      ]
-    },
-    {
-      "root": "packages/coloring",
-      "name": "coloring",
-      "pages": [
-        "pages/coloring/coloring"
-      ]
-    },
-    {
-      "root": "packages/numberfind",
-      "name": "numberfind",
-      "pages": [
-        "pages/numberfind/numberfind"
-      ]
-    },
-    {
-      "root": "packages/trash",
-      "name": "trash",
-      "pages": [
-        "pages/trash/trash"
-      ]
-    },
-    {
-      "root": "packages/hoop",
-      "name": "hoop",
-      "pages": [
-        "pages/hoop/hoop"
-      ]
-    },
-    {
-      "root": "packages/simon",
-      "name": "simon",
-      "pages": [
-        "pages/simon/simon"
-      ]
-    },
-    {
-      "root": "packages/sliding",
-      "name": "sliding",
-      "pages": [
-        "pages/sliding/sliding"
-      ]
-    },
-    {
-      "root": "packages/beat",
-      "name": "beat",
-      "pages": [
-        "pages/beat/beat"
-      ]
-    },
-    {
-      "root": "packages/merge",
-      "name": "merge",
-      "pages": [
-        "pages/merge/merge"
-      ]
-    },
-    {
-      "root": "packages/scratch",
-      "name": "scratch",
-      "pages": [
-        "pages/scratch/scratch"
       ]
     },
     {

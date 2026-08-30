@@ -2,7 +2,7 @@ import { upload, post } from '../../utils/request'
 import { ENDPOINTS } from '../../config/index'
 import {
   FACE_DEFS, CENTER_INDEX, SOLVE_PAYLOAD_KEY,
-  createEmptyState, cloneState, validateState, stateToKociemba, stateToColorNames
+  createEmptyState, cloneState, validateState, stateToKociemba
 } from '../../model/cube-state'
 
 /** 后端返回的颜色名 → 前端颜色索引 */
@@ -250,18 +250,20 @@ Page({
     this.setData({ solving: true })
     wx.showLoading({ title: '求解中…', mask: true })
 
-    const faces = stateToColorNames(state)
-    post(ENDPOINTS.CUBE_SOLVE_BY_COLORS, { faces }).then(res => {
+    // 线上 api.sunao.cc 尚未部署 /solve_by_colors 聚合接口（实测返回 404），
+    // 改用已上线的 /solve_cube（与 fill 流程一致）：前端拼好 URFDLB 54 串直接求解。
+    const cubeState = stateToKociemba(state)
+    post(ENDPOINTS.CUBE_SOLVE, { cube_state: cubeState }).then(res => {
       wx.hideLoading()
-      if (res.code === 1 && res.result) {
+      if (res && typeof res.solution === 'string') {
         wx.setStorageSync(SOLVE_PAYLOAD_KEY, {
-          solution: res.result,
+          solution: res.solution,
           state,
-          kociemba: res.state || stateToKociemba(state)
+          kociemba: cubeState
         })
         wx.navigateTo({ url: '/packages/cube/pages/solve-choice/solve-choice' })
       } else {
-        wx.showToast({ title: res.message || '求解失败', icon: 'none' })
+        wx.showToast({ title: '求解失败，请重试', icon: 'none' })
       }
     }).catch(err => {
       wx.hideLoading()

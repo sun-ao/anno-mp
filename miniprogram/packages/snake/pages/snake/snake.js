@@ -7,6 +7,10 @@ const SPEEDS = [
   { label: '2×', ms: 320 }
 ]
 
+// 跟着折：折点两侧两块的对比高亮色（须与 snake3d.js 的 COLOR_GUIDE_A / COLOR_GUIDE_B 一致）
+const GUIDE_HL_A = '#AB47BC' // 紫：铰链前一块
+const GUIDE_HL_B = '#9CCC65' // 黄绿：铰链后一块
+
 Page({
   data: {
     mode: 'library', // 'library' | 'guide' | 'manual'
@@ -35,6 +39,11 @@ Page({
     guideTotal: 0,
     guideDone: false,
     guideHint: '',
+    guideArrow: '↻',
+    guideColor: '#43A047',
+    guideWord: '往右边翻一下',
+    guideZoomTip: false, // 跟着折首屏提示「双指可放大看细节」
+    nudge: 0,
     // 展示 / 播放
     spin: false,
     speeds: SPEEDS,
@@ -44,7 +53,9 @@ Page({
     scale: 0.9,
     scalePct: 90,
     // 折叠聚焦：把正在折的那一节放到画面正中（-1 = 整条质心居中）
-    focus: -1
+    focus: -1,
+    // 每块序号标注（跟着折自动开，其他模式可手动开关）
+    showNumbers: false
   },
 
   onLoad() {
@@ -325,6 +336,11 @@ Page({
     this.setData({ spin: !this.data.spin })
   },
 
+  // 切换每块数字序号标注（任意模式可手动开关；跟着折进入时自动开）
+  onToggleNumbers() {
+    this.setData({ showNumbers: !this.data.showNumbers })
+  },
+
   // ---------- 跟着折（引导学习）----------
   onEnterGuide() {
     const item = this.currentShape()
@@ -350,6 +366,7 @@ Page({
     }
     const start = this.zeros(item.pieceCount)
     this._turns = start.slice()
+    if (this._zoomTipTimer) clearTimeout(this._zoomTipTimer)
     this.setData({
       mode: 'guide',
       interactive: true,
@@ -364,37 +381,64 @@ Page({
       overlapCount: 0,
       highlight: [],
       focus: -1,
-      guideHint: '把发光的那块折一下，开始吧！',
+      guideHint: '把发光的两个小方块中间折一下，开始吧！',
+      guideZoomTip: true,
+      showNumbers: true, // 跟着折：每块标序号，便于一眼认出「第几块」
       metaText: `跟着折：${item.name}`
-    }, () => this.updateGuideTarget())
+    }, () => {
+      this.updateGuideTarget()
+      // 3 秒后自动收起「双指放大」提示
+      this._zoomTipTimer = setTimeout(() => this.setData({ guideZoomTip: false }), 3200)
+    })
   },
 
   updateGuideTarget() {
     if (this.data.guideStep >= this.data.guideTotal) {
-      this.setData({ guideDone: true, highlight: [], focus: -1, guideHint: '折好啦！你真棒 🎉' })
+      const cheers = ['折好啦！你真棒 🎉', '学会啦！👏 太厉害', '折得真好看 ✨ 你做到了', '满分！🌟 小高手']
+      this.setData({
+        guideDone: true,
+        highlight: [],
+        focus: -1,
+        guideHint: cheers[Math.floor(Math.random() * cheers.length)]
+      })
       wx.showToast({ title: '完成！', icon: 'success' })
       return
     }
     const step = this._guideSteps[this.data.guideStep]
     const joint = step.joint // 0 基
     const piece = joint + 1
-    const dir = step.turn === 1 ? '向右转 ↻' : step.turn === -1 ? '向左转 ↺' : '翻个身 ⟳'
+    const dirMap = {
+      right: { arrow: '↻', color: '#43A047', word: '往右边翻一下' },
+      left: { arrow: '↺', color: '#1E88E5', word: '往左边翻一下' },
+      flip: { arrow: '⟳', color: '#FB8C00', word: '翻个身' }
+    }
+    const d = step.turn === 1 ? dirMap.right : step.turn === -1 ? dirMap.left : dirMap.flip
     this.setData({
       guideDone: false,
-      highlight: [piece],
+      // 高亮铰链两侧两块（joint 与 joint+1），用对比色区分：紫(前一块) + 黄绿(后一块)
+      // —— 铰链是旋转轴、本身几乎不动，单高亮近端块会显得「钉在原地、动的是别处」
+      highlight: [
+        { p: joint, c: GUIDE_HL_A },
+        { p: joint + 1, c: GUIDE_HL_B }
+      ],
       selectedJoint: joint,
-      focus: piece, // 把正在折的那一块放到画面正中
+      focus: piece, // 把铰链后一块放到画面正中，让折叠缝隙居中可见
       joints: this.buildJoints(this._turns, joint),
-      guideHint: `第 ${this.data.guideStep + 1}/${this.data.guideTotal} 步：把发光的那块 ${dir}！`
+      guideArrow: d.arrow,
+      guideColor: d.color,
+      guideWord: d.word,
+      guideHint: `第 ${this.data.guideStep + 1}/${this.data.guideTotal} 步：把第 ${joint + 1}、${joint + 2} 块（发光的）中间 ${d.word}！`
     })
   },
 
-  // 跟着折：折对当前这一步（点中发光块即自动折到位并进入下一步）
-  guideTapJoint(joint) {
+  // 跟着折：折对当前这一步（点中发光的两块之一即自动折到位并进入下一步）
+  guideTapJoint(piece) {
     if (this.data.guideDone) return
     const step = this._guideSteps[this.data.guideStep]
-    if (joint !== step.joint) {
-      wx.showToast({ title: '先折发光的那块哦', icon: 'none' })
+    // 高亮的是铰链两侧两块（joint 与 joint+1），点任一块都算折对这一铰链
+    if (piece !== step.joint && piece !== step.joint + 1) {
+      wx.showToast({ title: '不是这里～是那两块会发光的小方块中间', icon: 'none' })
+      this.setData({ nudge: Date.now() }) // 让 3D 里的发光块抖一下，提醒位置
       return
     }
     const next = this._guideFull[this.data.guideStep + 1]
@@ -459,7 +503,7 @@ Page({
     const joint = piece - 1
     if (joint < 0) return
     if (this.data.mode === 'guide') {
-      this.guideTapJoint(joint)
+      this.guideTapJoint(piece)
       return
     }
     if (this.data.mode === 'manual') {

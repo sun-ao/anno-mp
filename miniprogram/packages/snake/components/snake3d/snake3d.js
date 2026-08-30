@@ -12,8 +12,44 @@ const COLOR_A = '#2f6fb0'
 const COLOR_B = '#f3efe6'
 // 穿模高亮红
 const COLOR_OVERLAP = '#e23b3b'
-// 引导高亮金（跟着折时提示该折哪一块）
+// 引导高亮（跟着折：提示「在哪两个块之间折」）。两块用对比色，方便孩子一眼区分：
+// 紫 = 铰链前一块，黄绿 = 铰链后一块。与方向圆（右绿/左蓝/翻橙）含义不同，勿混。
+const COLOR_GUIDE_A = '#AB47BC'
+const COLOR_GUIDE_B = '#9CCC65'
+// 旧金色，仅作无颜色入参时的兜底
 const COLOR_HIGHLIGHT = '#f4b400'
+
+// 数字编号用的 3x5 LED 点阵字模（行0=顶部），用于给每块标序号
+const GLYPHS = {
+  '0': ['111', '101', '101', '101', '111'],
+  '1': ['010', '110', '010', '010', '111'],
+  '2': ['111', '001', '111', '100', '111'],
+  '3': ['111', '001', '111', '001', '111'],
+  '4': ['101', '101', '111', '001', '001'],
+  '5': ['111', '100', '111', '001', '111'],
+  '6': ['111', '100', '111', '101', '111'],
+  '7': ['111', '001', '010', '010', '010'],
+  '8': ['111', '101', '111', '101', '111'],
+  '9': ['111', '101', '111', '001', '111'],
+  '?': ['111', '101', '101', '101', '111']
+}
+
+function hexToRgb(h) {
+  const n = parseInt(h.slice(1), 16)
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+}
+function lerpColor(a, b, t) {
+  const ca = hexToRgb(a)
+  const cb = hexToRgb(b)
+  const r = Math.round(ca[0] + (cb[0] - ca[0]) * t)
+  const g = Math.round(ca[1] + (cb[1] - ca[1]) * t)
+  const bl = Math.round(ca[2] + (cb[2] - ca[2]) * t)
+  return '#' + ((1 << 24) + (r << 16) + (g << 8) + bl).toString(16).slice(1)
+}
+// 基于基色做明暗脉冲：amt 在 [0,1] 提亮（向白），在 [0,-1] 压暗（向黑）
+function shade(hex, amt) {
+  return amt >= 0 ? lerpColor(hex, '#ffffff', amt * 0.55) : lerpColor(hex, '#000000', -amt * 0.45)
+}
 
 Component({
   properties: {
@@ -92,6 +128,24 @@ Component({
         this._focus = (v != null && v >= 0) ? v : -1
         this.applyTurns(this._currentTurns) // 立即重居中
       }
+    },
+    /** 引导点错时递增此值，让高亮块做一次明显脉冲，提醒小朋友看发光的那块 */
+    nudge: {
+      type: Number,
+      value: 0,
+      observer() {
+        if (!this._inited) return
+        this._nudgeT = (Date.now() || 0) + 650
+      }
+    },
+    /** 是否给每块标数字序号（跟着折时自动开，便于辨别该折哪一块） */
+    showNumbers: {
+      type: Boolean,
+      value: false,
+      observer(v) {
+        if (!this._inited) return
+        this._applyNumberVisible(!!v)
+      }
     }
   },
 
@@ -123,7 +177,14 @@ Component({
       this._raycaster = new THREE.Raycaster()
 
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
-      renderer.setSize(canvas.width, canvas.height)
+      // 高清屏按 pixelRatio 放大渲染缓冲，消除块体边缘的毛刺/锯齿（之前没设 pixelRatio，dpr>1 时缓冲只有逻辑像素高）
+      let dpr = 2
+      try {
+        if (typeof wx !== 'undefined' && wx.getWindowInfo) dpr = wx.getWindowInfo().pixelRatio || 2
+        else if (typeof wx !== 'undefined' && wx.getSystemInfoSync) dpr = wx.getSystemInfoSync().pixelRatio || 2
+      } catch (e) { /* 保持默认 2 */ }
+      renderer.setPixelRatio(Math.min(dpr, 3))
+      renderer.setSize(canvas.width, canvas.height, false)
       this._renderer = renderer
 
       const scene = new THREE.Scene()
@@ -155,11 +216,20 @@ Component({
 
       this._orbit = { radius: 24, theta: -Math.PI / 4, phi: 1.12 }
       this._targetRadius = 24
+      // 用户双指捏合缩放：叠加在相机距离上（0.5 远 ~ 3.5 近），聚焦/折叠重算半径时保留
+      this._userZoom = 1
+      this._pinch = null
+      this._pinchedOnce = false
       this._focus = (this.data.focus != null && this.data.focus >= 0) ? this.data.focus : -1
       this.applyCamera()
 
       // 几何体只需两份（上下两种三角柱），所有节共用
       this._geometries = [this.createPrismGeometry(false), this.createPrismGeometry(true)]
+      // 每块几何中心（本地坐标）：三角柱质心不在组原点，把数字精灵贴到这才能「印在块上」
+      this._geoCenters = this._geometries.map((g) => {
+        const bb = g.boundingBox
+        return { x: (bb.min.x + bb.max.x) / 2, y: (bb.min.y + bb.max.y) / 2, z: (bb.min.z + bb.max.z) / 2 }
+      })
 
       this._groups = []
       this._materials = []
@@ -245,6 +315,16 @@ Component({
       if (this._groups && this._groups.length) {
         this._groups.forEach((g) => { if (g) this._pivot.remove(g) })
       }
+      if (this._numberSprites && this._numberSprites.length) {
+        this._numberSprites.forEach((s) => {
+          if (s.geometry && s.geometry.dispose) s.geometry.dispose()
+          if (s.material) {
+            if (s.material.map && s.material.map.dispose) s.material.map.dispose()
+            if (s.material.dispose) s.material.dispose()
+          }
+        })
+        this._numberSprites = []
+      }
       this._groups = []
       this._materials = []
       this._baseColors = []
@@ -259,6 +339,26 @@ Component({
         mesh.userData.pieceIndex = i // 供射线拾取定位段
         const group = new THREE.Group()
         group.add(mesh)
+        // 数字编号：直接印在每块「两个三角端面」上（沿块延伸方向的两端三角形面），
+        // 随块旋转、正常参与深度遮挡；折叠时被挡即「被覆盖」，不再用始终悬浮的 Sprite
+        const tex = this._digitTexture(i + 1)
+        const numGeo = new THREE.PlaneGeometry(PIECE_SIZE * 0.42, PIECE_SIZE * 0.42)
+        const numMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthTest: true, depthWrite: false })
+        const bb = geo.boundingBox
+        const ctr = (this._geoCenters && this._geoCenters[i % 2]) || { x: 0, y: 0, z: 0 }
+        // 一端：+Z 三角端面（法线默认 +Z）
+        const mFront = new THREE.Mesh(numGeo, numMat)
+        mFront.position.set(ctr.x, ctr.y, bb.max.z + 0.02)
+        mFront.visible = !!(this.data.showNumbers)
+        group.add(mFront)
+        // 另一端：-Z 三角端面（翻转法线使文字正立可读）
+        const mBack = new THREE.Mesh(numGeo, numMat)
+        mBack.position.set(ctr.x, ctr.y, bb.min.z - 0.02)
+        mBack.rotation.y = Math.PI
+        mBack.visible = !!(this.data.showNumbers)
+        group.add(mBack)
+        if (!this._numberSprites) this._numberSprites = []
+        this._numberSprites.push(mFront, mBack)
         this._pivot.add(group)
         this._groups.push(group)
         this._materials.push(mat)
@@ -267,6 +367,49 @@ Component({
       }
       this.applyOverlap(this.data.overlap)
       this.applyHighlight(this.data.highlight)
+    },
+
+    /** 用 3x5 点阵生成数字 DataTexture（深蓝灰字，透明底；支持多位数，DataTexture 行0=底部，故上下翻转使字正立） */
+    _digitTexture(digit) {
+      const THREE = this._THREE
+      if (!this._digitCache) this._digitCache = {}
+      if (this._digitCache[digit]) return this._digitCache[digit]
+      const S = 64
+      const data = new Uint8Array(S * S * 4)
+      const chars = String(digit).split('')
+      const cw = 3, ch = 5, sc = 8, gap = 4
+      const glyphW = cw * sc
+      const totalW = chars.length * glyphW + (chars.length - 1) * gap
+      const ox0 = Math.floor((S - totalW) / 2)
+      const oy = Math.floor((S - ch * sc) / 2)
+      for (let ci = 0; ci < chars.length; ci++) {
+        const glyph = GLYPHS[chars[ci]] || GLYPHS['?']
+        const ox = ox0 + ci * (glyphW + gap)
+        for (let r = 0; r < ch; r++) {
+          for (let c = 0; c < cw; c++) {
+            if (glyph[r][c] !== '1') continue
+            for (let dy = 0; dy < sc; dy++) {
+              for (let dx = 0; dx < sc; dx++) {
+                const x = ox + c * sc + dx
+                const y = oy + r * sc + dy
+                const ty = (S - 1) - y
+                const idx = (ty * S + x) * 4
+                data[idx] = 18; data[idx + 1] = 22; data[idx + 2] = 34; data[idx + 3] = 255
+              }
+            }
+          }
+        }
+      }
+      const tex = new THREE.DataTexture(data, S, S, THREE.RGBAFormat, THREE.UnsignedByteType)
+      tex.needsUpdate = true
+      if (THREE.NearestFilter) { tex.magFilter = THREE.NearestFilter; tex.minFilter = THREE.NearestFilter }
+      this._digitCache[digit] = tex
+      return tex
+    },
+
+    _applyNumberVisible(v) {
+      if (!this._numberSprites) return
+      this._numberSprites.forEach((s) => { s.visible = !!v })
     },
 
     computeTransforms(turns) {
@@ -337,7 +480,7 @@ Component({
         const base = this._baseColors[i] || '#ffffff'
         let c = base
         if (ov[i]) c = COLOR_OVERLAP
-        else if (hl[i]) c = COLOR_HIGHLIGHT
+        else if (hl[i]) c = hl[i]
         this._materials[i].color.set(c)
       }
     },
@@ -350,7 +493,14 @@ Component({
 
     applyHighlight(list) {
       this._highlightSet = {}
-      ;(list || []).forEach((i) => { this._highlightSet[i] = true })
+      ;(list || []).forEach((item) => {
+        let p = item, c = COLOR_HIGHLIGHT
+        if (item && typeof item === 'object' && 'p' in item) {
+          p = item.p
+          c = item.c || COLOR_HIGHLIGHT
+        }
+        if (typeof p === 'number') this._highlightSet[p] = c
+      })
       this.refreshColors()
     },
 
@@ -398,6 +548,36 @@ Component({
         }
         this.applyTurns(cur)
       }
+
+      // 高亮呼吸：金色块亮度起伏 + 轻微放大，让小朋友一眼锁定发光的那块；
+      // nudge 触发时（点错）额外来一次明显脉冲。
+      const hlSet = this._highlightSet || {}
+      const curHl = Object.keys(hlSet).map(Number)
+      const lastHl = this._lastHl || []
+      for (let n = 0; n < lastHl.length; n++) {
+        if (!hlSet[lastHl[n]] && this._groups[lastHl[n]]) this._groups[lastHl[n]].scale.set(1, 1, 1)
+      }
+      if (curHl.length && this._materials) {
+        const pulse = 0.5 + 0.5 * Math.sin((Date.now() || 0) / 240)
+        let extra = 0
+        if (this._nudgeT && this._nudgeT > (Date.now() || 0)) {
+          const k = (this._nudgeT - (Date.now() || 0)) / 650
+          extra = 0.35 * Math.sin(k * Math.PI)
+        }
+        const s = 1 + 0.12 * pulse + extra
+        for (let n = 0; n < curHl.length; n++) {
+          const i = curHl[n]
+          const m = this._materials[i]
+          if (m) {
+            const base = hlSet[i] || COLOR_HIGHLIGHT
+            m.color.set(lerpColor(shade(base, -0.12), shade(base, 0.5), pulse))
+          }
+          const g = this._groups[i]
+          if (g) g.scale.set(s, s, s)
+        }
+      }
+      this._lastHl = curHl
+
       this._renderer.render(this._scene, this._camera)
     },
 
@@ -433,25 +613,63 @@ Component({
     },
 
     applyCamera() {
-      const { radius, theta, phi } = this._orbit
+      // 实际相机距离 = 平滑半径 / 用户缩放（捏合放大 => _userZoom 大 => 更近更大）
+      const r = (this._orbit.radius || 24) / (this._userZoom || 1)
+      const { theta, phi } = this._orbit
       const camera = this._camera
       camera.position.set(
-        radius * Math.sin(phi) * Math.sin(theta),
-        radius * Math.cos(phi),
-        radius * Math.sin(phi) * Math.cos(theta)
+        r * Math.sin(phi) * Math.sin(theta),
+        r * Math.cos(phi),
+        r * Math.sin(phi) * Math.cos(theta)
       )
       camera.lookAt(0, 0, 0)
     },
 
     onTouchStart(e) {
-      const t = e.touches[0]
+      const ts = e.touches
+      // 双指落下的瞬间 → 进入捏合缩放，取消单指旋转
+      if (ts.length >= 2) {
+        const a = ts[0], b = ts[1]
+        const dx = a.x - b.x, dy = a.y - b.y
+        this._pinch = {
+          startDist: Math.hypot(dx, dy) || 1,
+          startZoom: this._userZoom || 1
+        }
+        this._pinchedOnce = true
+        this._touch = null
+        return
+      }
+      const t = ts[0]
       this._lastTouch = { x: t.x, y: t.y }
       this._touch = { x: t.x, y: t.y, startX: t.x, startY: t.y, moved: false }
     },
 
     onTouchMove(e) {
+      const ts = e.touches
+      // 双指 → 捏合缩放（不旋转）。部分机型多指 touchstart 上报不稳定，
+      // 这里在 move 里兜底初始化 pinch，确保双指一定能触发缩放
+      if (ts.length >= 2) {
+        if (!this._pinch) {
+          const a0 = ts[0], b0 = ts[1]
+          this._pinch = {
+            startDist: Math.hypot(a0.x - b0.x, a0.y - b0.y) || 1,
+            startZoom: this._userZoom || 1
+          }
+          this._pinchedOnce = true
+          this._touch = null
+        }
+        const a = ts[0], b = ts[1]
+        const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1
+        let z = this._pinch.startZoom * (dist / this._pinch.startDist)
+        if (z < 0.5) z = 0.5
+        else if (z > 3.5) z = 3.5
+        this._userZoom = z
+        this.applyCamera()
+        return
+      }
+      // 单指 → 旋转视角（老逻辑）
       if (!this._touch) return
-      const t = e.touches[0]
+      const t = ts[0]
       const dx = t.x - this._touch.x
       const dy = t.y - this._touch.y
       this._touch.x = t.x
@@ -466,13 +684,26 @@ Component({
       this.applyCamera()
     },
 
-    onTouchEnd() {
-      // 轻点（未拖动）且在可交互模式下 → 射线拾取段，触发 pick
-      if (this._touch && !this._touch.moved && this.data.interactive && this._lastTouch) {
-        const piece = this.pickPiece(this._lastTouch.x, this._lastTouch.y)
-        if (piece >= 0) this.triggerEvent('pick', { piece })
+    onTouchEnd(e) {
+      const remaining = e.touches.length
+      // 抬到不足两指 → 退出捏合
+      if (remaining < 2) {
+        this._pinch = null
       }
-      this._touch = null
+      if (remaining === 0) {
+        // 全部抬起：仅当本轮没捏合过、且是单指轻点(未拖动)才拾取
+        if (!this._pinchedOnce && this._touch && !this._touch.moved && this.data.interactive && this._lastTouch) {
+          const piece = this.pickPiece(this._lastTouch.x, this._lastTouch.y)
+          if (piece >= 0) this.triggerEvent('pick', { piece })
+        }
+        this._touch = null
+        this._pinchedOnce = false
+      } else if (remaining === 1) {
+        // 从双指变单指：重置单指基准，避免误判为轻点或旋转跳变
+        const p = e.touches[0]
+        this._touch = { x: p.x, y: p.y, startX: p.x, startY: p.y, moved: true }
+        this._lastTouch = { x: p.x, y: p.y }
+      }
     }
   }
 })

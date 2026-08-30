@@ -32,19 +32,35 @@
       spin="{{spin}}"
       scale="{{scale}}"
       focus="{{focus}}"
+      nudge="{{nudge}}"
+      showNumbers="{{showNumbers}}"
       bindpick="onPickPiece"
     />
+    <view wx:if="{{mode === 'guide' && guideZoomTip}}" class="zoom-tip">🤏 看不清？双指捏合放大，看清折叠细节</view>
     <view class="stage-tools">
       <view class="tool-size">
         <view class="tool-toggle" bindtap="onScaleDec">－</view>
         <text class="size-label">🔍 {{scalePct}}%</text>
         <view class="tool-toggle" bindtap="onScaleInc">＋</view>
       </view>
+      <view class="tool-toggle {{showNumbers ? 'on' : ''}}" bindtap="onToggleNumbers">🔢 编号</view>
       <view wx:if="{{mode === 'library'}}" class="tool-toggle {{spin ? 'on' : ''}}" bindtap="onToggleSpin">⟳ 自转</view>
     </view>
     <view wx:if="{{mode === 'manual' && overlapCount > 0}}" class="overlap-banner">⚠ 有 {{overlapCount}} 处穿模</view>
-    <view wx:if="{{mode === 'guide' && !guideDone}}" class="guide-banner">👉 {{guideHint}}</view>
-    <view wx:if="{{mode === 'guide' && guideDone}}" class="guide-banner done">🎉 {{guideHint}}</view>
+    <view wx:if="{{mode === 'guide' && !guideDone}}" class="guide-banner">
+      <view class="dir-orb" style="background:{{guideColor}}">{{guideArrow}}</view>
+      <view class="guide-text">
+        <text class="guide-step">第 {{guideStep + 1}}/{{guideTotal}} 步</text>
+        <text class="guide-word">把发光的小方块{{guideWord}}！</text>
+      </view>
+    </view>
+    <view wx:if="{{mode === 'guide' && guideDone}}" class="guide-done">
+      <text class="done-emoji">🎉</text>
+      <text class="done-text">{{guideHint}}</text>
+    </view>
+    <view wx:if="{{mode === 'guide' && guideDone}}" class="confetti">
+      <text class="cf cf1">🎊</text><text class="cf cf2">⭐</text><text class="cf cf3">🌟</text><text class="cf cf4">🎉</text><text class="cf cf5">✨</text>
+    </view>
   </view>
 
   <!-- 造型库 -->
@@ -98,6 +114,7 @@
   <!-- 跟着折 -->
   <block wx:if="{{mode === 'guide'}}">
     <view class="guide-progress">
+      <text class="prog-emoji">🌟</text>
       <view class="guide-bar">
         <view class="guide-fill" style="width:{{guideTotal ? (guideStep / guideTotal * 100) : 0}}%"></view>
       </view>

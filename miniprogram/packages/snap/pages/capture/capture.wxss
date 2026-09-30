@@ -141,6 +141,9 @@
   display: flex;
   gap: 20rpx;
   padding: 24rpx;
+  /* 全面屏底部安全区：操作栏不贴 Home 横条 */
+  padding-bottom: calc(24rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   background: #0c0c0e;
 }
 

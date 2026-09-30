@@ -371,6 +371,8 @@ function playBleat() {
 }
 
 module.exports = {
+  // 原语：其他分包的音效封装（muyu 木鱼 / tomato 番茄钟）也复用，不再各自维护一套 ctx 管理
+  ensureCtx, resume, tone, noiseBurst,
   playNote, playPop, playBoop, playRoar, playHorn, playEngine,
   playSiren, playBang, playWhoosh, playTada, playInflate, playDeflate,
   playCorrect, playWrong,

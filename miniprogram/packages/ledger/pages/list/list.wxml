@@ -2,17 +2,17 @@
   <view class="header">
     <view class="month-bar">
       <view class="left-entries">
-        <view class="wallet-entry" bindtap="onGoWallet">
+        <view class="wallet-entry" bindtap="onGoWallet" hover-class="hv">
           <text class="wallet-entry-text">钱包</text>
         </view>
-        <view class="wallet-entry" bindtap="onGoStat">
+        <view class="wallet-entry" bindtap="onGoStat" hover-class="hv">
           <text class="wallet-entry-text">统计</text>
         </view>
       </view>
       <view class="month-nav">
-        <view class="month-arrow" bindtap="onPrevMonth"><text class="arrow-text">‹</text></view>
+        <view class="month-arrow" bindtap="onPrevMonth" hover-class="hv"><text class="arrow-text">‹</text></view>
         <text class="month-text">{{monthLabel}}</text>
-        <view class="month-arrow" bindtap="onNextMonth"><text class="arrow-text">›</text></view>
+        <view class="month-arrow" bindtap="onNextMonth" hover-class="hv"><text class="arrow-text">›</text></view>
       </view>
     </view>
     <view class="summary">
@@ -46,8 +46,7 @@
         class="bill-item"
         bindtap="onTapBill"
         bindlongpress="onLongPressBill"
-        data-id="{{bill.id}}"
-      >
+        data-id="{{bill.id}}" hover-class="hv">
         <view class="bill-icon" style="background: {{bill.categoryColor}};">
           <text class="bill-icon-text">{{bill.categoryIcon}}</text>
         </view>
@@ -68,7 +67,7 @@
     </view>
   </scroll-view>
 
-  <view class="fab" bindtap="onAdd">
+  <view class="fab" bindtap="onAdd" hover-class="hv">
     <text class="fab-text">记一笔</text>
   </view>
 </view>

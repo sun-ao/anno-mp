@@ -1,6 +1,6 @@
 {
   "compileType": "miniprogram",
-  "libVersion": "latest",
+  "libVersion": "3.16.2",
   "appid": "wxad740a89abf91b5c",
   "projectname": "mp-hugtechai",
   "miniprogramRoot": "miniprogram/",
@@ -10,7 +10,7 @@
     "postcss": true,
     "minified": true,
     "urlCheck": false,
-    "ignoreUploadUnusedFiles": false,
+    "ignoreUploadUnusedFiles": true,
     "packNpmManually": true,
     "packNpmRelationList": [
       {
@@ -20,7 +20,7 @@
     ],
     "compileWorklet": false,
     "uglifyFileName": false,
-    "uploadWithSourceMap": true,
+    "uploadWithSourceMap": false,
     "minifyWXSS": true,
     "minifyWXML": true,
     "localPlugins": false,

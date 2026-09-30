@@ -6,8 +6,7 @@
       wx:key="index"
       class="progress-step {{captured[index] ? 'progress-done' : ''}} {{currentFace === index ? 'progress-current' : ''}}"
       bindtap="onFaceTap"
-      data-face="{{index}}"
-    >
+      data-face="{{index}}" hover-class="hv">
       <view class="progress-dot" style="background: {{captured[index] || currentFace === index ? (index === 0 ? '#FFD500' : index === 1 ? '#009B48' : index === 2 ? '#C41E3A' : index === 3 ? '#FFFFFF' : index === 4 ? '#0051BA' : '#FF5800') : '#e8e6e0'}};">
         <text wx:if="{{captured[index]}}" class="progress-check">✓</text>
       </view>
@@ -23,7 +22,7 @@
       <text class="face-count">第 {{currentFace + 1}}/6 面</text>
     </view>
 
-    <view class="camera-area" bindtap="onTakePhoto">
+    <view class="camera-area" bindtap="onTakePhoto" hover-class="hv">
       <view class="camera-icon-wrap">
         <view class="camera-icon">
           <view class="camera-body"></view>
@@ -33,7 +32,7 @@
       <text class="camera-text">点击拍照</text>
     </view>
 
-    <view class="album-btn" bindtap="onChooseFromAlbum">
+    <view class="album-btn" bindtap="onChooseFromAlbum" hover-class="hv">
       <text>从相册选择</text>
     </view>
 
@@ -89,8 +88,7 @@
         class="color-cell {{item.isCenter ? 'color-cell-center' : ''}} {{item.isEmpty ? 'color-cell-empty' : ''}}"
         style="background: {{item.hex}}; border-color: {{item.hex === '#FFFFFF' ? '#d3d1c7' : item.hex}};"
         bindtap="onCellTap"
-        data-cell="{{item.index}}"
-      >
+        data-cell="{{item.index}}" hover-class="hv">
         <text wx:if="{{item.isCenter}}" class="cell-letter" style="color: {{item.textOn}};">{{faceLetter}}</text>
       </view>
     </view>
@@ -98,8 +96,8 @@
     <text class="review-hint">中心块已自动校正为{{faceName}}面颜色 · 点击其他格子可手动修改</text>
 
     <view class="review-actions">
-      <view class="btn btn-plain" bindtap="onRetake">重拍</view>
-      <view class="btn btn-primary" bindtap="onConfirm">
+      <view class="btn btn-plain" bindtap="onRetake" hover-class="hv">重拍</view>
+      <view class="btn btn-primary" bindtap="onConfirm" hover-class="hv">
         {{currentFace < 5 ? '确认，下一面' : '完成拍摄'}}
       </view>
     </view>
@@ -121,8 +119,8 @@
     </view>
 
     <view class="done-actions">
-      <view class="btn btn-plain" bindtap="onBackToFill">返回修改</view>
-      <view class="btn btn-primary {{!canSolve ? 'btn-disabled' : ''}}" bindtap="onSolve">
+      <view class="btn btn-plain" bindtap="onBackToFill" hover-class="hv">返回修改</view>
+      <view class="btn btn-primary {{!canSolve ? 'btn-disabled' : ''}}" bindtap="onSolve" hover-class="hv">
         {{solving ? '求解中…' : '求解'}}
       </view>
     </view>

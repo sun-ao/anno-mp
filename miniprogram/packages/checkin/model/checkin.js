@@ -7,31 +7,26 @@
 const HABITS_KEY = 'checkin:habits'
 const RECORDS_KEY = 'checkin:records'
 
-/** 本地日期 'YYYY-MM-DD' */
-function formatDate(d) {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
-}
+// 日期格式化与 ID 生成统一走主包共享模块（原先各自内联复制）
+import { genId } from '../../../utils/id'
+import { formatDate as padDate, addDays as daysLater, dateStrToTs as strToTs } from '../../../utils/date'
 
 /** 今天 'YYYY-MM-DD' */
 export function getTodayStr() {
-  return formatDate(new Date())
+  return padDate(new Date())
 }
 
 /** 获取 N 天后的日期 'YYYY-MM-DD' */
 export function getDaysLater(n) {
-  const d = new Date()
-  d.setDate(d.getDate() + n)
-  return formatDate(d)
+  return daysLater(n)
 }
 
 // ==================== 打卡项 CRUD ====================
 
-/** 读取全部打卡项 */
+/** 读取全部打卡项（带类型兜底，key 被污染时返回空表） */
 export function getHabits() {
-  return wx.getStorageSync(HABITS_KEY) || []
+  const v = wx.getStorageSync(HABITS_KEY)
+  return Array.isArray(v) ? v : []
 }
 
 /** 保存全部打卡项 */
@@ -48,7 +43,7 @@ export function getHabitById(id) {
 /** 新增打卡项 */
 export function addHabit(habit) {
   const habits = getHabits()
-  habit.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
+  habit.id = genId()
   habit.createdAt = Date.now()
   habits.push(habit)
   saveHabits(habits)
@@ -76,8 +71,7 @@ export function deleteHabit(id) {
 
 /** 'YYYY-MM-DD' → 当天 00:00 时间戳 */
 export function dateStrToTs(dateStr) {
-  const [y, m, d] = dateStr.split('-').map(Number)
-  return new Date(y, m - 1, d).getTime()
+  return strToTs(dateStr)
 }
 
 /** 距截止剩余天数（当天为 0，已过为负数） */
@@ -120,11 +114,11 @@ export function getStreak(habitId) {
   const set = new Set(dates)
   let streak = 0
   const d = new Date()
-  if (!set.has(formatDate(d))) {
+  if (!set.has(padDate(d))) {
     // 今天还没打卡：从昨天开始连续
     d.setDate(d.getDate() - 1)
   }
-  while (set.has(formatDate(d))) {
+  while (set.has(padDate(d))) {
     streak++
     d.setDate(d.getDate() - 1)
   }

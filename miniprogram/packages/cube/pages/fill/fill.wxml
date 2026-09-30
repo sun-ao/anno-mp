@@ -1,7 +1,7 @@
 <view class="page">
   <view class="tabs">
-    <view class="tab {{mode === 'edit' ? 'tab-active' : ''}}" bindtap="onSwitchMode" data-mode="edit">手动填色</view>
-    <view class="tab {{mode === 'preview' ? 'tab-active' : ''}}" bindtap="onSwitchMode" data-mode="preview">3D 填色</view>
+    <view class="tab {{mode === 'edit' ? 'tab-active' : ''}}" bindtap="onSwitchMode" data-mode="edit" hover-class="hv">手动填色</view>
+    <view class="tab {{mode === 'preview' ? 'tab-active' : ''}}" bindtap="onSwitchMode" data-mode="preview" hover-class="hv">3D 填色</view>
   </view>
 
   <view class="content-area">
@@ -17,8 +17,7 @@
               style="background: {{cell.hex}}; color: {{cell.textOn}};"
               bindtap="onPaint"
               data-face="{{slot.face}}"
-              data-cell="{{index}}"
-            >
+              data-cell="{{index}}" hover-class="hv">
               <text wx:if="{{cell.isCenter}}" class="cell-letter">{{cell.letter}}</text>
             </view>
           </view>
@@ -40,8 +39,7 @@
       wx:key="id"
       class="palette-item {{selectedColor === item.id ? 'palette-active' : ''}}"
       bindtap="onSelectColor"
-      data-id="{{item.id}}"
-    >
+      data-id="{{item.id}}" hover-class="hv">
       <view class="palette-color" style="background: {{item.hex}}; border-color: {{item.id === 3 ? '#d3d1c7' : item.hex}};"></view>
       <text class="palette-count">{{item.count}}/9</text>
     </view>
@@ -52,8 +50,8 @@
   </view>
 
   <view class="actions">
-    <view class="btn btn-plain" bindtap="onReset">重置</view>
-    <view class="btn btn-plain" bindtap="onGotoCapture">拍照识别</view>
-    <view class="btn btn-primary {{!canSolve ? 'btn-disabled' : ''}}" bindtap="onSolve">{{solving ? '求解中…' : '求解'}}</view>
+    <view class="btn btn-plain" bindtap="onReset" hover-class="hv">重置</view>
+    <view class="btn btn-plain" bindtap="onGotoCapture" hover-class="hv">拍照识别</view>
+    <view class="btn btn-primary {{!canSolve ? 'btn-disabled' : ''}}" bindtap="onSolve" hover-class="hv">{{solving ? '求解中…' : '求解'}}</view>
   </view>
 </view>

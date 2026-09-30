@@ -9,13 +9,13 @@
     </block>
   </view>
 
-  <view class="draw-btn {{rolling ? 'draw-btn-disabled' : ''}}" bindtap="onDraw">抽签</view>
+  <view class="draw-btn {{rolling ? 'draw-btn-disabled' : ''}}" bindtap="onDraw" hover-class="hv">抽签</view>
 
   <!-- 选项池 -->
   <view class="section">
     <view class="section-head">
       <text class="section-title">选项池（{{options.length}}）</text>
-      <view wx:if="{{options.length > 0}}" class="clear-btn" bindtap="onClearOptions">清空</view>
+      <view wx:if="{{options.length > 0}}" class="clear-btn" bindtap="onClearOptions" hover-class="hv">清空</view>
     </view>
 
     <view class="add-row">
@@ -29,7 +29,7 @@
         bindconfirm="onAdd"
         confirm-type="done"
       />
-      <view class="add-btn" bindtap="onAdd">添加</view>
+      <view class="add-btn" bindtap="onAdd" hover-class="hv">添加</view>
     </view>
 
     <view wx:if="{{options.length === 0}}" class="empty-tip">
@@ -38,21 +38,21 @@
     <view wx:else class="chips">
       <view wx:for="{{options}}" wx:key="id" class="chip">
         <text class="chip-text">{{item.text}}</text>
-        <view class="chip-del" bindtap="onDeleteOption" data-id="{{item.id}}"></view>
+        <view class="chip-del" bindtap="onDeleteOption" data-id="{{item.id}}" hover-class="hv"></view>
       </view>
     </view>
   </view>
 
   <view class="footer-bar">
-    <view class="history-btn" bindtap="onOpenHistory">抽取历史</view>
+    <view class="history-btn" bindtap="onOpenHistory" hover-class="hv">抽取历史</view>
   </view>
 
   <!-- 历史弹窗 -->
-  <view wx:if="{{showHistory}}" class="cat-mask" bindtap="onCloseHistory" catchtouchmove="noop">
-    <view class="cat-dialog history-dialog" catchtap="noop">
+  <view wx:if="{{showHistory}}" class="cat-mask" bindtap="onCloseHistory" catchtouchmove="noop" hover-class="hv">
+    <view class="cat-dialog history-dialog" catchtap="noop" hover-class="hv">
       <view class="history-head">
         <text class="history-title">抽取历史</text>
-        <view wx:if="{{history.length > 0}}" class="history-clear" bindtap="onClearHistory">清空</view>
+        <view wx:if="{{history.length > 0}}" class="history-clear" bindtap="onClearHistory" hover-class="hv">清空</view>
       </view>
       <scroll-view scroll-y class="history-body">
         <view wx:if="{{history.length === 0}}" class="history-empty">

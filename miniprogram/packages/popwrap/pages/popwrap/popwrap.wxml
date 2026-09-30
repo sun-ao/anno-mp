@@ -15,8 +15,7 @@
       wx:key="id"
       class="cell"
       data-id="{{item.id}}"
-      bindtap="onTapCell"
-    >
+      bindtap="onTapCell" hover-class="hv">
       <view class="bubble c-{{item.color}} {{item.popped ? 'bubble-flat' : ''}}"></view>
     </view>
   </view>
@@ -24,6 +23,6 @@
   <view class="stat-row">
     <text class="stat-left">还剩 {{poppedLeft}} 颗</text>
     <text class="stat-right">已捏 {{total}} 颗</text>
-    <view class="score-clear" bindtap="onClear">清空</view>
+    <view class="score-clear" bindtap="onClear" hover-class="hv">清空</view>
   </view>
 </view>

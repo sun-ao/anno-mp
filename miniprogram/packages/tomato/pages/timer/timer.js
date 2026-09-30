@@ -1,5 +1,6 @@
 const { getStats, addFocusSession, getConfig, saveConfig } = require('../../model/tomato')
 const { playFocusDone, playRestDone } = require('../../utils/alarm-audio')
+const env = require('../../../../utils/env')
 
 Page({
   data: {
@@ -39,6 +40,18 @@ Page({
     if (this._canvasRetry) {
       clearTimeout(this._canvasRetry)
       this._canvasRetry = null
+    }
+  },
+
+  // 切后台停掉 interval：时间戳驱动，回来自动校准，不需要后台空转 setData + 绘制
+  onHide() {
+    this._stopInterval()
+  },
+
+  onShow() {
+    if (this.data.status === 'running' && !this._interval) {
+      this._interval = setInterval(() => this._tick(), 500)
+      this._tick() // 立即校准一次（自动补偿后台流逝的时间，到点即触发完成）
     }
   },
 
@@ -168,7 +181,8 @@ Page({
           return
         }
         const canvas = res[0].node
-        const dpr = (wx.getSystemInfoSync() && wx.getSystemInfoSync().pixelRatio) || 2
+        // dpr 统一走 utils/env（原 getSystemInfoSync 已废弃，且这里连调两次、每次 canvas 重试都会重复调）
+        const dpr = env.getPixelRatio()
         const w = res[0].width
         const h = res[0].height
         canvas.width = w * dpr

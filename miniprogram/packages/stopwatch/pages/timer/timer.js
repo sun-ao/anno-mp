@@ -1,6 +1,6 @@
 const { addSession, formatMs } = require('../../model/stopwatch')
 
-const TICK_MS = 30 // 显示刷新间隔，毫秒级观感
+const TICK_MS = 50 // 显示刷新间隔：20Hz 足够毫秒表观感（原 30ms/33Hz 是全项目最高频 setData 点），配合文本去重减半负载
 
 function pad2(n) { return n < 10 ? '0' + n : '' + n }
 
@@ -40,7 +40,9 @@ Page({
   _tick() {
     const elapsed = Date.now() - this._startMs
     this._elapsed = elapsed
-    this.setData({ timeText: formatMs(elapsed) })
+    // 文本去重：显示值没变就不 setData（省一次 native 通信；秒表大多数字段变化才值得刷）
+    const text = formatMs(elapsed)
+    if (text !== this.data.timeText) this.setData({ timeText: text })
   },
 
   _start() {

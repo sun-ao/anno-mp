@@ -11,17 +11,17 @@
   </view>
 
   <view class="opts">
-    <view class="opt {{answers[index] === 'a' ? 'opt-active' : ''}}" bindtap="onChoose" data-choice="a">
+    <view class="opt {{answers[index] === 'a' ? 'opt-active' : ''}}" bindtap="onChoose" data-choice="a" hover-class="hv">
       <view class="opt-mark">A</view>
       <text class="opt-text">{{questions[index].a}}</text>
     </view>
-    <view class="opt {{answers[index] === 'b' ? 'opt-active' : ''}}" bindtap="onChoose" data-choice="b">
+    <view class="opt {{answers[index] === 'b' ? 'opt-active' : ''}}" bindtap="onChoose" data-choice="b" hover-class="hv">
       <view class="opt-mark">B</view>
       <text class="opt-text">{{questions[index].b}}</text>
     </view>
   </view>
 
   <view class="nav-row">
-    <view wx:if="{{index > 0}}" class="prev-btn" bindtap="onPrev">上一题</view>
+    <view wx:if="{{index > 0}}" class="prev-btn" bindtap="onPrev" hover-class="hv">上一题</view>
   </view>
 </view>

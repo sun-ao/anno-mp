@@ -2,6 +2,7 @@ import {
   getWallets, deleteWallet, getTotalAssets, getTotalAssetsBalance, getTotalCreditDebt
 } from '../../model/wallet'
 import { formatAmount } from '../../model/bill'
+import { confirm as modalConfirm } from '../../../../utils/modal'
 
 Page({
   data: {
@@ -49,17 +50,14 @@ Page({
     const id = e.currentTarget.dataset.id
     const wallet = getWallets().find(w => w.id === id)
     if (!wallet) return
-    wx.showModal({
+    modalConfirm({
       title: '删除账户',
-      content: `确定删除"${wallet.name}"吗？关联的账单不会被删除，但将变为未关联账户。`,
-      confirmColor: '#C41E3A',
-      success: (res) => {
-        if (res.confirm) {
-          deleteWallet(id)
-          wx.showToast({ title: '已删除', icon: 'success' })
-          this.loadWallets()
-        }
-      }
+      content: `确定删除"${wallet.name}"吗？关联的账单不会被删除，但将变为未关联账户。`
+    }).then((ok) => {
+      if (!ok) return
+      deleteWallet(id)
+      wx.showToast({ title: '已删除', icon: 'success' })
+      this.loadWallets()
     })
   }
 })

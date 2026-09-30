@@ -6,8 +6,8 @@
 
   <!-- 模式切换 -->
   <view class="mode-tabs">
-    <view class="mode-tab {{mode === 'focus' ? 'mode-tab-active mode-tab-focus' : ''}}" bindtap="onSelectMode" data-mode="focus">专注</view>
-    <view class="mode-tab {{mode === 'rest' ? 'mode-tab-active mode-tab-rest' : ''}}" bindtap="onSelectMode" data-mode="rest">休息</view>
+    <view class="mode-tab {{mode === 'focus' ? 'mode-tab-active mode-tab-focus' : ''}}" bindtap="onSelectMode" data-mode="focus" hover-class="hv">专注</view>
+    <view class="mode-tab {{mode === 'rest' ? 'mode-tab-active mode-tab-rest' : ''}}" bindtap="onSelectMode" data-mode="rest" hover-class="hv">休息</view>
   </view>
 
   <!-- 圆环计时 -->
@@ -27,8 +27,7 @@
         wx:key="*this"
         class="duration-chip {{focusMin === item ? 'duration-chip-focus-on' : ''}}"
         bindtap="onSelectFocusMin"
-        data-min="{{item}}"
-      >{{item}} 分</view>
+        data-min="{{item}}" hover-class="hv">{{item}} 分</view>
     </block>
     <block wx:else>
       <view
@@ -36,8 +35,7 @@
         wx:key="*this"
         class="duration-chip {{restMin === item ? 'duration-chip-rest-on' : ''}}"
         bindtap="onSelectRestMin"
-        data-min="{{item}}"
-      >{{item}} 分</view>
+        data-min="{{item}}" hover-class="hv">{{item}} 分</view>
     </block>
   </view>
 
@@ -56,10 +54,10 @@
 
   <!-- 控制按钮 -->
   <view class="controls">
-    <view class="main-btn {{status === 'running' ? 'main-btn-pause' : (mode === 'rest' ? 'main-btn-rest' : 'main-btn-focus')}}" bindtap="onToggle">
+    <view class="main-btn {{status === 'running' ? 'main-btn-pause' : (mode === 'rest' ? 'main-btn-rest' : 'main-btn-focus')}}" bindtap="onToggle" hover-class="hv">
       {{status === 'running' ? '暂停' : (status === 'paused' ? '继续' : (mode === 'focus' ? '开始专注' : '开始休息'))}}
     </view>
-    <view class="reset-btn" bindtap="onReset">重置</view>
+    <view class="reset-btn" bindtap="onReset" hover-class="hv">重置</view>
   </view>
 
   <view class="tips">

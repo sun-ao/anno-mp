@@ -34,17 +34,15 @@
   padding: 2rpx 14rpx;
 }
 
-/* ===== 卡片网格 ===== */
+/* ===== 卡片网格（CSS Grid：两列等宽，未来加列只改 repeat 参数） ===== */
 .grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
 }
 
 .card {
   position: relative;
-  width: 331rpx;
-  margin-bottom: 24rpx;
   padding: 32rpx 28rpx;
   background: #ffffff;
   border-radius: 20rpx;
@@ -95,7 +93,8 @@
 }
 
 .footer {
-  margin-top: 48rpx;
+  /* 旧布局末行卡片自带 margin-bottom 24rpx，gap 无行尾间距，补齐保持视觉不变 */
+  margin-top: 72rpx;
   text-align: center;
 }
 

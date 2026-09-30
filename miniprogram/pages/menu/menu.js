@@ -20,7 +20,7 @@ const MODULES = {
 
 // 分类（其余模块按使用场景分组）
 const SECTIONS = [
-  { title: '实用工具', keys: ['cube', 'ledger', 'countdown', 'checkin', 'idphoto', 'mbti', 'lots', 'tomato', 'snap', 'stopwatch', 'morse', 'snake'] },
+  { title: '实用工具', keys: ['cube', 'snake', 'ledger', 'countdown', 'checkin', 'idphoto', 'mbti', 'lots', 'tomato', 'snap', 'stopwatch', 'morse'] },
   { title: '解压放松', keys: ['muyu', 'bubble', 'popwrap', 'firework'] }
 ]
 

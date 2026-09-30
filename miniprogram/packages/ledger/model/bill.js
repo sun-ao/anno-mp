@@ -5,6 +5,8 @@
  */
 
 import { reverseBalance, adjustBalance, getWalletById } from './wallet'
+import { genId } from '../../../utils/id'
+import { pad2, tsToDate as tsToDateShared } from '../../../utils/date'
 
 export const STORAGE_KEY = 'ledger:bills'
 
@@ -128,7 +130,7 @@ function saveBills(bills) {
 /** 新增账单（同时调整关联账户余额） */
 export function addBill(bill) {
   const bills = wx.getStorageSync(STORAGE_KEY) || []
-  bill.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
+  bill.id = genId()
   bill.createdAt = Date.now()
   bills.push(bill)
   saveBills(bills)
@@ -325,11 +327,7 @@ function formatDateLabel(dateStr) {
 
 /** 获取今天日期 'YYYY-MM-DD' */
 export function getToday() {
-  const d = new Date()
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
+  return tsToDateShared(Date.now())
 }
 
 /** 获取当前月份 'YYYY-MM' */
@@ -342,7 +340,7 @@ export function shiftMonth(monthStr, delta) {
   const [y, m] = monthStr.split('-').map(Number)
   const d = new Date(y, m - 1 + delta, 1)
   const ny = d.getFullYear()
-  const nm = String(d.getMonth() + 1).padStart(2, '0')
+  const nm = pad2(d.getMonth() + 1)
   return `${ny}-${nm}`
 }
 

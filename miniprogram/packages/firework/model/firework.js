@@ -1,19 +1,10 @@
-const STORAGE_KEY = 'firework:launched'
+// 计数逻辑公共实现在 utils/count-store，本文件只保留领域命名（页面调用方式不变）
+const { createCountStore } = require('../../../utils/count-store')
 
-function getLaunched() {
-  const v = wx.getStorageSync(STORAGE_KEY)
-  return typeof v === 'number' && v >= 0 ? v : 0
-}
+const store = createCountStore('firework:launched')
 
-function addLaunched() {
-  const total = getLaunched() + 1
-  wx.setStorageSync(STORAGE_KEY, total)
-  return total
-}
-
-function resetLaunched() {
-  wx.setStorageSync(STORAGE_KEY, 0)
-  return 0
-}
+function getLaunched() { return store.get() }
+function addLaunched() { return store.add() }
+function resetLaunched() { return store.reset() }
 
 module.exports = { getLaunched, addLaunched, resetLaunched }

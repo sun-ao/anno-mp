@@ -1,19 +1,10 @@
-const STORAGE_KEY = 'bubble:popped'
+// 计数逻辑公共实现在 utils/count-store，本文件只保留领域命名（页面调用方式不变）
+const { createCountStore } = require('../../../utils/count-store')
 
-function getPopped() {
-  const v = wx.getStorageSync(STORAGE_KEY)
-  return typeof v === 'number' && v >= 0 ? v : 0
-}
+const store = createCountStore('bubble:popped')
 
-function addPopped() {
-  const total = getPopped() + 1
-  wx.setStorageSync(STORAGE_KEY, total)
-  return total
-}
-
-function resetPopped() {
-  wx.setStorageSync(STORAGE_KEY, 0)
-  return 0
-}
+function getPopped() { return store.get() }
+function addPopped() { return store.add() }
+function resetPopped() { return store.reset() }
 
 module.exports = { getPopped, addPopped, resetPopped }

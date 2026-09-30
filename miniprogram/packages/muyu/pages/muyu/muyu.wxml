@@ -5,7 +5,7 @@
     <text class="merit-unit">功德</text>
   </view>
 
-  <view class="knock-area" bindtap="onKnock">
+  <view class="knock-area" bindtap="onKnock" hover-class="hv">
     <view class="ripple ripple-1 {{knocking ? 'ripple-on' : ''}}"></view>
     <view class="ripple ripple-2 {{knocking ? 'ripple-on' : ''}}"></view>
     <view class="ripple ripple-3 {{knocking ? 'ripple-on' : ''}}"></view>
@@ -20,7 +20,7 @@
   </view>
 
   <view class="footer">
-    <view class="reset-btn" bindtap="onReset">清零功德</view>
+    <view class="reset-btn" bindtap="onReset" hover-class="hv">清零功德</view>
     <text class="footer-tip">心诚则灵 · 敲一下功德 +1</text>
   </view>
 </view>

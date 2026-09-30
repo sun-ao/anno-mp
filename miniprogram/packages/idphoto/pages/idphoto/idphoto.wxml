@@ -1,6 +1,6 @@
 <view class="page">
   <!-- 未选图 -->
-  <view wx:if="{{!imageReady}}" class="upload-area" bindtap="onChooseImage">
+  <view wx:if="{{!imageReady}}" class="upload-area" bindtap="onChooseImage" hover-class="hv">
     <view class="upload-icon">+</view>
     <text class="upload-title">选择照片</text>
     <text class="upload-hint">从相册选择或拍摄，建议纯色背景</text>
@@ -30,8 +30,7 @@
         wx:key="key"
         class="chip {{selectedSpec === item.key ? 'active' : ''}}"
         bindtap="onSelectSpec"
-        data-key="{{item.key}}"
-      >
+        data-key="{{item.key}}" hover-class="hv">
         <text class="chip-name">{{item.name}}</text>
         <text class="chip-mm">{{item.mm}}</text>
       </view>
@@ -45,8 +44,7 @@
         wx:key="key"
         class="chip bg-chip {{selectedBg === item.key ? 'active' : ''}}"
         bindtap="onSelectBg"
-        data-key="{{item.key}}"
-      >
+        data-key="{{item.key}}" hover-class="hv">
         <view class="bg-dot" style="background: {{item.hex || '#f1efe8'}};"></view>
         <text class="chip-name">{{item.name}}</text>
       </view>
@@ -57,21 +55,21 @@
 
     <!-- 操作按钮 -->
     <view class="actions">
-      <view class="btn btn-primary {{generating ? 'btn-disabled' : ''}}" bindtap="onGenerate">生成证件照</view>
-      <view class="btn btn-secondary {{generating ? 'btn-disabled' : ''}}" bindtap="onPrintLayout">排版打印</view>
+      <view class="btn btn-primary {{generating ? 'btn-disabled' : ''}}" bindtap="onGenerate" hover-class="hv">生成证件照</view>
+      <view class="btn btn-secondary {{generating ? 'btn-disabled' : ''}}" bindtap="onPrintLayout" hover-class="hv">排版打印</view>
     </view>
     <view class="actions">
-      <view class="btn btn-ghost" bindtap="onChangeImage">重新选图</view>
+      <view class="btn btn-ghost" bindtap="onChangeImage" hover-class="hv">重新选图</view>
     </view>
   </block>
 
   <!-- 预览弹窗 -->
-  <view wx:if="{{showPreview}}" class="mask" bindtap="onClosePreview">
-    <view class="preview-dialog" catchtap="noop">
+  <view wx:if="{{showPreview}}" class="mask" bindtap="onClosePreview" hover-class="hv">
+    <view class="preview-dialog" catchtap="noop" hover-class="hv">
       <image src="{{previewSrc}}" class="preview-image" mode="widthFix"></image>
       <view class="preview-actions">
-        <view class="preview-btn" bindtap="onSavePreview">保存到相册</view>
-        <view class="preview-btn ghost" bindtap="onClosePreview">关闭</view>
+        <view class="preview-btn" bindtap="onSavePreview" hover-class="hv">保存到相册</view>
+        <view class="preview-btn ghost" bindtap="onClosePreview" hover-class="hv">关闭</view>
       </view>
     </view>
   </view>

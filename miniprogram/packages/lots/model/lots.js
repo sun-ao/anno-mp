@@ -1,12 +1,16 @@
+// 大转盘：选项与抽取历史的本地存储（无后端）
+// 读取/写入/删除收敛到 utils/count-store 的 createListStore，抽取等业务逻辑保留在此。
 const OPTIONS_KEY = 'lots:options'
 const HISTORY_KEY = 'lots:history'
 const HISTORY_LIMIT = 20
 const OPTIONS_LIMIT = 50
+const { createListStore } = require('../../../utils/count-store')
+const { genId } = require('../../../utils/id')
 
-function getOptions() {
-  const v = wx.getStorageSync(OPTIONS_KEY)
-  return Array.isArray(v) ? v : []
-}
+const optionsStore = createListStore(OPTIONS_KEY)
+const historyStore = createListStore(HISTORY_KEY)
+
+const getOptions = optionsStore.get
 
 // 返回：新列表 | 'duplicate' 重复 | 'full' 数量上限 | null 空文本
 function addOption(text) {
@@ -15,42 +19,27 @@ function addOption(text) {
   const list = getOptions()
   if (list.some((o) => o.text === t)) return 'duplicate'
   if (list.length >= OPTIONS_LIMIT) return 'full'
-  list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), text: t })
-  wx.setStorageSync(OPTIONS_KEY, list)
+  list.push({ id: genId(), text: t })
+  optionsStore.set(list)
   return list
 }
 
-function deleteOption(id) {
-  const list = getOptions().filter((o) => o.id !== id)
-  wx.setStorageSync(OPTIONS_KEY, list)
-  return list
-}
-
-function clearOptions() {
-  wx.setStorageSync(OPTIONS_KEY, [])
-  return []
-}
+const deleteOption = optionsStore.remove
+const clearOptions = optionsStore.clear
 
 // 随机抽取一个选项并写入历史，无选项时返回 null
 function drawOne() {
   const list = getOptions()
   if (list.length === 0) return null
   const picked = list[Math.floor(Math.random() * list.length)]
-  const history = getHistory()
+  const history = historyStore.get()
   history.unshift({ ts: Date.now(), text: picked.text })
-  wx.setStorageSync(HISTORY_KEY, history.slice(0, HISTORY_LIMIT))
+  historyStore.set(history.slice(0, HISTORY_LIMIT))
   return picked
 }
 
-function getHistory() {
-  const v = wx.getStorageSync(HISTORY_KEY)
-  return Array.isArray(v) ? v : []
-}
-
-function clearHistory() {
-  wx.setStorageSync(HISTORY_KEY, [])
-  return []
-}
+const getHistory = historyStore.get
+const clearHistory = historyStore.clear
 
 function formatDate(ts) {
   const d = new Date(ts)

@@ -1,4 +1,6 @@
 const { getHistory, getLatest, removeHistory, clearHistory, formatDate } = require('../../model/mbti')
+const env = require('../../../../utils/env')
+const modalConfirm = require('../../../../utils/modal').confirm
 
 const POSTER_W = 375
 const POSTER_H = 667
@@ -80,15 +82,13 @@ Page({
   },
 
   onClearHistory() {
-    wx.showModal({
+    modalConfirm({
       title: '清空记录',
-      content: '确定清空全部测试记录吗？',
-      confirmColor: '#C41E3A',
-      success: (r) => {
-        if (!r.confirm) return
-        clearHistory()
-        this.setData({ history: [] })
-      }
+      content: '确定清空全部测试记录吗？'
+    }).then((ok) => {
+      if (!ok) return
+      clearHistory()
+      this.setData({ history: [] })
     })
   },
 
@@ -122,7 +122,8 @@ Page({
         }
         return
       }
-      const dpr = (wx.getSystemInfoSync().pixelRatio) || 2
+      // dpr 统一走 utils/env（原裸调 getSystemInfoSync 无兜底）
+      const dpr = env.getPixelRatio()
       canvas.width = POSTER_W * dpr
       canvas.height = POSTER_H * dpr
       const ctx = canvas.getContext('2d')

@@ -1,6 +1,8 @@
 import {
-  getEventById, addEvent, updateEvent, deleteEvent, buildTargetTs, getTomorrow
+  getEventById, addEvent, updateEvent, deleteEvent, buildTargetTs, getTomorrow,
+  tsToDate, tsToTime
 } from '../../model/countdown'
+import { confirm as modalConfirm } from '../../../../utils/modal'
 
 Page({
   data: {
@@ -15,9 +17,8 @@ Page({
     if (query && query.id) {
       const ev = getEventById(query.id)
       if (ev) {
-        const d = new Date(ev.targetTs)
-        const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-        const timeStr = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+        const dateStr = tsToDate(ev.targetTs)
+        const timeStr = tsToTime(ev.targetTs)
         this.setData({
           isEdit: true,
           eventId: ev.id,
@@ -75,17 +76,14 @@ Page({
   },
 
   onDelete() {
-    wx.showModal({
+    modalConfirm({
       title: '删除倒计时',
-      content: '确定删除这条倒计时吗？',
-      confirmColor: '#C41E3A',
-      success: (res) => {
-        if (res.confirm) {
-          deleteEvent(this.data.eventId)
-          wx.showToast({ title: '已删除', icon: 'success' })
-          this._backTimer = setTimeout(() => wx.navigateBack(), 600)
-        }
-      }
+      content: '确定删除这条倒计时吗？'
+    }).then((ok) => {
+      if (!ok) return
+      deleteEvent(this.data.eventId)
+      wx.showToast({ title: '已删除', icon: 'success' })
+      this._backTimer = setTimeout(() => wx.navigateBack(), 600)
     })
   },
 

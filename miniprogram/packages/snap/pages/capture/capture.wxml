@@ -15,13 +15,13 @@
     </view>
 
     <view class="topctrls">
-      <view class="ctrlbtn" bindtap="onSwitchCamera">
+      <view class="ctrlbtn" bindtap="onSwitchCamera" hover-class="hv">
         <text class="ctrl-tx">镜头 {{devicePosition === 'back' ? '后置' : '前置'}}</text>
       </view>
-      <view class="ctrlbtn" bindtap="onCycleFlash">
+      <view class="ctrlbtn" bindtap="onCycleFlash" hover-class="hv">
         <text class="ctrl-tx">闪光 {{flashLabel}}</text>
       </view>
-      <view class="ctrlbtn" bindtap="onTogglePreview">
+      <view class="ctrlbtn" bindtap="onTogglePreview" hover-class="hv">
         <text class="ctrl-tx">预览 {{hidePreview ? '隐藏' : '显示'}}</text>
       </view>
     </view>

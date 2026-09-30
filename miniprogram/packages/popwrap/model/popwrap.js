@@ -1,19 +1,10 @@
-const STORAGE_KEY = 'popwrap:total'
+// 计数逻辑公共实现在 utils/count-store，本文件只保留领域命名（页面调用方式不变）
+const { createCountStore } = require('../../../utils/count-store')
 
-function getTotal() {
-  const v = wx.getStorageSync(STORAGE_KEY)
-  return typeof v === 'number' && v >= 0 ? v : 0
-}
+const store = createCountStore('popwrap:total')
 
-function addTotal() {
-  const total = getTotal() + 1
-  wx.setStorageSync(STORAGE_KEY, total)
-  return total
-}
-
-function resetTotal() {
-  wx.setStorageSync(STORAGE_KEY, 0)
-  return 0
-}
+function getTotal() { return store.get() }
+function addTotal() { return store.add() }
+function resetTotal() { return store.reset() }
 
 module.exports = { getTotal, addTotal, resetTotal }

@@ -11,7 +11,7 @@
     <view class="cell" wx:for="{{photos}}" wx:key="id">
       <image class="thumb" src="{{item.path}}" mode="aspectFill" data-idx="{{index}}" bindtap="onPreview"></image>
       <text class="time">{{item.displayTime}}</text>
-      <view class="del" data-id="{{item.id}}" data-path="{{item.path}}" bindtap="onDelete">删</view>
+      <view class="del" data-id="{{item.id}}" data-path="{{item.path}}" bindtap="onDelete" hover-class="hv">删</view>
     </view>
   </view>
 

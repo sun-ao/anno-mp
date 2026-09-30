@@ -1,5 +1,6 @@
 import { createScopedThreejs } from 'threejs-miniprogram'
 import { FACE_DEFS, stickerIndex } from '../../model/cube-state'
+import env from '../../../../utils/env'
 
 const FACE_ID = { U: 0, R: 1, F: 2, D: 3, L: 4, B: 5 }
 
@@ -82,7 +83,10 @@ Component({
       this._canvas = canvas
 
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
-      renderer.setSize(canvas.width, canvas.height)
+      // 按设备像素比放大渲染缓冲，消除高清屏下块体边缘的毛刺/锯齿
+      // dpr 统一走 utils/env（getWindowInfo 优先，废弃 API 兜底）
+      if (renderer.setPixelRatio) renderer.setPixelRatio(Math.min(env.getPixelRatio(), 3))
+      renderer.setSize(canvas.width, canvas.height, false)
       this._renderer = renderer
 
       const scene = new THREE.Scene()

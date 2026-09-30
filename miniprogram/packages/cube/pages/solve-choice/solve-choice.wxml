@@ -7,7 +7,7 @@
   </view>
 
   <!-- 卡片一：智能求解 -->
-  <view class="card card-smart" bindtap="onChooseSmart">
+  <view class="card card-smart" bindtap="onChooseSmart" hover-class="hv">
     <view class="card-left">
       <view class="card-icon">⚡</view>
       <view class="card-main">
@@ -23,7 +23,7 @@
   </view>
 
   <!-- 卡片二：课堂还原 -->
-  <view class="card card-class" bindtap="onChooseClassroom">
+  <view class="card card-class" bindtap="onChooseClassroom" hover-class="hv">
     <view class="card-left">
       <view class="card-icon">📚</view>
       <view class="card-main">
@@ -38,5 +38,5 @@
     <view class="card-go">开始 ›</view>
   </view>
 
-  <view class="back-link" bindtap="onBack">返回修改配色</view>
+  <view class="back-link" bindtap="onBack" hover-class="hv">返回修改配色</view>
 </view>

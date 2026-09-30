@@ -14,8 +14,7 @@
         wx:for-item="item"
         wx:key="ch"
         data-ch="{{item.ch}}"
-        bindtap="onTapChar"
-      >
+        bindtap="onTapChar" hover-class="hv">
         <view class="code-ch">{{item.ch}}</view>
         <view class="code-morse">{{item.code}}</view>
       </view>

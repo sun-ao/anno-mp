@@ -103,6 +103,9 @@
 .bill-list {
   flex: 1;
   padding: 0 24rpx 140rpx;
+  /* 末项让出悬浮按钮 + 全面屏安全区，不被遮挡 */
+  padding-bottom: calc(140rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
 }
 
 .date-header {
@@ -214,7 +217,8 @@
 
 .fab {
   position: fixed;
-  bottom: 48rpx;
+  bottom: calc(48rpx + constant(safe-area-inset-bottom));
+  bottom: calc(48rpx + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   background: #BA7517;

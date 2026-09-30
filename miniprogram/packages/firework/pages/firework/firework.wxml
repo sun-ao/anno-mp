@@ -1,5 +1,5 @@
 <view class="page">
-  <view class="sky" bindtap="onSkyTap">
+  <view class="sky" bindtap="onSkyTap" hover-class="hv">
     <view class="star star-1"></view>
     <view class="star star-2"></view>
     <view class="star star-3"></view>
@@ -16,7 +16,7 @@
     <view class="launched-panel">
       <text class="launched-num">{{launched}}</text>
       <text class="launched-label">放出的烟花</text>
-      <view class="launched-clear" catchtap="onClear">清空</view>
+      <view class="launched-clear" catchtap="onClear" hover-class="hv">清空</view>
     </view>
 
     <view class="hint">点一点天空，放烟花</view>

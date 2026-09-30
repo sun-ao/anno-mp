@@ -3,6 +3,7 @@ import {
   getToday, findCategory, formatAmount, addCustomCategory, deleteCategory, CATEGORY_COLORS
 } from '../../model/bill'
 import { getWallets, getWalletById, getLastWalletId, setLastWalletId } from '../../model/wallet'
+import { confirm as modalConfirm } from '../../../../utils/modal'
 
 function dateDisplay(dateStr) {
   const [, m, d] = dateStr.split('-').map(Number)
@@ -122,21 +123,18 @@ Page({
     const key = e.currentTarget.dataset.key
     const cat = this.data.categories.find(c => c.key === key)
     if (!cat) return
-    wx.showModal({
+    modalConfirm({
       title: '删除分类',
-      content: `确定删除「${cat.name}」吗？`,
-      confirmColor: '#C41E3A',
-      success: (res) => {
-        if (res.confirm) {
-          deleteCategory(this.data.type, key)
-          const categories = getCategories(this.data.type)
-          this.setData({
-            categories,
-            selectedCategory: this.data.selectedCategory === key ? '' : this.data.selectedCategory
-          })
-          wx.showToast({ title: '已删除', icon: 'success' })
-        }
-      }
+      content: `确定删除「${cat.name}」吗？`
+    }).then((ok) => {
+      if (!ok) return
+      deleteCategory(this.data.type, key)
+      const categories = getCategories(this.data.type)
+      this.setData({
+        categories,
+        selectedCategory: this.data.selectedCategory === key ? '' : this.data.selectedCategory
+      })
+      wx.showToast({ title: '已删除', icon: 'success' })
     })
   },
 

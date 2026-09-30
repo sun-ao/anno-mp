@@ -1,7 +1,7 @@
 <view class="page">
   <view class="topbar">
     <view class="title">历史成绩</view>
-    <view wx:if="{{!empty}}" class="clear" bindtap="onClear">清空</view>
+    <view wx:if="{{!empty}}" class="clear" bindtap="onClear" hover-class="hv">清空</view>
   </view>
 
   <view wx:if="{{empty}}" class="empty">还没有保存的成绩
@@ -14,7 +14,7 @@
           <text class="card-date">{{item.date}}</text>
           <text class="card-sub">{{item.count}} 组 · 最快 {{item.bestText}}</text>
         </view>
-        <view class="del" data-id="{{item.id}}" bindtap="onDelete">删除</view>
+        <view class="del" data-id="{{item.id}}" bindtap="onDelete" hover-class="hv">删除</view>
       </view>
       <view class="card-laps">
         <view class="clap" wx:for="{{item.laps}}" wx:for-item="l" wx:key="i">

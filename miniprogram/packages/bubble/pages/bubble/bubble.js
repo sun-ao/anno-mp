@@ -52,7 +52,8 @@ Page({
       popped,
       bubbles: this.data.bubbles.map((b) => (b.id === id ? { ...b, popping: true } : b))
     })
-    setTimeout(() => this._remove(id), 280)
+    // 爆破延迟移除也要纳入 _removeTimers（原来是裸 setTimeout，页面卸载后仍会触发 setData）
+    this._removeTimers[id] = setTimeout(() => this._remove(id), 280)
   },
 
   onClear() {

@@ -25,7 +25,7 @@
 
   <!-- 操作按钮 -->
   <view class="actions">
-    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete">删除</view>
-    <view class="btn btn-save" bindtap="onSave">保存</view>
+    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete" hover-class="hv">删除</view>
+    <view class="btn btn-save" bindtap="onSave" hover-class="hv">保存</view>
   </view>
 </view>

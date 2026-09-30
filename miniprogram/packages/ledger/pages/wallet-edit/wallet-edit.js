@@ -2,6 +2,7 @@ import {
   WALLET_TYPES, findWalletType, getWalletById, addWallet, updateWallet, deleteWallet
 } from '../../model/wallet'
 import { formatAmount } from '../../model/bill'
+import { confirm as modalConfirm } from '../../../../utils/modal'
 
 Page({
   data: {
@@ -89,17 +90,14 @@ Page({
   },
 
   onDelete() {
-    wx.showModal({
+    modalConfirm({
       title: '删除账户',
-      content: '确定删除此账户吗？关联的账单不会被删除。',
-      confirmColor: '#C41E3A',
-      success: (res) => {
-        if (res.confirm) {
-          deleteWallet(this.data.walletId)
-          wx.showToast({ title: '已删除', icon: 'success' })
-          this._backTimer = setTimeout(() => wx.navigateBack(), 600)
-        }
-      }
+      content: '确定删除此账户吗？关联的账单不会被删除。'
+    }).then((ok) => {
+      if (!ok) return
+      deleteWallet(this.data.walletId)
+      wx.showToast({ title: '已删除', icon: 'success' })
+      this._backTimer = setTimeout(() => wx.navigateBack(), 600)
     })
   },
 

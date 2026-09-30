@@ -1,33 +1,16 @@
 // 计时器：多组短跑成绩（本地存储，无后端）
+// 列表 CRUD 已收敛到 utils/count-store 的 createListStore（与 snap/lots 同构），此处只留领域命名。
 const KEY = 'stopwatch:sessions'
+const { createListStore } = require('../../../utils/count-store')
 
-function genId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
-}
+const store = createListStore(KEY)
 
-function getSessions() {
-  return wx.getStorageSync(KEY) || []
-}
+const getSessions = store.get
 
 // session: { id, title, date:'YYYY-MM-DD', laps:[{i,totalMs,splitMs}], bestMs, count, createdAt }
-function addSession(session) {
-  const list = getSessions()
-  const item = Object.assign({ id: genId(), createdAt: Date.now() }, session)
-  list.unshift(item)
-  wx.setStorageSync(KEY, list)
-  return item
-}
-
-function deleteSession(id) {
-  const list = getSessions().filter(s => s.id !== id)
-  wx.setStorageSync(KEY, list)
-  return list
-}
-
-function clearSessions() {
-  wx.setStorageSync(KEY, [])
-  return []
-}
+const addSession = (session) => store.add(session)
+const deleteSession = store.remove
+const clearSessions = store.clear
 
 // 毫秒 -> MM:SS.mmm
 function formatMs(ms) {

@@ -7,8 +7,7 @@
       wx:key="key"
       class="type-item {{selectedType === item.key ? 'selected' : ''}} {{isEdit ? 'disabled' : ''}}"
       bindtap="onSelectType"
-      data-key="{{item.key}}"
-    >
+      data-key="{{item.key}}" hover-class="hv">
       <view class="type-icon" style="background: {{item.color}};">
         <text class="type-icon-text">{{item.icon}}</text>
       </view>
@@ -29,7 +28,7 @@
 
   <!-- 操作按钮 -->
   <view class="actions">
-    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete">删除</view>
-    <view class="btn btn-save" bindtap="onSave">保存</view>
+    <view wx:if="{{isEdit}}" class="btn btn-delete" bindtap="onDelete" hover-class="hv">删除</view>
+    <view class="btn btn-save" bindtap="onSave" hover-class="hv">保存</view>
   </view>
 </view>

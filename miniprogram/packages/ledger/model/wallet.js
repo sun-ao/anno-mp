@@ -4,7 +4,8 @@
  * balance 单位：元（浮点），显示时 toFixed(2)
  */
 
-import { formatAmount } from './bill'
+import { formatAmount, STORAGE_KEY as BILLS_STORAGE_KEY } from './bill'
+import { genId } from '../../../utils/id'
 
 export const WALLET_STORAGE_KEY = 'ledger:wallets'
 
@@ -47,7 +48,7 @@ export function getWalletById(id) {
 /** 新增账户 */
 export function addWallet(wallet) {
   const wallets = getWallets()
-  wallet.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
+  wallet.id = genId()
   wallet.createdAt = Date.now()
   wallets.push(wallet)
   saveWallets(wallets)
@@ -64,10 +65,18 @@ export function updateWallet(wallet) {
   }
 }
 
-/** 删除账户（不级联删除账单，仅移除账户记录） */
+/** 删除账户：账单本身保留（与删除弹窗文案一致），但级联解绑——walletId 置空，避免孤儿 walletId */
 export function deleteWallet(id) {
-  const wallets = getWallets().filter(w => w.id !== id)
-  saveWallets(wallets)
+  saveWallets(getWallets().filter(w => w.id !== id))
+  const bills = wx.getStorageSync(BILLS_STORAGE_KEY) || []
+  if (Array.isArray(bills) && bills.some(b => b && b.walletId === id)) {
+    wx.setStorageSync(
+      BILLS_STORAGE_KEY,
+      bills.map(b => (b && b.walletId === id) ? Object.assign({}, b, { walletId: '' }) : b)
+    )
+  }
+  // 上次使用的账户恰好被删时清空记录，避免编辑页默认选中已删账户
+  if (getLastWalletId() === id) setLastWalletId('')
 }
 
 // ==================== 余额操作 ====================

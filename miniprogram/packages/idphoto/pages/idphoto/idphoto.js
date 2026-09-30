@@ -1,6 +1,7 @@
 import {
   PHOTO_SPECS, BG_COLORS, replaceBackground, getPrintLayout
 } from '../../model/idphoto'
+import env from '../../../../utils/env'
 
 Page({
   data: {
@@ -106,8 +107,8 @@ Page({
         }
         const canvas = res[0].node
         const ctx = canvas.getContext('2d')
-        // 按 CSS 尺寸设置实际像素（适配高清屏）
-        const dpr = wx.getWindowInfo ? wx.getWindowInfo().pixelRatio : wx.getSystemInfoSync().pixelRatio
+        // 按 CSS 尺寸设置实际像素（适配高清屏）；dpr 统一走 utils/env
+        const dpr = env.getPixelRatio()
         canvas.width = res[0].width * dpr
         canvas.height = res[0].height * dpr
         ctx.scale(dpr, dpr)

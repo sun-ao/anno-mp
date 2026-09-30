@@ -138,5 +138,11 @@
   },
   "style": "v2",
   "lazyCodeLoading": "requiredComponents",
+  "preloadRule": {
+    "pages/menu/menu": {
+      "network": "wifi",
+      "packages": ["packages/ledger", "packages/countdown", "packages/checkin"]
+    }
+  },
   "sitemapLocation": "sitemap.json"
 }

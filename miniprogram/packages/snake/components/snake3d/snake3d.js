@@ -1,5 +1,5 @@
-import { createScopedThreejs } from 'threejs-miniprogram'
 import snake from '../../model/snake'
+import env from '../../../../utils/env'
 
 // 几何为纯算法结果，组件内直接复用 model 的 calculateTransforms（CJS 默认导入）
 const { calculateTransforms } = snake
@@ -159,7 +159,16 @@ Component({
       query.exec((res) => {
         if (!res || !res[0] || !res[0].node) return
         this._rect = res[1] || { left: 0, top: 0, width: 300, height: 300 }
-        this.initThree(res[0].node)
+        // threejs-miniprogram 构建产物约 597K，此前在 snake / cube 两个分包各拷了一份。
+        // 现改为「分包异步化」（基础库 2.17.3+）跨分包加载 cube 分包内的产物，
+        // snake 分包不再重复打包，snake 体积 -84%。
+        require.async('../../../cube/miniprogram_npm/threejs-miniprogram/index.js')
+          .then((mod) => {
+            this.initThree(res[0].node, mod.createScopedThreejs)
+          })
+          .catch((err) => {
+            console.error('[snake3d] threejs 跨分包加载失败', err)
+          })
       })
     },
     detached() {
@@ -170,7 +179,7 @@ Component({
   },
 
   methods: {
-    initThree(canvas) {
+    initThree(canvas, createScopedThreejs) {
       const THREE = createScopedThreejs(canvas)
       this._THREE = THREE
       this._canvas = canvas
@@ -178,12 +187,8 @@ Component({
 
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
       // 高清屏按 pixelRatio 放大渲染缓冲，消除块体边缘的毛刺/锯齿（之前没设 pixelRatio，dpr>1 时缓冲只有逻辑像素高）
-      let dpr = 2
-      try {
-        if (typeof wx !== 'undefined' && wx.getWindowInfo) dpr = wx.getWindowInfo().pixelRatio || 2
-        else if (typeof wx !== 'undefined' && wx.getSystemInfoSync) dpr = wx.getSystemInfoSync().pixelRatio || 2
-      } catch (e) { /* 保持默认 2 */ }
-      renderer.setPixelRatio(Math.min(dpr, 3))
+      // dpr 统一走 utils/env（getWindowInfo 优先，废弃 API 兜底）
+      renderer.setPixelRatio(Math.min(env.getPixelRatio(), 3))
       renderer.setSize(canvas.width, canvas.height, false)
       this._renderer = renderer
 

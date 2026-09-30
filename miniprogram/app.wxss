@@ -4,8 +4,23 @@ page {
   font-size: 28rpx;
   line-height: 1.6;
   font-family: -apple-system, "PingFang SC", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* 全项目色板：原先 500+ 处硬编码色散落在 37 个 wxss 里，以此为唯一出处。
+     各分包 wxss 后续改动时逐步替换为 var(--c-xxx)，本次不动任何现有样式。 */
+  --c-bg: #f6f7f9;            /* 页面底色 */
+  --c-card: #ffffff;          /* 卡片底 */
+  --c-text: #1f2329;          /* 主文字 */
+  --c-text-secondary: #888780; /* 次要文字 */
+  --c-accent: #ba7517;        /* 强调金棕 */
+  --c-danger: #c41e3a;        /* 危险红（删除/警示） */
+  --radius-pill: 999rpx;      /* 胶囊圆角 */
 }
 
 view, text {
   box-sizing: border-box;
+}
+
+/* 统一触摸反馈：可点元素加 hover-class="hv"，按下时轻微降透明度 */
+.hv {
+  opacity: 0.7;
 }

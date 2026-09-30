@@ -4,11 +4,16 @@
  * targetTs：目标时间戳（毫秒）
  */
 
+// ID 生成与日期格式化统一走主包共享模块（原先各自内联复制）
+import { genId } from '../../../utils/id'
+import { pad2, addDays, dateTimeStrToTs, tsToDate as tsToDateShared, tsToTime as tsToTimeShared } from '../../../utils/date'
+
 const STORAGE_KEY = 'countdown:events'
 
-/** 读取全部事件（按目标时间升序） */
+/** 读取全部事件（按目标时间升序，带类型兜底） */
 export function getEvents() {
-  const events = wx.getStorageSync(STORAGE_KEY) || []
+  const v = wx.getStorageSync(STORAGE_KEY)
+  const events = Array.isArray(v) ? v : []
   return events.sort((a, b) => a.targetTs - b.targetTs)
 }
 
@@ -26,7 +31,7 @@ export function getEventById(id) {
 /** 新增事件 */
 export function addEvent(event) {
   const events = wx.getStorageSync(STORAGE_KEY) || []
-  event.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6)
+  event.id = genId()
   event.createdAt = Date.now()
   events.push(event)
   saveEvents(events)
@@ -51,9 +56,7 @@ export function deleteEvent(id) {
 
 /** 'YYYY-MM-DD' + 'HH:mm' → 时间戳（毫秒） */
 export function buildTargetTs(dateStr, timeStr) {
-  const [y, m, d] = dateStr.split('-').map(Number)
-  const [hh, mm] = (timeStr || '00:00').split(':').map(Number)
-  return new Date(y, m - 1, d, hh, mm, 0).getTime()
+  return dateTimeStrToTs(dateStr, timeStr)
 }
 
 /** 剩余毫秒（已过期返回负数） */
@@ -63,7 +66,6 @@ export function getRemainingMs(targetTs) {
 
 /** 格式化剩余时间 */
 export function formatRemaining(ms) {
-  const pad = n => String(n).padStart(2, '0')
   if (ms <= 0) {
     return { text: '00:00:00', expired: true }
   }
@@ -74,39 +76,27 @@ export function formatRemaining(ms) {
   const seconds = totalSec % 60
   if (days > 0) {
     return {
-      text: `${days}天 ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`,
+      text: `${days}天 ${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`,
       expired: false
     }
   }
   return {
-    text: `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`,
+    text: `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`,
     expired: false
   }
 }
 
 /** 时间戳 → 'YYYY-MM-DD' */
 export function tsToDate(ts) {
-  const d = new Date(ts)
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
+  return tsToDateShared(ts)
 }
 
 /** 时间戳 → 'HH:mm' */
 export function tsToTime(ts) {
-  const d = new Date(ts)
-  const hh = String(d.getHours()).padStart(2, '0')
-  const mm = String(d.getMinutes()).padStart(2, '0')
-  return `${hh}:${mm}`
+  return tsToTimeShared(ts)
 }
 
 /** 获取明天的日期 'YYYY-MM-DD' */
 export function getTomorrow() {
-  const d = new Date()
-  d.setDate(d.getDate() + 1)
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
+  return addDays(1)
 }

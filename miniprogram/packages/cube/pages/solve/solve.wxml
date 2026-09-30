@@ -6,16 +6,16 @@
   </view>
 
   <view class="controls">
-    <view class="ctrl {{current === 0 || animating || autoPlaying ? 'ctrl-disabled' : ''}}" bindtap="onPrev">上一步</view>
+    <view class="ctrl {{current === 0 || animating || autoPlaying ? 'ctrl-disabled' : ''}}" bindtap="onPrev" hover-class="hv">上一步</view>
     <view class="progress">{{current}} / {{steps.length}}</view>
-    <view class="ctrl ctrl-primary {{current === steps.length ? 'ctrl-disabled' : ''}}" bindtap="onMainAction">{{autoPlaying ? '暂停' : (animating ? '旋转中…' : '下一步')}}</view>
+    <view class="ctrl ctrl-primary {{current === steps.length ? 'ctrl-disabled' : ''}}" bindtap="onMainAction" hover-class="hv">{{autoPlaying ? '暂停' : (animating ? '旋转中…' : '下一步')}}</view>
   </view>
 
   <view class="formula">
     <view class="formula-header">
       <text class="formula-label">完整解法</text>
       <view class="auto-area">
-        <view class="auto-link {{autoPlaying ? 'auto-link-active' : ''}}" bindtap="onToggleAuto">{{autoPlaying ? '暂停' : '自动'}}</view>
+        <view class="auto-link {{autoPlaying ? 'auto-link-active' : ''}}" bindtap="onToggleAuto" hover-class="hv">{{autoPlaying ? '暂停' : '自动'}}</view>
         <picker mode="selector" range="{{intervalOptions}}" value="{{intervalIndex}}" bindchange="onIntervalChange">
           <view class="interval-link">{{autoInterval}}s</view>
         </picker>
@@ -44,5 +44,5 @@
     </view>
   </scroll-view>
 
-  <view class="back-link" bindtap="onBackFill">返回修改配色</view>
+  <view class="back-link" bindtap="onBackFill" hover-class="hv">返回修改配色</view>
 </view>

@@ -1,6 +1,8 @@
 import {
   getHabitById, addHabit, updateHabit, deleteHabit, getDaysLater
 } from '../../model/checkin'
+import { tsToDate } from '../../../../utils/date'
+import { confirm as modalConfirm } from '../../../../utils/modal'
 
 Page({
   data: {
@@ -14,8 +16,7 @@ Page({
     if (query && query.id) {
       const habit = getHabitById(query.id)
       if (habit) {
-        const d = new Date(habit.deadlineTs)
-        const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+        const dateStr = tsToDate(habit.deadlineTs)
         this.setData({
           isEdit: true,
           habitId: habit.id,
@@ -64,17 +65,14 @@ Page({
   },
 
   onDelete() {
-    wx.showModal({
+    modalConfirm({
       title: '删除打卡项',
-      content: '确定删除吗？打卡记录将一并删除。',
-      confirmColor: '#C41E3A',
-      success: (res) => {
-        if (res.confirm) {
-          deleteHabit(this.data.habitId)
-          wx.showToast({ title: '已删除', icon: 'success' })
-          this._backTimer = setTimeout(() => wx.navigateBack(), 600)
-        }
-      }
+      content: '确定删除吗？打卡记录将一并删除。'
+    }).then((ok) => {
+      if (!ok) return
+      deleteHabit(this.data.habitId)
+      wx.showToast({ title: '已删除', icon: 'success' })
+      this._backTimer = setTimeout(() => wx.navigateBack(), 600)
     })
   },
 

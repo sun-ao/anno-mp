@@ -207,6 +207,12 @@
   color: #1f2a37;
   line-height: 1.3;
 }
+.guide-dir {
+  font-size: 36rpx;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 2rpx;
+}
 .guide-done {
   position: absolute;
   top: 16rpx;

@@ -2,6 +2,7 @@ import {
   getHabits, deleteHabit, getDaysLeft, isCheckedToday, checkIn,
   getStreak, getTotalDays
 } from '../../model/checkin'
+import { confirm as modalConfirm } from '../../../../utils/modal'
 
 Page({
   data: {
@@ -71,17 +72,14 @@ Page({
     const id = e.currentTarget.dataset.id
     const habit = this.data.habits.find(h => h.id === id)
     if (!habit) return
-    wx.showModal({
+    modalConfirm({
       title: '删除打卡项',
-      content: `确定删除「${habit.name}」吗？打卡记录将一并删除。`,
-      confirmColor: '#C41E3A',
-      success: (res) => {
-        if (res.confirm) {
-          deleteHabit(id)
-          wx.showToast({ title: '已删除', icon: 'success' })
-          this.loadHabits()
-        }
-      }
+      content: `确定删除「${habit.name}」吗？打卡记录将一并删除。`
+    }).then((ok) => {
+      if (!ok) return
+      deleteHabit(id)
+      wx.showToast({ title: '已删除', icon: 'success' })
+      this.loadHabits()
     })
   }
 })

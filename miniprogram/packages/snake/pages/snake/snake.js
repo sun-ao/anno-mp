@@ -7,6 +7,10 @@ const SPEEDS = [
   { label: '2×', ms: 320 }
 ]
 
+// 跟着折：点一下折到位后，等 3D 折叠动画落定（约 0.6s）再把高亮/提示切到下一步，
+// 避免“刚点下去高亮就跳到下一步”造成歧义（用户原话：高亮的颜色折到位了再变）
+const GUIDE_SETTLE_MS = 600
+
 // 跟着折：折点两侧两块的对比高亮色（须与 snake3d.js 的 COLOR_GUIDE_A / COLOR_GUIDE_B 一致）
 const GUIDE_HL_A = '#AB47BC' // 紫：铰链前一块
 const GUIDE_HL_B = '#9CCC65' // 黄绿：铰链后一块
@@ -41,7 +45,8 @@ Page({
     guideHint: '',
     guideArrow: '↻',
     guideColor: '#43A047',
-    guideWord: '往右边翻一下',
+    guideWord: '顺时针翻（往右）↻',
+    guideDir: '顺时针',
     guideZoomTip: false, // 跟着折首屏提示「双指可放大看细节」
     nudge: 0,
     // 展示 / 播放
@@ -65,8 +70,13 @@ Page({
     this._turns = []
     this._guideSteps = []
     this._guideFull = []
-    this._favorites = wx.getStorageSync('snake:favorites') || []
-    this._myShapes = wx.getStorageSync('snake:myshapes') || []
+    this._guideSettling = false
+    this._settleTimer = null
+    // 类型兜底：key 被污染成非数组时返回空表，避免后续 push/filter 抛错
+    const fav = wx.getStorageSync('snake:favorites')
+    this._favorites = Array.isArray(fav) ? fav : []
+    const shapes = wx.getStorageSync('snake:myshapes')
+    this._myShapes = Array.isArray(shapes) ? shapes : []
     this._allPresets = this.buildPresetList()
     const list = this.applyPresetFilter()
     this.setData({ presets: list, myShapes: this.visibleMyShapes() }, () => {
@@ -76,10 +86,12 @@ Page({
 
   onUnload() {
     this.stopPlay()
+    this.clearGuideSettle()
   },
 
   onHide() {
     this.stopPlay()
+    this.clearGuideSettle()
   },
 
   // ---------- 造型列表（含收藏排序）----------
@@ -229,6 +241,7 @@ Page({
     const mode = e.currentTarget.dataset.mode
     if (mode === this.data.mode) return
     this.stopPlay()
+    this.clearGuideSettle()
     if (mode === 'library') {
       this.setData({ mode, interactive: false, highlight: [], overlap: [], overlapCount: 0, focus: -1 })
     } else if (mode === 'manual') {
@@ -292,6 +305,15 @@ Page({
       this._playTimer = null
     }
     if (this.data.isPlaying) this.setData({ isPlaying: false })
+  },
+
+  // 取消「跟着折」折叠落定计时器（切模式/上一步/重新折/退出页面时调用，避免延时回调误切高亮）
+  clearGuideSettle() {
+    if (this._settleTimer) {
+      clearTimeout(this._settleTimer)
+      this._settleTimer = null
+    }
+    this._guideSettling = false
   },
 
   onPrev() {
@@ -359,6 +381,7 @@ Page({
       return
     }
     this.stopPlay()
+    this.clearGuideSettle()
     this._guideSteps = parsed.steps
     this._guideFull = []
     for (let k = 0; k <= parsed.steps.length; k++) {
@@ -407,10 +430,12 @@ Page({
     const step = this._guideSteps[this.data.guideStep]
     const joint = step.joint // 0 基
     const piece = joint + 1
+    // turn 1 = 顺时针 90°（↻），turn -1 = 逆时针 90°（↺），turn 2 = 翻面 180°（⟳）
+    // 文字里直接标出「顺时针/逆时针」，方便小朋友看清该往哪边扭
     const dirMap = {
-      right: { arrow: '↻', color: '#43A047', word: '往右边翻一下' },
-      left: { arrow: '↺', color: '#1E88E5', word: '往左边翻一下' },
-      flip: { arrow: '⟳', color: '#FB8C00', word: '翻个身' }
+      right: { arrow: '↻', color: '#43A047', word: '顺时针翻（往右）↻' },
+      left: { arrow: '↺', color: '#1E88E5', word: '逆时针翻（往左）↺' },
+      flip: { arrow: '⟳', color: '#FB8C00', word: '翻个面 ⟳' }
     }
     const d = step.turn === 1 ? dirMap.right : step.turn === -1 ? dirMap.left : dirMap.flip
     this.setData({
@@ -427,13 +452,15 @@ Page({
       guideArrow: d.arrow,
       guideColor: d.color,
       guideWord: d.word,
+      guideDir: d.cw,
       guideHint: `第 ${this.data.guideStep + 1}/${this.data.guideTotal} 步：把第 ${joint + 1}、${joint + 2} 块（发光的）中间 ${d.word}！`
     })
   },
 
   // 跟着折：折对当前这一步（点中发光的两块之一即自动折到位并进入下一步）
+  // —— 折叠动画约 0.6s，期间保持当前步两块高亮不跳色；等落定后再把高亮/提示切到下一步
   guideTapJoint(piece) {
-    if (this.data.guideDone) return
+    if (this.data.guideDone || this._guideSettling) return
     const step = this._guideSteps[this.data.guideStep]
     // 高亮的是铰链两侧两块（joint 与 joint+1），点任一块都算折对这一铰链
     if (piece !== step.joint && piece !== step.joint + 1) {
@@ -443,25 +470,33 @@ Page({
     }
     const next = this._guideFull[this.data.guideStep + 1]
     this._turns = next.slice()
-    this.setData({
-      turns: next.slice(),
-      poseDigits: this.turnsToDigits(next),
-      guideStep: this.data.guideStep + 1
-    }, () => this.updateGuideTarget())
+    // 立即应用 turns（触发 3D 折叠动画），但先不移动高亮/提示——
+    // 等折叠落定（GUIDE_SETTLE_MS）后再切到下一步，避免「刚点就跳色」产生歧义
+    this.setData({ turns: next.slice(), poseDigits: this.turnsToDigits(next) })
+    this._guideSettling = true
+    if (this._settleTimer) clearTimeout(this._settleTimer)
+    this._settleTimer = setTimeout(() => {
+      this._guideSettling = false
+      this.setData({ guideStep: this.data.guideStep + 1 }, () => this.updateGuideTarget())
+    }, GUIDE_SETTLE_MS)
   },
 
+  // 帮我折 / 下一步：自动折对当前步，同样等折叠落定再切下一步高亮
   onGuideAuto() {
-    if (this.data.guideDone) return
+    if (this.data.guideDone || this._guideSettling) return
     const next = this._guideFull[this.data.guideStep + 1]
     this._turns = next.slice()
-    this.setData({
-      turns: next.slice(),
-      poseDigits: this.turnsToDigits(next),
-      guideStep: this.data.guideStep + 1
-    }, () => this.updateGuideTarget())
+    this.setData({ turns: next.slice(), poseDigits: this.turnsToDigits(next) })
+    this._guideSettling = true
+    if (this._settleTimer) clearTimeout(this._settleTimer)
+    this._settleTimer = setTimeout(() => {
+      this._guideSettling = false
+      this.setData({ guideStep: this.data.guideStep + 1 }, () => this.updateGuideTarget())
+    }, GUIDE_SETTLE_MS)
   },
 
   onGuidePrev() {
+    this.clearGuideSettle()
     if (this.data.guideStep <= 0) {
       wx.showToast({ title: '已经是第一步', icon: 'none' })
       return
@@ -481,6 +516,7 @@ Page({
   },
 
   onGuideRestart() {
+    this.clearGuideSettle()
     const start = this.zeros(this.data.pieceCount)
     this._turns = start.slice()
     this.setData({
